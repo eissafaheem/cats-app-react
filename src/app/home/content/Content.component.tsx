@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
-import { AVATARS } from '../../utils/avatars'
+import React, { useEffect, useState } from 'react'
+import { AVATARS } from './../../_shared/utils/avatars'
 import ContentStyles from './Content.module.css'
 import InputComponent from '../../_shared/components/input/Input.component'
 import ButtonComponent from '../../_shared/components/button/Button.component';
 import sendIcon from './../../../assets/send-icon.svg'
+import  {useLocation} from 'react-router-dom' 
 
 function ContentComponent() {
 
   const [message, setMessage] = useState<string>("");
+  const location = useLocation();
+ 
+  const {
+     userName
+  } = location.state
+
   function handleButtonClick(event: any) {
     event.preventDefault();
     console.log("ok");
@@ -22,7 +29,7 @@ function ContentComponent() {
         </div>
         <div className={ContentStyles["user"]}>
           <div className={ContentStyles["name"]}>
-            Grace Miller
+            {userName}
           </div>
           <div className={ContentStyles["status"]}>
             Online

@@ -5,6 +5,7 @@ import io from 'socket.io-client'
 import SidebarComponent from './home/sidebar/Sidebar.component';
 import ContentComponent from './home/content/Content.component';
 import HomeComponent from './home/Home.component';
+import AppRouting from './App.routing';
 
 const socket = io("http://localhost:5000")
 socket.on("connect", ()=>{
@@ -14,7 +15,7 @@ socket.on("connect", ()=>{
 function App() {
   return (
     <div className="App">
-      <HomeComponent/>
+      <AppRouting/>
     </div>
   );
 }

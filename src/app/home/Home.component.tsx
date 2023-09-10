@@ -2,6 +2,7 @@ import React from 'react'
 import HomeStyles from './Home.module.css'
 import SidebarComponent from './sidebar/Sidebar.component'
 import ContentComponent from './content/Content.component'
+import {Outlet} from 'react-router-dom'
 
 function HomeComponent() {
   return (
@@ -10,7 +11,7 @@ function HomeComponent() {
         <SidebarComponent/>
       </div>
       <div className={`${HomeStyles["content"]} ${HomeStyles["content-close"]}`}>
-        <ContentComponent/>
+        <Outlet/>
       </div>
     </div>
   )

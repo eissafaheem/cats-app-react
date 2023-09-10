@@ -1,5 +1,6 @@
 import React from 'react'
 import ConversationItemStyles from './ConversationItem.module.css'
+import {useNavigate} from 'react-router-dom'
 
 type ConversationItemProps = {
     profileAvatar: string,
@@ -16,9 +17,13 @@ function ConversationItemComponent(props: ConversationItemProps) {
         lastMessage,
         timeStamp
     } = props;
+    const navigate = useNavigate();
+    function handleConversationClick(){
+        navigate('chat', {state:{userName}})
+    }
 
     return (
-        <div className={ConversationItemStyles['conversation-item-container']}>
+        <div className={ConversationItemStyles['conversation-item-container']} onClick={handleConversationClick}>
                 <div className={ConversationItemStyles["profile-pic"]}>
                     <img src={profileAvatar} alt="Avatar" />
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import ConversationListStyles from './ConversationList.module.css'
 import ConversationItemComponent from './conversation-item/ConversationItem.component'
-import { AVATARS } from '../../../utils/avatars'
+import { AVATARS } from '../../../_shared/utils/avatars'
 
 function ConversationListComponent() {
 
@@ -12,7 +12,7 @@ function ConversationListComponent() {
             {
                 arr.map((value, index) => {
                     return <>
-                        <ConversationItemComponent lastMessage='Hii how are you?' profileAvatar={AVATARS[index%6]} timeStamp="7:58" userName='Liam Anderson' />
+                        <ConversationItemComponent lastMessage='Hii how are you?' profileAvatar={AVATARS[index%6]} timeStamp="7:58" userName={index+""} />
                     </>
                 })
             }
