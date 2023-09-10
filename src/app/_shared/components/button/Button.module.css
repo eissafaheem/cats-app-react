@@ -1,0 +1,22 @@
+.button-container{
+    background-color: var(--primary_color);
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.5rem;
+    height: 2.5rem;
+    gap: 1ch;
+    border-radius: var(--app_border_radius);
+    color: white;
+    cursor: pointer;
+}
+
+.button-container:hover{
+    opacity: 0.8;
+}
+
+button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+}

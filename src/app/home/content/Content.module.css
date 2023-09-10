@@ -1,0 +1,79 @@
+.content-container {
+    background-color: white;
+    height: 100vh;
+}
+
+.content-container .header {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--app_border_color);
+    line-height: 1.4rem;
+}
+
+.content-container .header .user {
+    flex-direction: column;
+}
+
+.content-container .header .user .name {
+    color: var(--text1_color);
+}
+
+.content-container .header .user .status {
+    color: var(--primary_color);
+    font-size: 0.8rem;
+}
+
+.content-container .header .profile-avatar img {
+    height: 3.5rem;
+}
+
+.content-container .footer {
+    height: 4rem;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.content-container .footer .input {
+    width: calc(100% - 4rem);
+}
+
+.content-container .message-container {
+    width: 100%;
+    height: calc(100vh - 9rem);
+    overflow-y: scroll;
+}
+
+.my-message {
+    text-align: right;
+    margin: 0.5rem;
+}
+
+.my-message span {
+    padding: 0.5rem;
+    border-radius: var(--app_border_radius);
+    background-color: var(--primary_color);
+    color: white;
+    display: inline-block;
+    max-width: 70%;
+    text-align: left;
+}
+
+.other-message {
+    text-align: left;
+    margin: 0.5rem;
+}
+
+.other-message span {
+    padding: 0.5rem;
+    display: inline-block;
+    background-color: var(--secondary_color);
+    max-width: 70%;
+    color: var(--text1_color);
+    border-radius: var(--app_border_radius);
+
+}

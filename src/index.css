@@ -1,0 +1,35 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.App{
+  height: 100vh;
+}
+
+:root{
+  --primary_color: #00A3FF;
+  --secondary_color: #DFDFDF;
+  --app_border_color: #5E5E5E33;
+  --app_border_radius: 12px;
+  --text1_color: #515151;
+  --text2_color: #333333;
+  --text3_color: #A0A0A0;
+  --success_color: green;
+  --danger_color: red;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--app_border_color);
+
+}

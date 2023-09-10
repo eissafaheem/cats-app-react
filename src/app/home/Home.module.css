@@ -1,0 +1,51 @@
+.home-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    /* background-color: red; */
+    width: 30%;
+    height: 100%;
+}
+
+.content {
+    width: 70%;
+    height: 100%;
+    /* background-color: yellow; */
+}
+
+@media screen and (max-width: 950px){
+    *{
+        font-size: 12px;
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+
+    *{
+        font-size: 14px;
+    }
+
+    .home-container {
+        position: relative;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .content,
+    .content-close {
+        position: absolute;
+        width: 100%;
+        top: 0rem;
+        left: -100%;
+        transition: all 0.5s ease
+    }
+
+    .content-open {
+        left: 0;
+    }
+}

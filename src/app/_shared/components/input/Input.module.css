@@ -1,0 +1,15 @@
+.input-container{
+    border: 1px solid var(--app_border_color);
+    border-radius: var(--app_border_radius);
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    height: 2.5rem;
+}
+
+.input-container input{
+    width: 100%;
+    outline: none;
+    border: none;
+}
