@@ -3,6 +3,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LayoutComponent from './layout/Layout.component';
 import HomeComponent from './home/Home.component';
 import ContentComponent from './home/content/Content.component';
+import AuthComponent from './auth/Auth.component';
+import SigninComponent from './auth/signin/Signin.component';
+import SignupComponent from './auth/Signup/Signup.component';
 
 function AppRouting() {
 
@@ -11,6 +14,21 @@ function AppRouting() {
       path: "/",
       element: <LayoutComponent />,
       children: [
+        {
+          path: "auth",
+          element: <AuthComponent/>,
+          children:[
+            {
+              path: "signin",
+              element: <SigninComponent/>
+            },
+            {
+              path: "signup",
+              element: <SignupComponent/>
+            }
+            
+          ]
+        },
         {
           path: "/home",
           element: <HomeComponent />,

@@ -46,7 +46,10 @@
     width: 100%;
     height: calc(100vh - 9rem);
     overflow-y: scroll;
+    background-image: url('./../../../assets/opacity10.png');
+    background-size: cover;
 }
+
 
 .my-message {
     text-align: right;
@@ -77,3 +80,4 @@
     border-radius: var(--app_border_radius);
 
 }
+

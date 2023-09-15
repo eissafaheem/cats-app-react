@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { AVATARS } from './../../_shared/utils/avatars'
+import { AVATARS } from '../../_shared/utils/constatnts'
 import ContentStyles from './Content.module.css'
 import InputComponent from '../../_shared/components/input/Input.component'
 import ButtonComponent from '../../_shared/components/button/Button.component';
 import sendIcon from './../../../assets/send-icon.svg'
+import bg from './../../../assets/chat-bg2.avif'
 import  {useLocation} from 'react-router-dom' 
 
 function ContentComponent() {
@@ -12,7 +13,8 @@ function ContentComponent() {
   const location = useLocation();
  
   const {
-     userName
+     userName,
+     conversationId
   } = location.state
 
   function handleButtonClick(event: any) {
@@ -29,7 +31,7 @@ function ContentComponent() {
         </div>
         <div className={ContentStyles["user"]}>
           <div className={ContentStyles["name"]}>
-            {userName}
+            {userName} {conversationId}
           </div>
           <div className={ContentStyles["status"]}>
             Online
@@ -37,6 +39,7 @@ function ContentComponent() {
         </div>
       </div>
       <div className={ContentStyles["message-container"]}>
+      {/* <img src={bg} alt="Background" id={ContentStyles["bg-img"]} /> */}
         <div className={ContentStyles["my-message"]}>
           <span>
             Hii how are you?

@@ -7,7 +7,15 @@ import addIcon from './../../../assets/add-icon.svg'
 import ButtonComponent from '../../_shared/components/button/Button.component'
 import ConversationListComponent from './conversation-list/ConversationList.component'
 
-function SidebarComponent() {
+type SidebarProps ={
+  setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function SidebarComponent(props: SidebarProps) {
+
+  const {
+    setIsChatOpen
+  } = props;
 
   const [searchString, setSearchString] = useState<string>("")
 
@@ -33,7 +41,7 @@ function SidebarComponent() {
           <ButtonComponent icon={addIcon} onClick={handleAddButtonClick} />
         </div>
       </div>
-      <ConversationListComponent/>
+      <ConversationListComponent setIsChatOpen={setIsChatOpen}/>
     </div>
   )
 }

@@ -7,6 +7,7 @@ type ConversationItemProps = {
     userName: string,
     lastMessage: string,
     timeStamp: string
+    setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function ConversationItemComponent(props: ConversationItemProps) {
@@ -15,11 +16,13 @@ function ConversationItemComponent(props: ConversationItemProps) {
         profileAvatar,
         userName,
         lastMessage,
-        timeStamp
+        timeStamp,
+        setIsChatOpen
     } = props;
     const navigate = useNavigate();
     function handleConversationClick(){
-        navigate('chat', {state:{userName}})
+        navigate('chat', {state:{userName: `user${userName}`, conversationId: `conversation${userName}`}})
+        setIsChatOpen(true);
     }
 
     return (

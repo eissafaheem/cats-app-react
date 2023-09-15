@@ -1,3 +1,4 @@
+import { environment } from '../../../environment'
 import avatar1 from './../../../assets/avatar/avatar1.png'
 import avatar2 from './../../../assets/avatar/avatar2.png'
 import avatar3 from './../../../assets/avatar/avatar3.png'
@@ -12,3 +13,9 @@ export const AVATARS = [
     avatar5,
     avatar6
 ]
+
+export const ROUTES = {
+    signup: `/auth/signup`,
+    signin: `/auth/signin`,
+    home: `/home`
+}
