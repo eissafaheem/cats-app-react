@@ -18,9 +18,9 @@ function ConversationListComponent(props: ConversationListProps) {
 
             {
                 arr.map((value, index) => {
-                    return <>
-                        <ConversationItemComponent lastMessage='Hii how are you?' profileAvatar={AVATARS[index%6]} timeStamp="7:58" userName={index+""} setIsChatOpen={setIsChatOpen}/>
-                    </>
+                    return (
+                        <ConversationItemComponent key={index} lastMessage='Hii how are you?' profileAvatar={AVATARS[index%6]} timeStamp="7:58" userName={index+""} setIsChatOpen={setIsChatOpen}/>
+                    )
                 })
             }
         </div>

@@ -15,11 +15,11 @@ function AppRouting() {
       element: <LayoutComponent />,
       children: [
         {
-          path: "auth",
+          path: "/",
           element: <AuthComponent/>,
           children:[
             {
-              path: "signin",
+              path: "/",
               element: <SigninComponent/>
             },
             {

@@ -15,7 +15,7 @@ export const AVATARS = [
 ]
 
 export const ROUTES = {
-    signup: `/auth/signup`,
-    signin: `/auth/signin`,
+    signup: `/signup`,
+    signin: `/`,
     home: `/home`
 }
