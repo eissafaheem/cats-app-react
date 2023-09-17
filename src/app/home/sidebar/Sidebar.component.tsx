@@ -102,6 +102,7 @@ function SidebarComponent(props: SidebarProps) {
         <NewConversationModalComponent
           setIsNewConversationModalVisible={setIsNewConversationModalVisible}
           setConversations={setConversations}
+          conversations={conversations}
         />
       )}
     </div>

@@ -17,12 +17,14 @@ type NewConversationProps = {
     React.SetStateAction<boolean>
   >;
   setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
+  conversations: Conversation[];
 };
 
 function NewConversationModalComponent(props: NewConversationProps) {
   const [searchToken, setSearchToken] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
-  const { setIsNewConversationModalVisible, setConversations } = props;
+  const { setIsNewConversationModalVisible, setConversations, conversations } =
+    props;
 
   useEffect(() => {
     if (searchToken) {
@@ -58,9 +60,8 @@ function NewConversationModalComponent(props: NewConversationProps) {
       const addConversationResult =
         await conversationManagementService.addConversation(conversation);
       if (addConversationResult.errorCode === 0) {
-        let tempConversationsArray: Conversation[] = [];
+        let tempConversationsArray: Conversation[] = conversations;
         tempConversationsArray.push(addConversationResult.conversation);
-        console.log("idhar",addConversationResult.conversation)
         setConversations(tempConversationsArray);
         setIsNewConversationModalVisible(false);
       } else {

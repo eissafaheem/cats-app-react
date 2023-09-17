@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AVATARS } from "../../_shared/utils/constatnts";
 import ContentStyles from "./Content.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
@@ -6,17 +6,81 @@ import ButtonComponent from "../../_shared/components/button/Button.component";
 import sendIcon from "./../../../assets/send-icon.svg";
 import bg from "./../../../assets/chat-bg2.avif";
 import { useLocation } from "react-router-dom";
+import { ConversationManagementService } from "../../../client/services/conversation-management.service";
+import { MessageanagementService } from "../../../client/services/message-management.service";
+import { Message } from "../../../client/models/Entities/Message";
+import {
+  LocalKeys,
+  LocalStorage,
+} from "../../../client/models/classes/businessLogic/LocalStorage";
 
 function ContentComponent() {
   const [message, setMessage] = useState<string>("");
+  const [myId, setMyId] = useState<string>("");
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
   const location = useLocation();
-
   const { _id, name, users, lastMessage, isPinned } = location.state;
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
-  function handleButtonClick(event: any) {
-    event.preventDefault();
-    console.log("ok");
+  useEffect(() => {
+    setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
+    getAllMessages();
+  }, []);
+  
+  useEffect(()=>{
+    setMessage("");
+    setAllMessages([]);
+    getAllMessages();
+  }, [_id])
+
+  async function getAllMessages() {
+    const messageManagementService = new MessageanagementService();
+    try {
+      const getMessageResult = await messageManagementService.getAllMessages(
+        _id
+      );
+      if (getMessageResult.errorCode === 0) {
+        setAllMessages(getMessageResult.messages);
+      } else {
+        alert("failure");
+      }
+    } catch (err) {
+      alert("Something went wrong!");
+    }
   }
+
+  async function addMessage(event: any) {
+    event.preventDefault();
+    try {
+      const messageManagementService = new MessageanagementService();
+      const newMessage = new Message(null, message, myId, _id, undefined);
+      const addMessageResult = await messageManagementService.addMessage(
+        newMessage
+      );
+      if (addMessageResult.errorCode === 0) {
+        addMyMessageInDom(addMessageResult.message);
+        event.target.reset();
+      } else {
+        alert("failure");
+      }
+    } catch (err) {
+      alert("Something went wrong");
+    }
+  }
+
+  function addMyMessageInDom(newMessage: Message) {
+    const messageDiv = document.createElement("div");
+    // messageDiv.setAttribute("id", newMessage._id || "");
+    messageDiv.classList.add(ContentStyles["my-message"]);
+    const messageSpan = document.createElement("span");
+    messageSpan.innerText = newMessage.content || "";
+
+    if (messageContainerRef.current) {
+      messageDiv.appendChild(messageSpan);
+      messageContainerRef.current.appendChild(messageDiv);
+    }
+  }
+
   return (
     <div className={ContentStyles["content-container"]}>
       <div className={ContentStyles["header"]}>
@@ -30,118 +94,31 @@ function ContentComponent() {
           <div className={ContentStyles["status"]}>Online</div>
         </div>
       </div>
-      <div className={ContentStyles["message-container"]}>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>
-            Hii how are you? Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Fugiat quos quis necessitatibus dolorem eveniet veniam maxime.
-            Rerum quae inventore ea eum aliquid? Ipsam velit totam officia
-            molestiae consectetur esse animi, quasi incidunt doloremque ducimus
-            libero labore porro dicta. Rem rerum ipsum quis, repudiandae
-            doloribus odio dolorum voluptatem, ipsam libero aperiam saepe iusto
-            doloremque iste vitae exercitationem minus dolores? Incidunt
-            excepturi omnis, eligendi recusandae quisquam quibusdam dolores
-            praesentium mollitia harum fugit quod blanditiis magnam repellendus
-            nihil vero ipsam eius provident. Totam a et eos suscipit ipsa saepe
-            autem nisi praesentium, deserunt cumque commodi officia earum
-            molestias recusandae quaerat nulla hic sit debitis consequatur
-            fugiat ea ratione. Quasi, delectus! Reiciendis assumenda eaque
-            tempore dignissimos dicta, pariatur veritatis doloremque totam?
-            Voluptatum, quas ipsa quam placeat aliquid eum, culpa consequatur
-            quibusdam ut reiciendis deleniti impedit dicta eveniet unde ad
-            doloremque corrupti consequuntur illum iure omnis? Ipsa in tenetur
-            pariatur assumenda incidunt nam reiciendis ducimus ut quas voluptas?
-            Consequatur recusandae perferendis vero ullam magnam obcaecati ea.
-            Quae fuga nisi ab aut consectetur doloribus et officia odio beatae?
-            Suscipit reiciendis cupiditate a quidem assumenda tenetur inventore
-            quaerat, harum aliquam dolorem dolores asperiores consequatur dolor
-            laborum? Suscipit alias ab in cupiditate dolore dolor facere!
-            Laboriosam, pariatur reprehenderit?
-          </span>
-        </div>
-        <div className={ContentStyles["my-message"]}>
-          <span>Hii how are you?</span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>
-            Hii how are you? Lorem, ipsum dolor sit amet consectetur adipisicing
-            elit. Aliquid, aperiam. Nisi nihil corporis fuga a, maiores minus,
-            cumque hic voluptatem itaque perspiciatis, recusandae omnis quam
-            molestiae est dolores quisquam atque dolore sequi. Quae quis dolor
-            sunt ex ipsa, ducimus quidem vel, molestiae reiciendis labore quos
-            quisquam architecto impedit nisi at!
-          </span>
-        </div>
-        <div className={ContentStyles["other-message"]}>
-          <span>Hii how are you?</span>
-        </div>
+      <div
+        className={ContentStyles["message-container"]}
+        ref={messageContainerRef}
+      >
+        {allMessages.map((message, index) => {
+          return (
+            <div
+              key={index}
+              className={`${
+                message.sender === myId
+                  ? ContentStyles["my-message"]
+                  : ContentStyles["other-message"]
+              }`}
+            >
+              <span>{message.content}</span>
+            </div>
+          );
+        })}
       </div>
-      <form className={ContentStyles["footer"]} onSubmit={handleButtonClick}>
+      <form className={ContentStyles["footer"]} onSubmit={addMessage}>
         <div className={ContentStyles["input"]}>
           <InputComponent placeholder="Type message..." setValue={setMessage} />
         </div>
         <div className={ContentStyles["button"]}>
-          <ButtonComponent icon={sendIcon} />
+          <ButtonComponent icon={sendIcon} onClick={addMessage} />
         </div>
       </form>
     </div>

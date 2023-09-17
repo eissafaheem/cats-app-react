@@ -1,4 +1,5 @@
 import { Conversation } from "./Conversation";
+import { Message } from "./Message";
 import { User } from "./User";
 
 export class RestResult {
@@ -46,5 +47,21 @@ export class GetConversationResult extends RestResult {
   constructor(conversation: Conversation[] = []) {
     super();
     this.conversation = conversation;
+  }
+}
+
+export class AddMessageResult extends RestResult {
+  message: Message;
+  constructor(message: Message = new Message()) {
+    super();
+    this.message = message;
+  }
+}
+
+export class GetMessageResult extends RestResult {
+  messages: Message[];
+  constructor(messages: Message[] = []) {
+    super();
+    this.messages = messages;
   }
 }

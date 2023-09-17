@@ -27,7 +27,7 @@ function ConversationItemComponent(props: ConversationItemProps) {
       onClick={handleConversationClick}
     >
       <div className={ConversationItemStyles["profile-pic"]}>
-        <img src={AVATARS[users[0].avatarId]} alt="Avatar" />
+        <img src={AVATARS[users[0].avatarId || 0]} alt="Avatar" />
       </div>
       <div className={ConversationItemStyles["user"]}>
         <div className={ConversationItemStyles["line-1"]}>

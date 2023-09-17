@@ -1,4 +1,5 @@
 import { Message } from "../models/Entities/Message";
+import { AddMessageResult, GetMessageResult } from "../models/Entities/RestResults";
 import { MessageManagementClient } from "../models/classes/businessLogic/MessageManagementClient";
 
 export class MessageanagementService{
@@ -7,12 +8,12 @@ export class MessageanagementService{
     this.messageManagementClient = new MessageManagementClient();
   }
 
-  addMessage(message: Message): Promise<Message> {
+  addMessage(message: Message): Promise<AddMessageResult> {
     return this.messageManagementClient.addMessage(message);
   }
 
-  getAllMessages(): Promise<Message[]> {
-    return this.messageManagementClient.getAllMessages();
+  getAllMessages(conversationId: string): Promise<GetMessageResult> {
+    return this.messageManagementClient.getAllMessages(conversationId);
   }
 
     
