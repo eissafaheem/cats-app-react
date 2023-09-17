@@ -1,29 +1,52 @@
+import { environment } from "../../../../environment";
 import { Conversation } from "../../Entities/Conversation";
+import { Method, RestCalls } from "./RestCalls";
 
-export class ConversationManagementClinet{
-    constructor(){
+export class ConversationManagementClinet {
+  restCalls: RestCalls;
+  constructor() {
+    this.restCalls = new RestCalls();
+  }
 
-    }
+  addConversation(conversation: Conversation): Promise<Conversation> {
+    return new Promise((resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}/conversation`;
+        const addedConversation = this.restCalls.sendHttpRequest(
+          Method.POST,
+          url,
+          conversation
+        );
+        if (addedConversation) {
+          resolve(addedConversation);
+        } else {
+          reject(addedConversation);
+        }
+      } catch (err) {
+        reject(conversation);
+      }
+    });
+  }
 
-    addConversation(conversation: Conversation){
-        return new Promise((resolve, reject)=>{
-            
-        })
-    }
+  getAllConversations(): Promise<Conversation[]> {
+    return new Promise((resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}/conversation`;
+        const conversations = this.restCalls.sendHttpRequest(Method.GET, url);
+        if (conversations) {
+          resolve(conversations);
+        } else {
+          reject(conversations);
+        }
+      } catch (err) {
+        reject([]);
+      }
+    });
+  }
 
-    getAllConversations(){
-        
-    }
+  deleteConversation(conversationId: string) {}
 
-    deleteConversation(conversationId: string){
+  pinConversation(conversationId: string) {}
 
-    }
-
-    pinConversation(conversationId: string){
-
-    }
-
-    searchConversation(token: string){
-
-    }
+  searchConversation(token: string) {}
 }
