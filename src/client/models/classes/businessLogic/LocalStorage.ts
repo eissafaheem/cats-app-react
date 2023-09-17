@@ -1,6 +1,6 @@
 export class LocalStorage{
     getData(data: string){
-        localStorage.getItem(data);
+        return JSON.parse(localStorage.getItem(data) || "");
     }
 
     setData(key:string, value:any){

@@ -1,4 +1,5 @@
 import { Conversation } from "../models/Entities/Conversation";
+import { AddConversationResult, GetConversationResult } from "../models/Entities/RestResults";
 import { ConversationManagementClinet } from "../models/classes/businessLogic/ConversationManagementClient";
 
 export class ConversationManagementService {
@@ -7,11 +8,11 @@ export class ConversationManagementService {
     this.conversationManagementClient = new ConversationManagementClinet();
   }
 
-  addConversation(conversation: Conversation): Promise<Conversation> {
+  addConversation(conversation: Conversation): Promise<AddConversationResult> {
     return this.conversationManagementClient.addConversation(conversation);
   }
 
-  getAllConversations(): Promise<Conversation[]> {
+  getAllConversations(): Promise<GetConversationResult> {
     return this.conversationManagementClient.getAllConversations();
   }
 }

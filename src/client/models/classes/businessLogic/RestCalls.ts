@@ -15,7 +15,8 @@ export class RestCalls {
       xhr.open(method, url);
       xhr.responseType = "json";
       const accessToken = new LocalStorage().getData(LocalKeys.ACCESS_TOKEN);
-      xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+      console.log("accessToken", accessToken)
+      xhr.setRequestHeader("Authorization", ("Bearer "  +accessToken));
       if (body) {
         xhr.setRequestHeader("Content-Type", "application/json");
       }

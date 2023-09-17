@@ -6,7 +6,7 @@ import { Method, RestCalls } from "./RestCalls";
 
 export class UserManagementClient {
   restCalls: RestCalls;
-  USER_ROUTE: string = "/api/user";
+  USER_ROUTE: string = "/user";
   constructor() {
     this.restCalls = new RestCalls();
   }
@@ -53,7 +53,7 @@ export class UserManagementClient {
         const accessToken = restResponse.accessToken;
         const userDetails = restResponse.user;
         let signinResult = new SigninResult();
-        if (accessToken) {
+        if (accessToken && userDetails) {
           const localStore = new LocalStorage();
           localStore.setData(LocalKeys.ACCESS_TOKEN, accessToken);
           localStore.setData(LocalKeys.USER_DETAILS, userDetails);
@@ -63,7 +63,7 @@ export class UserManagementClient {
         } else {
           signinResult.errorCode = 1;
           signinResult.errorMessage = "Incorrect email or password!";
-          resolve(signinResult);
+          reject(signinResult);
         }
       } catch (err) {
         let signinResult = new SigninResult();
