@@ -1,5 +1,5 @@
 export class Message {
-    id: string | null;
+    _id: string | null;
     content: string | null;
     sender: string | null;
     conversationId: string | null;
@@ -12,7 +12,7 @@ export class Message {
         conversationId: string | null = null,
         timestamp: number = 0
     ) {
-        this.id = id;
+        this._id = id;
         this.content = content;
         this.sender = sender;
         this.conversationId = conversationId;

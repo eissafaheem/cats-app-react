@@ -1,0 +1,52 @@
+.new-conversation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.new-conversation-container .modal {
+    background-color: var(--secondary_color);
+    padding: 2rem 4rem;
+    border-radius: var(--app_border_radius);
+    position: relative;
+
+}
+
+.new-conversation-container h3 {
+    color: var(--primary_color);
+    margin-bottom: 1rem;
+}
+
+.new-conversation-container .close-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+}
+
+.new-conversation-container .users-list {
+    overflow-y: auto;
+    max-height: 20rem;
+    /* height: 20rem; */
+    transition: all 1s ease;
+    margin: 1rem 0;
+}
+
+.new-conversation-container .user {
+    padding: 1rem 0;
+    transition: all 0.5s ease;
+    border-radius: var(--app_border_radius);
+    cursor: pointer;
+    margin: 0 1rem;
+}
+
+.new-conversation-container .user:hover {
+    background-color: var(--tertiary_color);
+    padding: 1rem;
+}

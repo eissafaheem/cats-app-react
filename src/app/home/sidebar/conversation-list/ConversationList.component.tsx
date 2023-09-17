@@ -10,10 +10,6 @@ type ConversationListProps = {
 };
 
 function ConversationListComponent(props: ConversationListProps) {
-  const arr = [
-    1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1,
-  ];
   const { setIsChatOpen, conversations } = props;
   return (
     <div className={ConversationListStyles["conversation-list-container"]}>
@@ -21,10 +17,7 @@ function ConversationListComponent(props: ConversationListProps) {
         return (
           <ConversationItemComponent
             key={index}
-            lastMessage={conversation.lastMessage || ""}
-            profileAvatar={AVATARS[conversation.users[0].avatarId]}
-            timeStamp="7:58"
-            userName={conversation.users[0].name || ""}
+            conversation= {conversation}
             setIsChatOpen={setIsChatOpen}
           />
         );

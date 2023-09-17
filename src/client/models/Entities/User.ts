@@ -1,5 +1,5 @@
 export class User {
-    id: string | null;
+    _id: string | null;
     name: string | null;
     email: string | null;
     password: string | null;
@@ -14,7 +14,7 @@ export class User {
         avatarId: number = 0,
         pawints: number = 0
     ) {
-        this.id = id;
+        this._id = id;
         this.name = name;
         this.email = email;
         this.password = password;

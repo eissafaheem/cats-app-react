@@ -1,5 +1,5 @@
 import { environment } from "../../../../environment";
-import { SignUpResult, SigninResult } from "../../Entities/RestResults";
+import { SearchUserResult, SignUpResult, SigninResult } from "../../Entities/RestResults";
 import { User } from "../../Entities/User";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
 import { Method, RestCalls } from "./RestCalls";
@@ -70,6 +70,35 @@ export class UserManagementClient {
         signinResult.errorCode = 1;
         signinResult.errorMessage = "Something went wrong";
         reject(signinResult);
+      }
+    });
+  }
+
+  searchUser(token: string): Promise<SearchUserResult> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}${this.USER_ROUTE}/${token}`;
+        const restResponse = await this.restCalls.sendHttpRequest(
+          Method.GET,
+          url
+        );
+        let searchUserResult = new SearchUserResult();
+        if (restResponse) {
+          searchUserResult.errorCode = 0;
+          searchUserResult.errorMessage = "Successfull!";
+          searchUserResult.users = restResponse;
+          resolve(searchUserResult);
+        } else {
+          searchUserResult.errorCode = 1;
+          searchUserResult.errorMessage = "Failure!";
+          searchUserResult.users = restResponse;
+          reject(searchUserResult);
+        }
+      } catch (err) {
+        let searchUserResult = new SearchUserResult();
+        searchUserResult.errorCode = 1;
+        searchUserResult.errorMessage = "Something went wrong";
+        reject(searchUserResult);
       }
     });
   }

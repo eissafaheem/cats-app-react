@@ -8,6 +8,11 @@ import ButtonComponent from "../../_shared/components/button/Button.component";
 import ConversationListComponent from "./conversation-list/ConversationList.component";
 import { ConversationManagementService } from "../../../client/services/conversation-management.service";
 import { Conversation } from "../../../client/models/Entities/Conversation";
+import {
+  LocalKeys,
+  LocalStorage,
+} from "../../../client/models/classes/businessLogic/LocalStorage";
+import NewConversationModalComponent from "./new-conversation-modal/NewConversationModal.component";
 
 type SidebarProps = {
   setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +22,10 @@ function SidebarComponent(props: SidebarProps) {
   const { setIsChatOpen } = props;
 
   const [searchString, setSearchString] = useState<string>("");
+  const [isNewConversationModalVisible, setIsNewConversationModalVisible] =
+    useState<boolean>(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const modalDiv = document.getElementById("modal");
 
   useEffect(() => {
     getConversations();
@@ -33,25 +41,37 @@ function SidebarComponent(props: SidebarProps) {
       const getConversationResult =
         await conversationManagementService.getAllConversations();
       if (getConversationResult.errorCode === 0) {
-        setConversations(getConversationResult.conversation);
-        console.log(getConversationResult.conversation);
-        alert(getConversationResult.errorMessage);
+        const conversatiosArray = handleConversationName(
+          getConversationResult.conversation
+        );
+        console.log("conversatiosArray", conversatiosArray);
+        setConversations(conversatiosArray);
       } else {
         alert(getConversationResult.errorMessage);
       }
     } catch (err) {
-      alert(err);
+      console.log(err);
     }
   }
 
-  function handleAddButtonClick() {
-    // const conversationManagementService = new ConversationManagementService();
-    // try {
-    //   const addConversationResult = await conversationManagementService.addConversation(new Conversation);
-    //   if()
-    // } catch (err) {
-    //   console.log(err);
-    // }
+  function handleConversationName(
+    conversations: Conversation[]
+  ): Conversation[] {
+    let tempConversations: Conversation[] = conversations;
+    for (let i = 0; i < tempConversations.length; i++) {
+      for (let j = 0; j < tempConversations[i].users.length; j++) {
+        let currUser = tempConversations[i].users[j];
+        const myId = new LocalStorage().getData(LocalKeys.USER_DETAILS)._id;
+        if (currUser._id !== myId) {
+          tempConversations[i].name = currUser.name;
+        }
+      }
+    }
+    return tempConversations;
+  }
+
+  function openNewConversationModal() {
+    setIsNewConversationModalVisible(true);
   }
 
   return (
@@ -71,13 +91,19 @@ function SidebarComponent(props: SidebarProps) {
           />
         </div>
         <div className={SidebarStyles["button"]}>
-          <ButtonComponent icon={addIcon} onClick={handleAddButtonClick} />
+          <ButtonComponent icon={addIcon} onClick={openNewConversationModal} />
         </div>
       </div>
       <ConversationListComponent
         setIsChatOpen={setIsChatOpen}
         conversations={conversations}
       />
+      {isNewConversationModalVisible && (
+        <NewConversationModalComponent
+          setIsNewConversationModalVisible={setIsNewConversationModalVisible}
+          setConversations={setConversations}
+        />
+      )}
     </div>
   );
 }

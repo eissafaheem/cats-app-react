@@ -25,6 +25,14 @@ export class SignUpResult extends RestResult {
   }
 }
 
+export class SearchUserResult extends RestResult {
+  users: User[];
+  constructor(users: User[] = []) {
+    super();
+    this.users = users;
+  }
+}
+
 export class AddConversationResult extends RestResult {
   conversation: Conversation;
   constructor(conversation: Conversation = new Conversation()) {
