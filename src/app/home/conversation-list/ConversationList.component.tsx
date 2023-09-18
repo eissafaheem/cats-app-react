@@ -1,8 +1,7 @@
 import React from "react";
 import ConversationListStyles from "./ConversationList.module.css";
 import ConversationItemComponent from "./conversation-item/ConversationItem.component";
-import { AVATARS } from "../../../_shared/utils/constatnts";
-import { Conversation } from "../../../../client/models/Entities/Conversation";
+import { Conversation } from "../../../client/models/Entities/Conversation";
 
 type ConversationListProps = {
   setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import NewComversationModalStyles from "./NewConversationModal.module.css";
-import InputComponent from "../../../_shared/components/input/Input.component";
-import searchIcon from "./../../../../assets/search-icon.svg";
-import { UserManagementService } from "../../../../client/services/user-management.service";
-import { User } from "../../../../client/models/Entities/User";
-import { ConversationManagementService } from "../../../../client/services/conversation-management.service";
-import { Conversation } from "../../../../client/models/Entities/Conversation";
-import { AddConversationResult } from "../../../../client/models/Entities/RestResults";
+import InputComponent from "../../_shared/components/input/Input.component";
+import searchIcon from "./../../../assets/search-icon.svg";
+import { UserManagementService } from "../../../client/services/user-management.service";
+import { User } from "../../../client/models/Entities/User";
+import { ConversationManagementService } from "../../../client/services/conversation-management.service";
+import { Conversation } from "../../../client/models/Entities/Conversation";
+import { AddConversationResult } from "../../../client/models/Entities/RestResults";
 import {
   LocalKeys,
   LocalStorage,
-} from "../../../../client/models/classes/businessLogic/LocalStorage";
+} from "../../../client/models/classes/businessLogic/LocalStorage";
 
 type NewConversationProps = {
   setIsNewConversationModalVisible: React.Dispatch<
@@ -49,7 +49,8 @@ function NewConversationModalComponent(props: NewConversationProps) {
   async function addConversation(user: User) {
     try {
       const conversationManagementService = new ConversationManagementService();
-      const myId = new LocalStorage().getData(LocalKeys.USER_DETAILS)._id;
+      const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
+      const myId = myDetails._id;
       let conversation = new Conversation(
         null,
         user.name,
@@ -61,6 +62,9 @@ function NewConversationModalComponent(props: NewConversationProps) {
         await conversationManagementService.addConversation(conversation);
       if (addConversationResult.errorCode === 0) {
         let tempConversationsArray: Conversation[] = conversations;
+        let conversationToAdd = new Conversation();
+        conversationToAdd = addConversationResult.conversation;
+        conversationToAdd.users = [user, myDetails];
         tempConversationsArray.push(addConversationResult.conversation);
         setConversations(tempConversationsArray);
         setIsNewConversationModalVisible(false);

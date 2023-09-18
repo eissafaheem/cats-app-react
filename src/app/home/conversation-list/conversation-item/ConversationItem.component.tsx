@@ -1,9 +1,9 @@
 import React from "react";
 import ConversationItemStyles from "./ConversationItem.module.css";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../../../../client/models/Entities/User";
-import { Conversation } from "../../../../../client/models/Entities/Conversation";
-import { AVATARS } from "../../../../_shared/utils/constatnts";
+import { User } from "../../../../client/models/Entities/User";
+import { Conversation } from "../../../../client/models/Entities/Conversation";
+import { AVATARS } from "../../../_shared/utils/constatnts";
 
 type ConversationItemProps = {
   conversation: Conversation;
