@@ -66,11 +66,9 @@ function NewConversationModalComponent(props: NewConversationProps) {
         setIsNewConversationModalVisible(false);
       } else {
         alert(addConversationResult.errorMessage);
-        console.log("addConversationResult");
-        console.log(addConversationResult);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert("Failed");
     }
   }

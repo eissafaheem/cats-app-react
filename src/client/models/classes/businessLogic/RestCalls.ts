@@ -37,7 +37,7 @@ export class RestCalls {
         }
       };
       xhr.onerror = (err) => {
-        console.log(err);
+        console.error(err);
         reject(err);
       };
       xhr.send(JSON.stringify(body));

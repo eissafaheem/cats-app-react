@@ -1,6 +1,6 @@
 import { SearchUserResult, SignUpResult, SigninResult } from "../models/Entities/RestResults";
 import { User } from "../models/Entities/User";
-import { UserManagementClient } from "../models/classes/businessLogic/UserManagementcClient";
+import { UserManagementClient } from "../models/classes/businessLogic/UserManagementClient";
 
 export class UserManagementService{
 

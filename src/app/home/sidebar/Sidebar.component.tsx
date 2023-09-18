@@ -31,10 +31,6 @@ function SidebarComponent(props: SidebarProps) {
     getConversations();
   }, []);
 
-  useEffect(() => {
-    console.log(conversations);
-  }, [conversations]);
-
   async function getConversations() {
     const conversationManagementService = new ConversationManagementService();
     try {
@@ -44,13 +40,12 @@ function SidebarComponent(props: SidebarProps) {
         const conversatiosArray = handleConversationName(
           getConversationResult.conversation
         );
-        console.log("conversatiosArray", conversatiosArray);
         setConversations(conversatiosArray);
       } else {
         alert(getConversationResult.errorMessage);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

@@ -63,7 +63,6 @@ export class ConversationManagementClinet {
           getConversationResult.errorCode = 0;
           getConversationResult.errorMessage = "Conversation got";
           getConversationResult.conversation = restResult;
-          console.log(getConversationResult);
           resolve(getConversationResult);
         } else {
           getConversationResult.errorCode = 0;

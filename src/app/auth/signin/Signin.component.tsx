@@ -29,11 +29,10 @@ function SigninComponent() {
         navigate(ROUTES.home);
       } else {
         alert(signinResult.errorMessage);
-        console.log(signinResult)
       }
     } catch (err) {
       alert(err);
-      console.log(err)
+      console.error(err)
     }
   }
 

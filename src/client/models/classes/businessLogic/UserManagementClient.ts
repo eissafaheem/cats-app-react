@@ -1,5 +1,9 @@
 import { environment } from "../../../../environment";
-import { SearchUserResult, SignUpResult, SigninResult } from "../../Entities/RestResults";
+import {
+  SearchUserResult,
+  SignUpResult,
+  SigninResult,
+} from "../../Entities/RestResults";
 import { User } from "../../Entities/User";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
 import { Method, RestCalls } from "./RestCalls";
@@ -44,7 +48,7 @@ export class UserManagementClient {
   signIn(email: string, password: string): Promise<SigninResult> {
     return new Promise(async (resolve, reject) => {
       try {
-        const url = `${environment.BASE_URL}${this.USER_ROUTE}/signin`;
+       const url = `${environment.BASE_URL}${this.USER_ROUTE}/signin`;
         const restResponse = await this.restCalls.sendHttpRequest(
           Method.POST,
           url,
@@ -54,9 +58,7 @@ export class UserManagementClient {
         const userDetails = restResponse.user;
         let signinResult = new SigninResult();
         if (accessToken && userDetails) {
-          const localStore = new LocalStorage();
-          localStore.setData(LocalKeys.ACCESS_TOKEN, accessToken);
-          localStore.setData(LocalKeys.USER_DETAILS, userDetails);
+          this.storeSigninDetails(accessToken, userDetails);
           signinResult.errorCode = 0;
           signinResult.errorMessage = "User Signin successfull!";
           resolve(signinResult);
@@ -72,6 +74,12 @@ export class UserManagementClient {
         reject(signinResult);
       }
     });
+  }
+
+  private storeSigninDetails(accessToken: string, userDetails: any) {
+    const localStore = new LocalStorage();
+    localStore.setData(LocalKeys.ACCESS_TOKEN, accessToken);
+    localStore.setData(LocalKeys.USER_DETAILS, userDetails);
   }
 
   searchUser(token: string): Promise<SearchUserResult> {

@@ -16,7 +16,6 @@ function SignupComponent() {
   async function handleSignup(event: any) {
     event.preventDefault();
     const userManagementService = new UserManagementService();
-    console.log(name, email, password);
     try {
       const newUser = new User(null, name, email, password, 0, 10);
       const signUpResult = await userManagementService.signup(newUser);

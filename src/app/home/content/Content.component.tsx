@@ -13,6 +13,8 @@ import {
   LocalKeys,
   LocalStorage,
 } from "../../../client/models/classes/businessLogic/LocalStorage";
+import { SocketIoService } from "../../../client/services/socket-io.service";
+import { SocketIoEvent } from "../../../client/models/Entities/SocketIoEvents";
 
 function ContentComponent() {
   const [message, setMessage] = useState<string>("");
@@ -24,20 +26,17 @@ function ContentComponent() {
 
   useEffect(() => {
     setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
-    getAllMessages();
-  }, []);
-  
-  useEffect(()=>{
     setMessage("");
     setAllMessages([]);
     getAllMessages();
-  }, [_id])
-
+    recieveMessage();
+  }, [_id]);
+  
   async function getAllMessages() {
     const messageManagementService = new MessageanagementService();
     try {
       const getMessageResult = await messageManagementService.getAllMessages(
-        _id
+        _id,
       );
       if (getMessageResult.errorCode === 0) {
         setAllMessages(getMessageResult.messages);
@@ -45,6 +44,7 @@ function ContentComponent() {
         alert("failure");
       }
     } catch (err) {
+      console.error(err)
       alert("Something went wrong!");
     }
   }
@@ -55,23 +55,23 @@ function ContentComponent() {
       const messageManagementService = new MessageanagementService();
       const newMessage = new Message(null, message, myId, _id, undefined);
       const addMessageResult = await messageManagementService.addMessage(
-        newMessage
+        newMessage,
+        location.state
       );
       if (addMessageResult.errorCode === 0) {
-        addMyMessageInDom(addMessageResult.message);
-        event.target.reset();
+        addMessageInDom(addMessageResult.message);
       } else {
         alert("failure");
       }
     } catch (err) {
+      console.error(err)
       alert("Something went wrong");
     }
   }
 
-  function addMyMessageInDom(newMessage: Message) {
+  function addMessageInDom(newMessage: Message) {
     const messageDiv = document.createElement("div");
-    // messageDiv.setAttribute("id", newMessage._id || "");
-    messageDiv.classList.add(ContentStyles["my-message"]);
+    messageDiv.classList.add( newMessage.senderId === myId ? ContentStyles["my-message"]: ContentStyles["other-message"]);
     const messageSpan = document.createElement("span");
     messageSpan.innerText = newMessage.content || "";
 
@@ -81,6 +81,16 @@ function ContentComponent() {
     }
   }
 
+  function recieveMessage(){
+    const socketIoService = new SocketIoService();
+    socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data)=>{
+      console.log("From chat");
+      console.log(data);
+      addMessageInDom(data);
+    })
+
+  }
+
   return (
     <div className={ContentStyles["content-container"]}>
       <div className={ContentStyles["header"]}>
@@ -88,9 +98,7 @@ function ContentComponent() {
           <img src={AVATARS[0]} alt="" />
         </div>
         <div className={ContentStyles["user"]}>
-          <div className={ContentStyles["name"]}>
-            {name} {_id}
-          </div>
+          <div className={ContentStyles["name"]}>{name}</div>
           <div className={ContentStyles["status"]}>Online</div>
         </div>
       </div>
@@ -103,7 +111,7 @@ function ContentComponent() {
             <div
               key={index}
               className={`${
-                message.sender === myId
+                message.senderId === myId
                   ? ContentStyles["my-message"]
                   : ContentStyles["other-message"]
               }`}

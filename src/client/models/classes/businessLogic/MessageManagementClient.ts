@@ -1,8 +1,12 @@
 import { environment } from "../../../../environment";
+import { Conversation } from "../../Entities/Conversation";
 import { Message } from "../../Entities/Message";
 import { AddMessageResult, GetMessageResult } from "../../Entities/RestResults";
+import { SocketIoEvent } from "../../Entities/SocketIoEvents";
+import { User } from "../../Entities/User";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
 import { Method, RestCalls } from "./RestCalls";
+import { SocketIoClient } from "./SocketIoClient";
 
 export class MessageManagementClient {
   restCalls: RestCalls;
@@ -10,11 +14,16 @@ export class MessageManagementClient {
     this.restCalls = new RestCalls();
   }
 
-  addMessage(message: Message): Promise<AddMessageResult> {
+  addMessage(
+    message: Message,
+    conversation: Conversation
+  ): Promise<AddMessageResult> {
     return new Promise(async (resolve, reject) => {
       try {
         const url = `${environment.BASE_URL}/message`;
-        const accessToken = new LocalStorage().getData(LocalKeys.ACCESS_TOKEN);
+        const accessToken = new LocalStorage().getData(
+          LocalKeys.ACCESS_TOKEN
+        );
         const addedMessage = await this.restCalls.sendHttpRequest(
           Method.POST,
           url,
@@ -26,6 +35,7 @@ export class MessageManagementClient {
           addMessageResult.errorCode = 0;
           addMessageResult.errorMessage = "Success";
           addMessageResult.message = addedMessage;
+          this.sendSocketIONotification(message, conversation);
           resolve(addMessageResult);
         } else {
           addMessageResult.errorCode = 1;
@@ -42,11 +52,23 @@ export class MessageManagementClient {
     });
   }
 
+  sendSocketIONotification(message: Message, conversation: Conversation) {
+    try {
+      const socketIoClient = new SocketIoClient();
+      socketIoClient.emitEvent(SocketIoEvent.SEND_MESSAGE, {message, conversation});
+    }
+    catch (err) {
+      console.error(err)
+    }
+  }
+
   getAllMessages(conversationId: string): Promise<GetMessageResult> {
     return new Promise(async (resolve, reject) => {
       try {
         const url = `${environment.BASE_URL}/message/${conversationId}`;
-        const accessToken = new LocalStorage().getData(LocalKeys.ACCESS_TOKEN);
+        const accessToken = new LocalStorage().getData(
+          LocalKeys.ACCESS_TOKEN
+        );
         const messages = await this.restCalls.sendHttpRequest(
           Method.GET,
           url,
@@ -75,5 +97,5 @@ export class MessageManagementClient {
     });
   }
 
-  deleteMessage(messageId: string) {}
+  deleteMessage(messageId: string) { }
 }
