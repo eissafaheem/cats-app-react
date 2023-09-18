@@ -28,4 +28,8 @@ export class SocketIoClient {
       callback(data);
     })
   }
+
+  unregisterEvent(socketIoEvent: SocketIoEvent, callback: any){
+    SocketIoClient.socket.off(socketIoEvent, callback);
+  }
 }

@@ -23,13 +23,19 @@ function ContentComponent() {
   const location = useLocation();
   const { _id, name, users, lastMessage, isPinned } = location.state;
   const messageContainerRef = useRef<HTMLDivElement>(null);
-
+  const socketIoService = new SocketIoService();
+  
   useEffect(() => {
     setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
     setMessage("");
     setAllMessages([]);
     getAllMessages();
     recieveMessage();
+
+    return () => {
+      socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, () => {});
+      socketIoService.unregisterEvent(SocketIoEvent.SEND_MESSAGE, () => {});
+    };
   }, [_id]);
   
   async function getAllMessages() {
@@ -82,7 +88,6 @@ function ContentComponent() {
   }
 
   function recieveMessage(){
-    const socketIoService = new SocketIoService();
     socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data)=>{
       console.log("From chat");
       console.log(data);

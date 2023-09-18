@@ -19,4 +19,7 @@ export class SocketIoService {
   recieveEvent(socketIoEvent: SocketIoEvent, callback: (data: any) => void): any {
     this.socketIoClient.recieveEvent(socketIoEvent, callback);
   }
+  unregisterEvent(socketIoEvent: SocketIoEvent, callback: any) {
+    this.socketIoClient.unregisterEvent(socketIoEvent, callback);
+  }
 }
