@@ -36,4 +36,10 @@
     color: var(--text3_color);
     font-size: 0.8rem;
 }
+.conversation-item-container .user .line-1 .unread{
+    background-color: var(--success_color);
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: var(--app_border_radius);
+}
 

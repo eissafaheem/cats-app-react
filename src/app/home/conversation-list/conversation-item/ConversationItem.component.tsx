@@ -4,22 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { User } from "../../../../client/models/Entities/User";
 import { Conversation } from "../../../../client/models/Entities/Conversation";
 import { AVATARS } from "../../../_shared/utils/constatnts";
+import { timeStamp } from "console";
 
 type ConversationItemProps = {
   conversation: Conversation;
-  setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleConversationClick: () => void;
 };
 
 function ConversationItemComponent(props: ConversationItemProps) {
-  const { setIsChatOpen } = props;
+  const { handleConversationClick } = props;
 
-  const { _id, name, users, lastMessage, isPinned } = props.conversation;
-  const navigate = useNavigate();
-
-  function handleConversationClick() {
-    navigate("chat", { state: props.conversation});
-    setIsChatOpen(true);
-  }
+  const { _id, name, users, lastMessage, isPinned, isUnread } =
+    props.conversation;
 
   return (
     <div
@@ -32,7 +28,7 @@ function ConversationItemComponent(props: ConversationItemProps) {
       <div className={ConversationItemStyles["user"]}>
         <div className={ConversationItemStyles["line-1"]}>
           <div className={ConversationItemStyles["user-name"]}>{name}</div>
-          <div className={ConversationItemStyles["timestamp"]}>{lastMessage}</div>
+          {isUnread && <div className={ConversationItemStyles["unread"]}></div>}
         </div>
         <div className={ConversationItemStyles["line-2"]}>
           <div className={ConversationItemStyles["last-message"]}>

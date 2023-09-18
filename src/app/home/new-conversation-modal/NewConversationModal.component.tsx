@@ -55,7 +55,7 @@ function NewConversationModalComponent(props: NewConversationProps) {
         null,
         user.name,
         [user._id, myId],
-        null,
+        "Start meowing...",
         false
       );
       const addConversationResult =

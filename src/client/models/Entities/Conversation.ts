@@ -6,18 +6,22 @@ export class Conversation {
   users: User[];
   lastMessage: string | null;
   isPinned: boolean;
+  isUnread: boolean;
 
   constructor(
     id: string | null = null,
     name: string | null = null,
     users: any[] = [],
     lastMessage: string | null = null,
-    isPinned: boolean = false
+    isPinned: boolean = false,
+    isUnread: boolean = false
+
   ) {
     this._id = id;
     this.name = name;
     this.users = users;
     this.lastMessage = lastMessage;
     this.isPinned = isPinned;
+    this.isUnread = isUnread
   }
 }

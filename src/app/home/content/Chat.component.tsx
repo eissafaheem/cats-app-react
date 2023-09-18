@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AVATARS } from "../../_shared/utils/constatnts";
-import ContentStyles from "./Content.module.css";
+import ContentStyles from "./Chat.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
 import ButtonComponent from "../../_shared/components/button/Button.component";
 import sendIcon from "./../../../assets/send-icon.svg";
@@ -15,16 +15,23 @@ import {
 } from "../../../client/models/classes/businessLogic/LocalStorage";
 import { SocketIoService } from "../../../client/services/socket-io.service";
 import { SocketIoEvent } from "../../../client/models/Entities/SocketIoEvents";
+import { Conversation } from "../../../client/models/Entities/Conversation";
 
-function ContentComponent() {
+type ChatComponentProps = {
+  conversation: Conversation;
+  setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
+};
+
+function ChatComponent(props: ChatComponentProps) {
   const [message, setMessage] = useState<string>("");
   const [myId, setMyId] = useState<string>("");
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const location = useLocation();
-  const { _id, name, users, lastMessage, isPinned } = location.state;
+  const { setSelectedConversation, conversation } = props;
+  const { _id, name, users, lastMessage, isPinned, isUnread } = conversation;
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const socketIoService = new SocketIoService();
-  
+
   useEffect(() => {
     setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
     setMessage("");
@@ -37,20 +44,22 @@ function ContentComponent() {
       socketIoService.unregisterEvent(SocketIoEvent.SEND_MESSAGE, () => {});
     };
   }, [_id]);
-  
+
   async function getAllMessages() {
     const messageManagementService = new MessageanagementService();
     try {
-      const getMessageResult = await messageManagementService.getAllMessages(
-        _id,
-      );
-      if (getMessageResult.errorCode === 0) {
-        setAllMessages(getMessageResult.messages);
-      } else {
-        alert("failure");
+      if (_id) {
+        const getMessageResult = await messageManagementService.getAllMessages(
+          _id
+        );
+        if (getMessageResult.errorCode === 0) {
+          setAllMessages(getMessageResult.messages);
+        } else {
+          alert("failure");
+        }
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
       alert("Something went wrong!");
     }
   }
@@ -70,14 +79,18 @@ function ContentComponent() {
         alert("failure");
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
       alert("Something went wrong");
     }
   }
 
   function addMessageInDom(newMessage: Message) {
     const messageDiv = document.createElement("div");
-    messageDiv.classList.add( newMessage.senderId === myId ? ContentStyles["my-message"]: ContentStyles["other-message"]);
+    messageDiv.classList.add(
+      newMessage.senderId === myId
+        ? ContentStyles["my-message"]
+        : ContentStyles["other-message"]
+    );
     const messageSpan = document.createElement("span");
     messageSpan.innerText = newMessage.content || "";
 
@@ -87,55 +100,71 @@ function ContentComponent() {
     }
   }
 
-  function recieveMessage(){
-    socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data)=>{
+  function recieveMessage() {
+    socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data) => {
       console.log("From chat");
       console.log(data);
       addMessageInDom(data);
-    })
+    });
+  }
 
+  function closeChat() {
+    setSelectedConversation(new Conversation());
   }
 
   return (
-    <div className={ContentStyles["content-container"]}>
-      <div className={ContentStyles["header"]}>
-        <div className={ContentStyles["profile-avatar"]}>
-          <img src={AVATARS[0]} alt="" />
-        </div>
-        <div className={ContentStyles["user"]}>
-          <div className={ContentStyles["name"]}>{name}</div>
-          <div className={ContentStyles["status"]}>Online</div>
-        </div>
-      </div>
-      <div
-        className={ContentStyles["message-container"]}
-        ref={messageContainerRef}
-      >
-        {allMessages.map((message, index) => {
-          return (
-            <div
-              key={index}
-              className={`${
-                message.senderId === myId
-                  ? ContentStyles["my-message"]
-                  : ContentStyles["other-message"]
-              }`}
-            >
-              <span>{message.content}</span>
+    <>
+      {_id ? (
+        <div className={ContentStyles["content-container"]}>
+          <div className={ContentStyles["header"]}>
+            <div className={ContentStyles["profile-avatar"]}>
+              <img src={AVATARS[0]} alt="" />
             </div>
-          );
-        })}
-      </div>
-      <form className={ContentStyles["footer"]} onSubmit={addMessage}>
-        <div className={ContentStyles["input"]}>
-          <InputComponent placeholder="Type message..." setValue={setMessage} />
+            <div className={ContentStyles["user"]}>
+              <div className={ContentStyles["name"]}>{name}</div>
+              <div className={ContentStyles["status"]}>Online</div>
+            </div>
+            <div className={ContentStyles["close-chat"]} onClick={closeChat}>
+              X
+            </div>
+          </div>
+          <div
+            className={ContentStyles["message-container"]}
+            ref={messageContainerRef}
+          >
+            {allMessages.map((message, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`${
+                    message.senderId === myId
+                      ? ContentStyles["my-message"]
+                      : ContentStyles["other-message"]
+                  }`}
+                >
+                  <span>{message.content}</span>
+                </div>
+              );
+            })}
+          </div>
+          <form className={ContentStyles["footer"]} onSubmit={addMessage}>
+            <div className={ContentStyles["input"]}>
+              <InputComponent
+                placeholder="Type message..."
+                setValue={setMessage}
+              />
+            </div>
+            <div className={ContentStyles["button"]}>
+              <ButtonComponent icon={sendIcon} onClick={addMessage} />
+            </div>
+          </form>
         </div>
-        <div className={ContentStyles["button"]}>
-          <ButtonComponent icon={sendIcon} onClick={addMessage} />
-        </div>
-      </form>
-    </div>
+      )
+    :
+    "No Chat Selected"
+    }
+    </>
   );
 }
 
-export default ContentComponent;
+export default ChatComponent;

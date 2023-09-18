@@ -2,22 +2,31 @@ import React from "react";
 import ConversationListStyles from "./ConversationList.module.css";
 import ConversationItemComponent from "./conversation-item/ConversationItem.component";
 import { Conversation } from "../../../client/models/Entities/Conversation";
+import { useNavigate } from "react-router-dom";
 
 type ConversationListProps = {
-  setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
   conversations: Conversation[];
 };
 
 function ConversationListComponent(props: ConversationListProps) {
-  const { setIsChatOpen, conversations } = props;
+  const { setSelectedConversation, conversations } = props;
+  const navigate = useNavigate();
+
+  function handleConversationClick(conversation: Conversation) {
+    setSelectedConversation(conversation);
+  }
+
   return (
     <div className={ConversationListStyles["conversation-list-container"]}>
       {conversations?.map((conversation: Conversation, index: number) => {
         return (
           <ConversationItemComponent
             key={index}
-            conversation= {conversation}
-            setIsChatOpen={setIsChatOpen}
+            conversation={conversation}
+            handleConversationClick={() => {
+              handleConversationClick(conversation);
+            }}
           />
         );
       })}
