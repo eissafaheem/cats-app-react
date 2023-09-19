@@ -53,7 +53,7 @@ function NewConversationModalComponent(props: NewConversationProps) {
       const myId = myDetails._id;
       let conversation = new Conversation(
         null,
-        user.name,
+        null,
         [user._id, myId],
         "Start meowing...",
         false

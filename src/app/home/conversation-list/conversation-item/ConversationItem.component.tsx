@@ -14,7 +14,7 @@ type ConversationItemProps = {
 function ConversationItemComponent(props: ConversationItemProps) {
   const { handleConversationClick } = props;
 
-  const { _id, name, users, lastMessage, isPinned, isUnread } =
+  const { _id, name, users, lastMessage, isPinned, isUnread ,avatarIds} =
     props.conversation;
 
   return (
@@ -23,7 +23,7 @@ function ConversationItemComponent(props: ConversationItemProps) {
       onClick={handleConversationClick}
     >
       <div className={ConversationItemStyles["profile-pic"]}>
-        <img src={AVATARS[users[0].avatarId || 0]} alt="Avatar" />
+        <img src={AVATARS[avatarIds[0]]} alt="Avatar" />
       </div>
       <div className={ConversationItemStyles["user"]}>
         <div className={ConversationItemStyles["line-1"]}>

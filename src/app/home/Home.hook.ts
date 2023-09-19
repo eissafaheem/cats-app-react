@@ -66,12 +66,22 @@ export const useHomeHook = () => {
 
     function handleConversationName(conversations: Conversation[]): Conversation[] {
         const myId = new LocalStorage().getData(LocalKeys.USER_DETAILS)._id;
-        return conversations.map(conversation => {
-            return {
-                ...conversation,
-                name: conversation.users.find(user => user._id !== myId)?.name || "Unnamed Conversation"
-            };
-        });
+        const tempConversations = conversations;
+        for (let i=0;i<tempConversations.length;i++) {
+            let conversationName:string = "";
+            let conversationAvatar = [];
+            for(let j=0;j<tempConversations[i].users.length;j++) {
+                const user =  tempConversations[i].users[j];
+                if(user._id !== myId) {
+                    conversationName += user.name; 
+                    conversationAvatar.push(user.avatarId);
+                }
+            }
+            tempConversations[i].name = conversationName;
+            tempConversations[i].avatarIds = conversationAvatar;
+        }
+
+        return tempConversations;
     }
 
     function openNewConversationModal() {
