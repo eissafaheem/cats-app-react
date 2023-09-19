@@ -43,6 +43,10 @@ export const useHomeHook = () => {
         getConversations();
     }, []);
 
+    useEffect(()=>{
+        console.log("From home", conversations)
+    },[conversations])
+
     async function getConversations() {
         const conversationManagementService = new ConversationManagementService();
         try {
@@ -52,7 +56,7 @@ export const useHomeHook = () => {
                 const conversatiosArray = handleConversationName(
                     getConversationResult.conversation
                 );
-                setConversations(conversatiosArray);
+                setConversations([...conversatiosArray]);
             } else {
                 alert(getConversationResult.errorMessage);
             }
@@ -61,20 +65,14 @@ export const useHomeHook = () => {
         }
     }
 
-    function handleConversationName(
-        conversations: Conversation[]
-    ): Conversation[] {
-        let tempConversations: Conversation[] = conversations;
-        for (let i = 0; i < tempConversations.length; i++) {
-            for (let j = 0; j < tempConversations[i].users.length; j++) {
-                let currUser = tempConversations[i].users[j];
-                const myId = new LocalStorage().getData(LocalKeys.USER_DETAILS)._id;
-                if (currUser._id !== myId) {
-                    tempConversations[i].name = currUser.name;
-                }
-            }
-        }
-        return tempConversations;
+    function handleConversationName(conversations: Conversation[]): Conversation[] {
+        const myId = new LocalStorage().getData(LocalKeys.USER_DETAILS)._id;
+        return conversations.map(conversation => {
+            return {
+                ...conversation,
+                name: conversation.users.find(user => user._id !== myId)?.name || "Unnamed Conversation"
+            };
+        });
     }
 
     function openNewConversationModal() {

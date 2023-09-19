@@ -50,6 +50,8 @@ function HomeComponent() {
           <ConversationListComponent
             setSelectedConversation={setSelectedConversation}
             conversations={conversations}
+            allConversations={conversations}
+          setAllConversations={setConversations}
           />
           {isNewConversationModalVisible && (
             <NewConversationModalComponent
@@ -69,7 +71,7 @@ function HomeComponent() {
         }`}
       >
         <ChatComponent
-          conversation={selectedConversation}
+          selectedConversation={selectedConversation}
           setSelectedConversation={setSelectedConversation}
           allConversations={conversations}
           setAllConversations={setConversations}

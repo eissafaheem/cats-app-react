@@ -10,7 +10,7 @@ import { useChatHook } from "./Chat.hook";
 import { Message } from "../../../client/models/Entities/Message";
 
 export type ChatComponentProps = {
-  conversation: Conversation;
+  selectedConversation: Conversation;
   setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
   setAllConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
   allConversations: Conversation[];
@@ -24,19 +24,19 @@ function ChatComponent(props: ChatComponentProps) {
     myId,
     addMessage,
     setMessage,
-    conversation
+    selectedConversation
   } = useChatHook(props);
-
+  
   return (
     <>
-      {conversation._id ? (
+      {selectedConversation._id ? (
         <div className={ChatStyles["content-container"]}>
           <div className={ChatStyles["header"]}>
             <div className={ChatStyles["profile-avatar"]}>
               <img src={AVATARS[0]} alt="" />
             </div>
             <div className={ChatStyles["user"]}>
-              <div className={ChatStyles["name"]}>{conversation.name}</div>
+              <div className={ChatStyles["name"]}>{selectedConversation.name}</div>
               <div className={ChatStyles["status"]}>Online</div>
             </div>
             <div className={ChatStyles["close-chat"]} onClick={closeChat}>

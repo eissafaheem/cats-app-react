@@ -21,10 +21,14 @@ export const useChatHook = (props: ChatComponentProps) => {
 
     const {
         setSelectedConversation,
-        conversation,
+        selectedConversation,
         allConversations,
         setAllConversations
     } = props;
+
+    useEffect(()=>{
+        console.log("From chat allConversations", allConversations)
+    },[allConversations])
 
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const socketIoService = new SocketIoService();
@@ -39,14 +43,14 @@ export const useChatHook = (props: ChatComponentProps) => {
             socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, () => { });
             socketIoService.unregisterEvent(SocketIoEvent.SEND_MESSAGE, () => { });
         };
-    }, [conversation._id]);
+    }, [selectedConversation._id]);
 
     async function getAllMessages() {
         const messageManagementService = new MessageanagementService();
         try {
-            if (conversation._id) {
+            if (selectedConversation._id) {
                 const getMessageResult = await messageManagementService.getAllMessages(
-                    conversation._id
+                    selectedConversation._id
                 );
                 if (getMessageResult.errorCode === 0) {
                     setAllMessages(getMessageResult.messages);
@@ -64,10 +68,10 @@ export const useChatHook = (props: ChatComponentProps) => {
         event.preventDefault();
         try {
             const messageManagementService = new MessageanagementService();
-            const newMessage = new Message(null, message, myId, conversation._id, undefined);
+            const newMessage = new Message(null, message, myId, selectedConversation._id, undefined);
             const addMessageResult = await messageManagementService.addMessage(
                 newMessage,
-                conversation
+                selectedConversation
             );
             if (addMessageResult.errorCode === 0) {
                 addMessageInDom(addMessageResult.message);
@@ -98,9 +102,7 @@ export const useChatHook = (props: ChatComponentProps) => {
 
     function recieveMessage() {
         socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data) => {
-            console.log("From chat");
-            console.log(data);
-            if (data.conversation._id === conversation._id) {
+            if (data.conversation._id === selectedConversation._id) {
                 addMessageInDom(data.message);
             }
             else {
@@ -110,12 +112,11 @@ export const useChatHook = (props: ChatComponentProps) => {
     }
 
     function markConversationAsUnread(conversation: Conversation) {
-        
-        console.log("allConversations", allConversations)
-        let tempConversations = allConversations;
-        console.log("allConversations", allConversations)
+        console.log("allConversations", allConversations);
+        let tempConversations: Conversation[] = [...allConversations]; // Create a copy
+    
         let isConversationExists = false;
-
+    
         for (let i = 0; i < tempConversations.length; i++) {
             if (tempConversations[i]._id === conversation._id) {
                 tempConversations[i].isUnread = true;
@@ -123,14 +124,17 @@ export const useChatHook = (props: ChatComponentProps) => {
                 break;
             }
         }
-
+    
         if (!isConversationExists) {
             conversation.isUnread = true;
             tempConversations.push(conversation);
         }
-        console.log(tempConversations)
-        setAllConversations(tempConversations);
+    
+        console.log(tempConversations);
+    
+        setAllConversations(tempConversations); // Update state
     }
+    
 
     function closeChat() {
         setSelectedConversation(new Conversation());
@@ -142,6 +146,6 @@ export const useChatHook = (props: ChatComponentProps) => {
         myId,
         addMessage,
         setMessage,
-        conversation
+        selectedConversation
     };
 }
