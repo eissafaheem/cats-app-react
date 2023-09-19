@@ -67,7 +67,7 @@ function HomeComponent() {
 
       <div
         className={`${HomeStyles["content"]} ${
-          selectedConversation._id && HomeStyles["content-open"]
+          selectedConversation?._id && HomeStyles["content-open"]
         }`}
       >
         <ChatComponent

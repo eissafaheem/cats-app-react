@@ -25,7 +25,6 @@ function ConversationListComponent(props: ConversationListProps) {
   }
 
   function markConversationAsRead(conversation: Conversation) {
-    console.log("allConversations", allConversations);
     let tempConversations: Conversation[] = [...allConversations]; // Create a copy
 
     let isConversationExists = false;
@@ -43,7 +42,6 @@ function ConversationListComponent(props: ConversationListProps) {
       tempConversations.push(conversation);
     }
 
-    console.log(tempConversations);
 
     setAllConversations(tempConversations); // Update state
   }

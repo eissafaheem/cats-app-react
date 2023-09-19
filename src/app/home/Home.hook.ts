@@ -44,7 +44,6 @@ export const useHomeHook = () => {
     }, []);
 
     useEffect(()=>{
-        console.log("From home", conversations)
     },[conversations])
 
     async function getConversations() {

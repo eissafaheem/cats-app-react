@@ -18,6 +18,8 @@ export const useChatHook = (props: ChatComponentProps) => {
     const [message, setMessage] = useState<string>("");
     const [myId, setMyId] = useState<string>("");
     const [allMessages, setAllMessages] = useState<Message[]>([]);
+    const messageContainerRef = useRef<HTMLDivElement>(null);
+    const socketIoService = new SocketIoService();
 
     const {
         setSelectedConversation,
@@ -27,20 +29,25 @@ export const useChatHook = (props: ChatComponentProps) => {
     } = props;
 
     useEffect(()=>{
-        console.log("From chat allConversations", allConversations)
-    },[allConversations])
 
-    const messageContainerRef = useRef<HTMLDivElement>(null);
-    const socketIoService = new SocketIoService();
+        socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, recieveMessage);
+        console.log("recieve envet registered")
+        console.log(allConversations, selectedConversation);
+        return () => {
+            console.log("recieve envet unregistered")
+            socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, recieveMessage);
+
+        }
+    },[allConversations, selectedConversation])
+
     useEffect(() => {
         setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
         setMessage("");
         setAllMessages([]);
         getAllMessages();
-        recieveMessage();
 
         return () => {
-            socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, () => { });
+
             socketIoService.unregisterEvent(SocketIoEvent.SEND_MESSAGE, () => { });
         };
     }, [selectedConversation._id]);
@@ -100,20 +107,19 @@ export const useChatHook = (props: ChatComponentProps) => {
         }
     }
 
-    function recieveMessage() {
-        socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data) => {
-            if (data.conversation._id === selectedConversation._id) {
-                addMessageInDom(data.message);
-            }
-            else {
-                markConversationAsUnread(data.conversation)
-            }
-        });
+    const recieveMessage = (data: any) => {
+        if(data.conversation._id === selectedConversation._id) {
+            addMessageInDom(data.message);
+        }
+        else {
+            markConversationAsUnread(data.conversation)
+        }
+        
     }
 
     function markConversationAsUnread(conversation: Conversation) {
-        console.log("allConversations", allConversations);
-        let tempConversations: Conversation[] = [...allConversations]; // Create a copy
+
+        let tempConversations: Conversation[] = [...allConversations]; 
     
         let isConversationExists = false;
     
@@ -130,7 +136,6 @@ export const useChatHook = (props: ChatComponentProps) => {
             tempConversations.push(conversation);
         }
     
-        console.log(tempConversations);
     
         setAllConversations(tempConversations); // Update state
     }

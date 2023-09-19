@@ -24,7 +24,6 @@ export class SocketIoClient {
 
   recieveEvent(socketIoEvent: SocketIoEvent, callback: (data: any) => void): any {
     SocketIoClient.socket.on(socketIoEvent, (data) => {
-      console.log("hi")
       callback(data);
     })
   }
