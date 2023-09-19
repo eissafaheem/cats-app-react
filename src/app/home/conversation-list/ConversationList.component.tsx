@@ -11,7 +11,6 @@ type ConversationListProps = {
 
 function ConversationListComponent(props: ConversationListProps) {
   const { setSelectedConversation, conversations } = props;
-  const navigate = useNavigate();
 
   function handleConversationClick(conversation: Conversation) {
     setSelectedConversation(conversation);

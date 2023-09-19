@@ -68,7 +68,12 @@ function HomeComponent() {
           selectedConversation._id && HomeStyles["content-open"]
         }`}
       >
-        <ChatComponent conversation={selectedConversation} setSelectedConversation={setSelectedConversation}/>
+        <ChatComponent
+          conversation={selectedConversation}
+          setSelectedConversation={setSelectedConversation}
+          allConversations={conversations}
+          setAllConversations={setConversations}
+        />
       </div>
     </div>
   );
