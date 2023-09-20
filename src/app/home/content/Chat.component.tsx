@@ -24,7 +24,9 @@ function ChatComponent(props: ChatComponentProps) {
     myId,
     addMessage,
     setMessage,
-    selectedConversation
+    selectedConversation,
+    scrollFlagRef,
+    inputRef
   } = useChatHook(props);
   
   return (
@@ -61,12 +63,14 @@ function ChatComponent(props: ChatComponentProps) {
                 </div>
               );
             })}
+            <div id="scrollFlag" ref={scrollFlagRef}></div>
           </div>
           <form className={ChatStyles["footer"]} onSubmit={addMessage}>
             <div className={ChatStyles["input"]}>
               <InputComponent
                 placeholder="Type message..."
                 setValue={setMessage}
+                inputRef={inputRef}
               />
             </div>
             <div className={ChatStyles["button"]}>

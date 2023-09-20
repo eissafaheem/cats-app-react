@@ -29,6 +29,6 @@ export class SocketIoClient {
   }
 
   unregisterEvent(socketIoEvent: SocketIoEvent, callback: any){
-    SocketIoClient.socket.off(socketIoEvent, callback);
+    SocketIoClient.socket.removeAllListeners(socketIoEvent);
   }
 }

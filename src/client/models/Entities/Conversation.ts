@@ -16,7 +16,7 @@ export class Conversation {
     lastMessage: string | null = null,
     isPinned: boolean = false,
     isUnread: boolean = false,
-    avatarId: number[] = [0]
+    avatarId: number[] | null = null
 
   ) {
     this._id = id;
@@ -25,6 +25,6 @@ export class Conversation {
     this.lastMessage = lastMessage;
     this.isPinned = isPinned;
     this.isUnread = isUnread
-    this.avatarIds = avatarId;
+    this.avatarIds = avatarId !== null ? avatarId : [0];
   }
 }

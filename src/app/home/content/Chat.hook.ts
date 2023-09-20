@@ -19,6 +19,8 @@ export const useChatHook = (props: ChatComponentProps) => {
     const [myId, setMyId] = useState<string>("");
     const [allMessages, setAllMessages] = useState<Message[]>([]);
     const messageContainerRef = useRef<HTMLDivElement>(null);
+    const scrollFlagRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     const socketIoService = new SocketIoService();
 
     const {
@@ -28,17 +30,22 @@ export const useChatHook = (props: ChatComponentProps) => {
         setAllConversations
     } = props;
 
-    useEffect(()=>{
-
-        socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, recieveMessage);
-        console.log("recieve envet registered")
+    useEffect(() => {
+        socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
         console.log(allConversations, selectedConversation);
+        
         return () => {
-            console.log("recieve envet unregistered")
-            socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, recieveMessage);
-
+            socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
+        };
+    }, [allConversations, selectedConversation]);
+    
+    const handleReceiveMessage = (data: any) => {
+        if (data.conversation._id === selectedConversation._id) {
+            addMessageInDom(data.message);
+        } else {
+            markConversationAsUnread(data.conversation);
         }
-    },[allConversations, selectedConversation])
+    };
 
     useEffect(() => {
         setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
@@ -46,10 +53,6 @@ export const useChatHook = (props: ChatComponentProps) => {
         setAllMessages([]);
         getAllMessages();
 
-        return () => {
-
-            socketIoService.unregisterEvent(SocketIoEvent.SEND_MESSAGE, () => { });
-        };
     }, [selectedConversation._id]);
 
     async function getAllMessages() {
@@ -73,6 +76,11 @@ export const useChatHook = (props: ChatComponentProps) => {
 
     async function addMessage(event: any) {
         event.preventDefault();
+        
+        if(inputRef.current){
+            inputRef.current.value="";
+        }
+
         try {
             const messageManagementService = new MessageanagementService();
             const newMessage = new Message(null, message, myId, selectedConversation._id, undefined);
@@ -104,43 +112,37 @@ export const useChatHook = (props: ChatComponentProps) => {
         if (messageContainerRef.current) {
             messageDiv.appendChild(messageSpan);
             messageContainerRef.current.appendChild(messageDiv);
+            scrollToBottom();
         }
     }
-
-    const recieveMessage = (data: any) => {
-        if(data.conversation._id === selectedConversation._id) {
-            addMessageInDom(data.message);
-        }
-        else {
-            markConversationAsUnread(data.conversation)
-        }
-        
-    }
-
+    
     function markConversationAsUnread(conversation: Conversation) {
-
         let tempConversations: Conversation[] = [...allConversations]; 
-    
         let isConversationExists = false;
-    
         for (let i = 0; i < tempConversations.length; i++) {
             if (tempConversations[i]._id === conversation._id) {
-                tempConversations[i].isUnread = true;
-                isConversationExists = true;
-                break;
+                if(!tempConversations[i].isUnread){
+                    tempConversations[i].isUnread = true;
+                    isConversationExists = true;
+                    break;
+                }
+                else{
+                    return;
+                }
             }
         }
-    
+
         if (!isConversationExists) {
             conversation.isUnread = true;
             tempConversations.push(conversation);
         }
-    
-    
-        setAllConversations(tempConversations); // Update state
+        setAllConversations(tempConversations); 
+    }
+
+    function scrollToBottom(){
+        scrollFlagRef.current?.scrollIntoView();
     }
     
-
     function closeChat() {
         setSelectedConversation(new Conversation());
     }
@@ -151,6 +153,8 @@ export const useChatHook = (props: ChatComponentProps) => {
         myId,
         addMessage,
         setMessage,
-        selectedConversation
+        selectedConversation,
+        scrollFlagRef,
+        inputRef
     };
 }

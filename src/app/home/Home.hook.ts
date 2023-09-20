@@ -30,9 +30,9 @@ export const useHomeHook = () => {
         );
         socketIoService.establishConnection(userDetails);
         socketIoService.emitEvent(SocketIoEvent.JOIN_MY_ROOM, userDetails);
-        socketIoService.recieveEvent(SocketIoEvent.JOINED, (data) => {
-            console.log("joined", data);
-        });
+        // socketIoService.recieveEvent(SocketIoEvent.JOINED, (data) => {
+        //     console.log("joined", data);
+        // });
         // socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data)=>{
         //   console.log("event");
         //   console.log(data);
@@ -42,9 +42,6 @@ export const useHomeHook = () => {
     useEffect(() => {
         getConversations();
     }, []);
-
-    useEffect(()=>{
-    },[conversations])
 
     async function getConversations() {
         const conversationManagementService = new ConversationManagementService();

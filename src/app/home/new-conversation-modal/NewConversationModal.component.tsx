@@ -63,9 +63,14 @@ function NewConversationModalComponent(props: NewConversationProps) {
       if (addConversationResult.errorCode === 0) {
         let tempConversationsArray: Conversation[] = conversations;
         let conversationToAdd = new Conversation();
-        conversationToAdd = addConversationResult.conversation;
+        const conversationRestResult: Conversation = addConversationResult.conversation;
+        conversationToAdd.name = conversationRestResult.name;
+        conversationToAdd._id = conversationRestResult._id;
+        conversationToAdd.isPinned = conversationRestResult.isPinned;
+        conversationToAdd.lastMessage = conversationRestResult.lastMessage;
+        conversationToAdd.users = conversationRestResult.users;
         conversationToAdd.users = [user, myDetails];
-        tempConversationsArray.push(addConversationResult.conversation);
+        tempConversationsArray.push(conversationToAdd);
         setConversations(tempConversationsArray);
         setIsNewConversationModalVisible(false);
       } else {
