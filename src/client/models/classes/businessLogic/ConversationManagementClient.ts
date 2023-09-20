@@ -1,29 +1,86 @@
+import { get } from "http";
+import { environment } from "../../../../environment";
 import { Conversation } from "../../Entities/Conversation";
+import {
+  AddConversationResult,
+  GetConversationResult,
+} from "../../Entities/RestResults";
+import { Method, RestCalls } from "./RestCalls";
+import { LocalKeys, LocalStorage } from "./LocalStorage";
 
-export class ConversationManagementClinet{
-    constructor(){
+export class ConversationManagementClinet {
+  restCalls: RestCalls;
+  CONVERSATION_URL: string = "/conversation";
+  accessToken: string;
+  constructor() {
+    this.restCalls = new RestCalls();
+    this.accessToken = new LocalStorage().getData(LocalKeys.ACCESS_TOKEN);
+  }
 
-    }
+  addConversation(conversation: Conversation): Promise<AddConversationResult> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}${this.CONVERSATION_URL}`;
+        const restResult = await this.restCalls.sendHttpRequest(
+          Method.POST,
+          url,
+          conversation,
+          this.accessToken
+        );
+        let addConversationResult = new AddConversationResult();
+        if (restResult) {
+          addConversationResult.errorCode = 0;
+          addConversationResult.errorMessage = "Conversation added";
+          addConversationResult.conversation = restResult;
+          resolve(addConversationResult);
+        } else {
+          addConversationResult.errorCode = 1;
+          addConversationResult.errorMessage = "Failed to add conversation";
+          addConversationResult.conversation = restResult;
+          reject(addConversationResult);
+        }
+      } catch (err) {
+        let addConversationResult = new AddConversationResult();
+        addConversationResult.errorCode = 1;
+        addConversationResult.errorMessage = "Something went wrong";
+        reject(addConversationResult);
+      }
+    });
+  }
 
-    addConversation(conversation: Conversation){
-        return new Promise((resolve, reject)=>{
-            
-        })
-    }
+  getAllConversations(): Promise<GetConversationResult> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}${this.CONVERSATION_URL}`;
+        const restResult = await this.restCalls.sendHttpRequest(
+          Method.GET,
+          url,
+          null,
+          this.accessToken
+        );
+        let getConversationResult = new GetConversationResult();
+        if (restResult) {
+          getConversationResult.errorCode = 0;
+          getConversationResult.errorMessage = "Conversation got";
+          getConversationResult.conversation = restResult;
+          resolve(getConversationResult);
+        } else {
+          getConversationResult.errorCode = 0;
+          getConversationResult.errorMessage = "Failed to add conversation";
+          reject(getConversationResult);
+        }
+      } catch (err) {
+        let getConversationResult = new GetConversationResult();
+        getConversationResult.errorCode = 1;
+        getConversationResult.errorMessage = "Something went wrong";
+        reject(getConversationResult);
+      }
+    });
+  }
 
-    getAllConversations(){
-        
-    }
+  deleteConversation(conversationId: string) {}
 
-    deleteConversation(conversationId: string){
+  pinConversation(conversationId: string) {}
 
-    }
-
-    pinConversation(conversationId: string){
-
-    }
-
-    searchConversation(token: string){
-
-    }
+  searchConversation(token: string) {}
 }

@@ -12,6 +12,7 @@
 :root{
   --primary_color: #00A3FF;
   --secondary_color: #DFDFDF;
+  --tertiary_color: white;
   --app_border_color: #5E5E5E33;
   --app_border_radius: 12px;
   --text1_color: #515151;

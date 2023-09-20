@@ -2,7 +2,7 @@ import React from 'react'
 import ButtonStyles from './Button.module.css'
 
 type ButtonProps = {
-    onClick?: () => void,
+    onClick?: any,
     text?: string,
     icon?: string
 }

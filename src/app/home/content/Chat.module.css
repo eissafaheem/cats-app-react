@@ -11,6 +11,13 @@
     padding: 1rem;
     border-bottom: 1px solid var(--app_border_color);
     line-height: 1.4rem;
+    position: relative;
+}
+
+.close-chat{
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
 }
 
 .content-container .header .user {

@@ -1,4 +1,5 @@
 export const environment = {
-    CLIENT_BASE_URL: "/"
+    BASE_URL: "http://localhost:5000/api",
+    IO_URL: "http://localhost:5000"
 
 }
