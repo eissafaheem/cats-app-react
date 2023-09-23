@@ -11,6 +11,7 @@ import {
   LocalKeys,
   LocalStorage,
 } from "../../../client/models/classes/businessLogic/LocalStorage";
+import { handleConversationData } from "../../_shared/utils/methods";
 
 type NewConversationProps = {
   setIsNewConversationModalVisible: React.Dispatch<
@@ -61,15 +62,22 @@ function NewConversationModalComponent(props: NewConversationProps) {
       const addConversationResult =
         await conversationManagementService.addConversation(conversation);
       if (addConversationResult.errorCode === 0) {
-        let tempConversationsArray: Conversation[] = conversations;
+        let tempConversationsArray: Conversation[] = [...conversations];
         let conversationToAdd = new Conversation();
         const conversationRestResult: Conversation = addConversationResult.conversation;
-        conversationToAdd.name = conversationRestResult.name;
-        conversationToAdd._id = conversationRestResult._id;
-        conversationToAdd.isPinned = conversationRestResult.isPinned;
-        conversationToAdd.lastMessage = conversationRestResult.lastMessage;
-        conversationToAdd.users = conversationRestResult.users;
-        conversationToAdd.users = [user, myDetails];
+        const {
+          name,
+          _id,
+          isPinned,
+          isUnread,
+          lastMessage,
+          users,
+          avatarIds
+        } = conversationRestResult
+        console.log(conversationToAdd)
+        conversationToAdd = {name, _id, isPinned, lastMessage, users, isUnread, avatarIds};
+        console.log(conversationToAdd)
+        conversationToAdd = handleConversationData([conversationToAdd])[0];
         tempConversationsArray.push(conversationToAdd);
         setConversations(tempConversationsArray);
         setIsNewConversationModalVisible(false);

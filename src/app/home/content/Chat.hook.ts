@@ -43,6 +43,7 @@ export const useChatHook = (props: ChatComponentProps) => {
     }, [allConversations, selectedConversation]);
     
     const handleReceiveMessage = (data: any) => {
+        addLastMessageInDom(data.conversation, data.message.content)
         if (data.conversation._id === selectedConversation._id) {
             addMessageInDom(data.message);
         } else {
@@ -93,7 +94,7 @@ export const useChatHook = (props: ChatComponentProps) => {
             );
             if (addMessageResult.errorCode === 0) {
                 addMessageInDom(addMessageResult.message);
-                addLastMessageInDom(selectedConversation, addMessageResult.message.content || "");
+                addLastMessageInDom(selectedConversation, `You:${addMessageResult.message.content || ""}`);
             } else {
                 alert("failure");
             }

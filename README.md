@@ -1,10 +1,7 @@
 # cats-app-react
 
 Bugs
-    Conversation add name undefined bug
-    Conversation marked as unread even if chat is open
-    Changing conversation removing dom messages
-    sending scroll
+    
 
 Features
     Big
