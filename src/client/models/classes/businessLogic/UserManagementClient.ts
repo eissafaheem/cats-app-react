@@ -19,22 +19,22 @@ export class UserManagementClient {
     return new Promise(async (resolve, reject) => {
       try {
         const url = `${environment.BASE_URL}${this.USER_ROUTE}/signup`;
-        const addedUser: User = await this.restCalls.sendHttpRequest(
+        const addedUser = await this.restCalls.sendHttpRequest(
           Method.POST,
           url,
           user
         );
         let signupResult = new SignUpResult();
-        if (addedUser) {
+        if (addedUser._id) {
           signupResult.errorCode = 0;
           signupResult.errorMessage = "Signup successfull!";
           signupResult.user = addedUser;
           resolve(signupResult);
         } else {
           signupResult.errorCode = 1;
-          signupResult.errorMessage = "Signup failed!";
+          signupResult.errorMessage = addedUser.message;
           signupResult.user = user;
-          reject(addedUser);
+          resolve(addedUser);
         }
       } catch (err) {
         let signinResult = new SigninResult();
@@ -65,7 +65,7 @@ export class UserManagementClient {
         } else {
           signinResult.errorCode = 1;
           signinResult.errorMessage = "Incorrect email or password!";
-          reject(signinResult);
+          resolve(signinResult);
         }
       } catch (err) {
         let signinResult = new SigninResult();

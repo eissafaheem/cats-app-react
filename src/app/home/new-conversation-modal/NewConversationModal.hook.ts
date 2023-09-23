@@ -14,8 +14,12 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
 
     const [searchToken, setSearchToken] = useState<string>("");
     const [users, setUsers] = useState<User[]>([]);
-    const { setIsNewConversationModalVisible, setConversations, conversations } =
-        props;
+    const {
+        setIsNewConversationModalVisible,
+        setConversations,
+        conversations
+    } = props;
+    const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
 
     useEffect(() => {
         if (searchToken) {
@@ -40,13 +44,12 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
     async function addConversation(user: User) {
         try {
             const conversationManagementService = new ConversationManagementService();
-            const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
             const myId = myDetails._id;
             let conversation = new Conversation(
                 null,
                 null,
                 [user._id, myId],
-                "Start meowing...",
+                `${myDetails.name} started a chat`,
                 false
             );
             const addConversationResult =
@@ -64,9 +67,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
                     users,
                     avatarIds
                 } = conversationRestResult
-                console.log(conversationToAdd)
                 conversationToAdd = { name, _id, isPinned, lastMessage, users, isUnread, avatarIds };
-                console.log(conversationToAdd)
                 conversationToAdd = handleConversationData([conversationToAdd])[0];
                 tempConversationsArray.push(conversationToAdd);
                 setConversations(tempConversationsArray);
@@ -89,6 +90,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         handleClose,
         setSearchToken,
         users,
-        addConversation
+        addConversation,
+        myDetails
     };
 }

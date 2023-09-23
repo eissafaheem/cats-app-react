@@ -1,14 +1,15 @@
 # cats-app-react
 
 Bugs
-    self conversation
     repeated conversation
-    signin signup messages
+    form validation
+
 
 Features
     Big
         Group chat
         Profile edit name avatar
+        toaster
 
     Small
         conversation notification

@@ -23,6 +23,7 @@ function SignupComponent() {
         alert("Signup successfull! Please signin");
       } else {
         alert(signUpResult.errorMessage);
+        console.log(signUpResult)
       }
     } catch (err) {
       alert("Something went wrong");

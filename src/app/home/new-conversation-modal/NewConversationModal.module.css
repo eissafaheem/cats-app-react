@@ -46,6 +46,11 @@
     margin: 0 1rem;
 }
 
+.new-conversation-container .no-user {
+    display: none;
+}
+
+
 .new-conversation-container .user:hover {
     background-color: var(--tertiary_color);
     padding: 1rem;

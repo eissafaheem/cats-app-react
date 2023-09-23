@@ -15,13 +15,9 @@ export type NewConversationProps = {
 };
 
 function NewConversationModalComponent(props: NewConversationProps) {
-  const {
-    handleClose,
-    setSearchToken,
-    users,
-    addConversation
-  } = useNewConversationModalHook(props);
-  
+  const { handleClose, setSearchToken, users, addConversation, myDetails } =
+    useNewConversationModalHook(props);
+
   return (
     <div className={NewComversationModalStyles["new-conversation-container"]}>
       <div className={NewComversationModalStyles["modal"]}>
@@ -42,8 +38,11 @@ function NewConversationModalComponent(props: NewConversationProps) {
             return (
               <div
                 key={index}
-                className={NewComversationModalStyles["user"]}
-                onClick={()=>addConversation(user)}
+                className={`${NewComversationModalStyles["user"]} ${
+                  myDetails.email === user.email &&
+                  NewComversationModalStyles["no-user"]
+                }`}
+                onClick={() => addConversation(user)}
               >
                 {user.email}
               </div>
