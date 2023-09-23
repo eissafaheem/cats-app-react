@@ -30,10 +30,13 @@ export const useChatHook = (props: ChatComponentProps) => {
         setAllConversations
     } = props;
 
+    useEffect(()=>{
+        scrollToBottom();
+    },[allMessages])
+
     useEffect(() => {
         socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
-        console.log(allConversations, selectedConversation);
-        
+
         return () => {
             socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
         };
@@ -52,8 +55,8 @@ export const useChatHook = (props: ChatComponentProps) => {
         setMessage("");
         setAllMessages([]);
         getAllMessages();
-
-    }, [selectedConversation._id]);
+        scrollToBottom();
+    }, [selectedConversation]);
 
     async function getAllMessages() {
         const messageManagementService = new MessageanagementService();
@@ -76,9 +79,9 @@ export const useChatHook = (props: ChatComponentProps) => {
 
     async function addMessage(event: any) {
         event.preventDefault();
-        
-        if(inputRef.current){
-            inputRef.current.value="";
+
+        if (inputRef.current) {
+            inputRef.current.value = "";
         }
 
         try {
@@ -90,6 +93,7 @@ export const useChatHook = (props: ChatComponentProps) => {
             );
             if (addMessageResult.errorCode === 0) {
                 addMessageInDom(addMessageResult.message);
+                addLastMessageInDom(selectedConversation, addMessageResult.message.content || "");
             } else {
                 alert("failure");
             }
@@ -100,33 +104,20 @@ export const useChatHook = (props: ChatComponentProps) => {
     }
 
     function addMessageInDom(newMessage: Message) {
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add(
-            newMessage.senderId === myId
-                ? ChatStyles["my-message"]
-                : ChatStyles["other-message"]
-        );
-        const messageSpan = document.createElement("span");
-        messageSpan.innerText = newMessage.content || "";
-
-        if (messageContainerRef.current) {
-            messageDiv.appendChild(messageSpan);
-            messageContainerRef.current.appendChild(messageDiv);
-            scrollToBottom();
-        }
+       setAllMessages([...allMessages, newMessage]);
     }
-    
+
     function markConversationAsUnread(conversation: Conversation) {
-        let tempConversations: Conversation[] = [...allConversations]; 
+        let tempConversations: Conversation[] = [...allConversations];
         let isConversationExists = false;
         for (let i = 0; i < tempConversations.length; i++) {
             if (tempConversations[i]._id === conversation._id) {
-                if(!tempConversations[i].isUnread){
+                if (!tempConversations[i].isUnread) {
                     tempConversations[i].isUnread = true;
                     isConversationExists = true;
                     break;
                 }
-                else{
+                else {
                     return;
                 }
             }
@@ -136,11 +127,25 @@ export const useChatHook = (props: ChatComponentProps) => {
             conversation.isUnread = true;
             tempConversations.push(conversation);
         }
-        setAllConversations(tempConversations); 
+        setAllConversations(tempConversations);
     }
 
-    function scrollToBottom(){
-        scrollFlagRef.current?.scrollIntoView();
+    function addLastMessageInDom(conversation: Conversation, lastMessage: string) {
+        let tempConversations: Conversation[] = [...allConversations];
+
+        for (let i = 0; i < tempConversations.length; i++) {
+            if (tempConversations[i]._id === conversation._id) {
+                tempConversations[i].lastMessage = lastMessage;
+                break;
+            }
+        }
+        setAllConversations(tempConversations);
+    }
+
+    function scrollToBottom() {
+        if(messageContainerRef.current){
+            messageContainerRef.current.scrollTop = messageContainerRef.current?.scrollHeight;       
+        }
     }
     
     function closeChat() {

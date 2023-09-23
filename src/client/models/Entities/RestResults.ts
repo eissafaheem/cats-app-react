@@ -42,6 +42,14 @@ export class AddConversationResult extends RestResult {
   }
 }
 
+export class UpdateConversationResult extends RestResult {
+  conversation: Conversation;
+  constructor(conversation: Conversation = new Conversation()) {
+    super();
+    this.conversation = conversation;
+  }
+}
+
 export class GetConversationResult extends RestResult {
   conversation: Conversation[];
   constructor(conversation: Conversation[] = []) {

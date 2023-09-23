@@ -4,6 +4,7 @@ import { Conversation } from "../../Entities/Conversation";
 import {
   AddConversationResult,
   GetConversationResult,
+  UpdateConversationResult,
 } from "../../Entities/RestResults";
 import { Method, RestCalls } from "./RestCalls";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
@@ -44,6 +45,37 @@ export class ConversationManagementClinet {
         addConversationResult.errorCode = 1;
         addConversationResult.errorMessage = "Something went wrong";
         reject(addConversationResult);
+      }
+    });
+  }
+
+  updateConversation(conversation: Conversation): Promise<UpdateConversationResult> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}${this.CONVERSATION_URL}/${conversation._id}`;
+        const restResult = await this.restCalls.sendHttpRequest(
+          Method.PUT,
+          url,
+          conversation,
+          this.accessToken
+        );
+        let updateConversationResult = new UpdateConversationResult();
+        if (restResult) {
+          updateConversationResult.errorCode = 0;
+          updateConversationResult.errorMessage = "Conversation updated";
+          updateConversationResult.conversation = restResult;
+          resolve(updateConversationResult);
+        } else {
+          updateConversationResult.errorCode = 1;
+          updateConversationResult.errorMessage = "Failed to update conversation";
+          updateConversationResult.conversation = restResult;
+          reject(updateConversationResult);
+        }
+      } catch (err) {
+        let updateConversationResult = new UpdateConversationResult();
+        updateConversationResult.errorCode = 1;
+        updateConversationResult.errorMessage = "Something went wrong";
+        reject(updateConversationResult);
       }
     });
   }

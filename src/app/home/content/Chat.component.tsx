@@ -63,7 +63,6 @@ function ChatComponent(props: ChatComponentProps) {
                 </div>
               );
             })}
-            <div id="scrollFlag" ref={scrollFlagRef}></div>
           </div>
           <form className={ChatStyles["footer"]} onSubmit={addMessage}>
             <div className={ChatStyles["input"]}>
