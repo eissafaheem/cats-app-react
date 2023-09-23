@@ -5,6 +5,9 @@ import searchIcon from "./../../../assets/search-icon.svg";
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useNewConversationModalHook } from "./NewConversationModal.hook";
 import { User } from "../../../client/models/Entities/User";
+import UserItemComponent from "../../_shared/user-item/UserItem.component";
+import ButtonComponent from "../../_shared/components/button/Button.component";
+import ChipConponent from "../../_shared/components/chip/Chip.conponent";
 
 export type NewConversationProps = {
   setIsNewConversationModalVisible: React.Dispatch<
@@ -15,40 +18,99 @@ export type NewConversationProps = {
 };
 
 function NewConversationModalComponent(props: NewConversationProps) {
-  const { handleClose, setSearchToken, users, addConversation, myDetails } =
-    useNewConversationModalHook(props);
+  const {
+    handleClose,
+    setSearchToken,
+    users,
+    addConversation,
+    myDetails,
+    conversationType,
+    setConversationType,
+    handleSelectUser,
+    selectedUsers,
+    setGroupName
+  } = useNewConversationModalHook(props);
 
   return (
     <div className={NewComversationModalStyles["new-conversation-container"]}>
+      <div
+        className={NewComversationModalStyles["closeDiv"]}
+        onClick={handleClose}
+      ></div>
       <div className={NewComversationModalStyles["modal"]}>
-        <div
-          className={NewComversationModalStyles["close-icon"]}
-          onClick={handleClose}
-        >
-          X
-        </div>
-        <h3>Start New Conversation</h3>
-        <InputComponent
-          setValue={setSearchToken}
-          placeholder="Search users by email"
-          icon={searchIcon}
-        />
-        <div className={NewComversationModalStyles["users-list"]}>
-          {users.map((user: User, index: number) => {
-            return (
-              <div
-                key={index}
-                className={`${NewComversationModalStyles["user"]} ${
-                  myDetails.email === user.email &&
-                  NewComversationModalStyles["no-user"]
-                }`}
-                onClick={() => addConversation(user)}
-              >
-                {user.email}
+        <header>
+          <h3
+            className={`${
+              conversationType === "single-chat" &&
+              NewComversationModalStyles["selected"]
+            }`}
+            onClick={() => setConversationType("single-chat")}
+          >
+            New Chat
+          </h3>
+          <h3
+            className={`${
+              conversationType === "group-chat" &&
+              NewComversationModalStyles["selected"]
+            }`}
+            onClick={() => setConversationType("group-chat")}
+          >
+            New Group
+          </h3>
+        </header>
+        <div className={NewComversationModalStyles["content"]}>
+          <InputComponent
+            placeholder="Search users"
+            setValue={setSearchToken}
+            icon={searchIcon}
+          />
+          <div className={NewComversationModalStyles["user-list"]}>
+            {conversationType === "single-chat" ? (
+              <div></div>
+            ) : (
+              <div className={NewComversationModalStyles["group-name"]}>
+                <InputComponent
+                  placeholder="Group name"
+                  setValue={setGroupName}
+                />
               </div>
-            );
-          })}
+            )}
+            {users.map((user: User, index: number) => {
+              return (
+                <UserItemComponent
+                  key={index}
+                  myEmail={myDetails.email}
+                  onClick={() => handleSelectUser(user)}
+                  user={user}
+                />
+              );
+            })}
+          </div>
         </div>
+        <footer>
+          <div className={NewComversationModalStyles["grid-item"]}>
+            <div className={NewComversationModalStyles["chip-container"]}>
+              {selectedUsers.map((user: User, index: number) => {
+                return (
+                  <ChipConponent
+                    onCrossClick={() => {}}
+                    text={user.email || ""}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          <div className={NewComversationModalStyles["grid-item"]}>
+            <ButtonComponent
+              text={
+                conversationType === "single-chat"
+                  ? "Start Chat"
+                  : "Create Group"
+              }
+              onClick={addConversation}
+            />
+          </div>
+        </footer>
       </div>
     </div>
   );

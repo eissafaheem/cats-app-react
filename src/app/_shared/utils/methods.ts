@@ -10,11 +10,15 @@ export function handleConversationData(conversations: Conversation[]): Conversat
         for(let j=0;j<tempConversations[i].users.length;j++) {
             const user =  tempConversations[i].users[j];
             if(user._id !== myId) {
-                conversationName += user.name; 
+                if(tempConversations[i].name === null || tempConversations[i].name?.length===0){
+                    conversationName += user.name; 
+                }
                 conversationAvatar.push(user.avatarId);
             }
         }
-        tempConversations[i].name = conversationName;
+        if(tempConversations[i].name === null || tempConversations[i].name?.length===0){
+            tempConversations[i].name = conversationName;
+        }
         tempConversations[i].avatarIds = conversationAvatar;
     }
 

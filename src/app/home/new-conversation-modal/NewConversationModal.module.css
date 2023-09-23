@@ -7,51 +7,82 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
 }
 
-.new-conversation-container .modal {
-    background-color: var(--secondary_color);
-    padding: 2rem 4rem;
+.closeDiv{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--modal_background_color);
+    z-index: 1;
+}
+
+.new-conversation-container .modal{
+    background-color: var(--tertiary_color);
+    min-height: 70%;
+    width: 50%;
     border-radius: var(--app_border_radius);
-    position: relative;
-
+    box-shadow: 0px 0px 20px var(--app_border_color);
+    z-index: 2;
+}
+.new-conversation-container .modal header{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 1rem;
+    border-bottom: 1px solid var(--app_border_color);
 }
 
-.new-conversation-container h3 {
-    color: var(--primary_color);
-    margin-bottom: 1rem;
-}
-
-.new-conversation-container .close-icon {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+.new-conversation-container .modal header h3{
+    padding: 1rem 0rem;
+    transition: all 0.5s ease;
+    border-bottom: 3px solid transparent;
     cursor: pointer;
 }
 
-.new-conversation-container .users-list {
+.new-conversation-container .modal header .selected{
+    border-bottom: 3px solid var(--primary_color);
+    color: var(--primary_color);
+}
+
+.new-conversation-container .modal .content{
+    padding: 1rem 3rem;
+}
+
+.new-conversation-container .modal .user-list{
+    height: 20rem;
     overflow-y: auto;
-    max-height: 20rem;
-    /* height: 20rem; */
-    transition: all 1s ease;
     margin: 1rem 0;
 }
 
-.new-conversation-container .user {
-    padding: 1rem 0;
-    transition: all 0.5s ease;
-    border-radius: var(--app_border_radius);
-    cursor: pointer;
-    margin: 0 1rem;
+.new-conversation-container footer{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    margin-bottom: 2rem;
+}
+.new-conversation-container footer .grid-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* gap: 2rem; */
 }
 
-.new-conversation-container .no-user {
+.new-conversation-container .chip-container{
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    max-width: 30rem;
+    flex-direction: row-reverse;
+}
+
+.new-conversation-container .chip-container::-webkit-scrollbar{
     display: none;
 }
 
-
-.new-conversation-container .user:hover {
-    background-color: var(--tertiary_color);
-    padding: 1rem;
+.new-conversation-container .group-name{
+    margin-bottom: 1rem;
 }

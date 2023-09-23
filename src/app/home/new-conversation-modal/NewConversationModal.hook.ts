@@ -9,11 +9,15 @@ import {
 } from "../../../client/models/classes/businessLogic/LocalStorage";
 import { handleConversationData } from "../../_shared/utils/methods";
 import { NewConversationProps } from "./NewConversationModal.component";
+import { CONVERSATION_TYPES } from "../../_shared/utils/constatnts";
 
 export const useNewConversationModalHook = (props: NewConversationProps) => {
 
     const [searchToken, setSearchToken] = useState<string>("");
+    const [groupName, setGroupName] = useState<string>("");
+    const [conversationType, setConversationType] = useState<CONVERSATION_TYPES>('single-chat');
     const [users, setUsers] = useState<User[]>([]);
+    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
     const {
         setIsNewConversationModalVisible,
         setConversations,
@@ -26,6 +30,12 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
             handleSearchUsers();
         }
     }, [searchToken]);
+
+    useEffect(()=>{
+        setSelectedUsers([]);
+        setGroupName("");
+        setSearchToken("")
+    },[conversationType])
 
     async function handleSearchUsers() {
         const userManagementService = new UserManagementService();
@@ -41,15 +51,15 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         } catch (err) { }
     }
 
-    async function addConversation(user: User) {
+    async function addConversation() {
         try {
             const conversationManagementService = new ConversationManagementService();
             const myId = myDetails._id;
             let conversation = new Conversation(
                 null,
-                null,
-                [user._id, myId],
-                `${myDetails.name} started a chat`,
+                groupName,
+                [...selectedUsers, myId],
+                `${myDetails.name} ${selectedUsers.length===1? "started a chat" : "created a group"}`,
                 false
             );
             const addConversationResult =
@@ -81,16 +91,29 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         }
     }
 
+    function handleSelectUser(user: User){
+        if(conversationType === "single-chat"){
+            setSelectedUsers([user]);
+        }
+        else{
+            setSelectedUsers([user,...selectedUsers])
+        }
+    }
+
     function handleClose() {
         setIsNewConversationModalVisible(false);
     }
-
 
     return {
         handleClose,
         setSearchToken,
         users,
         addConversation,
-        myDetails
+        myDetails,
+        conversationType,
+        setConversationType,
+        handleSelectUser,
+        selectedUsers,
+        setGroupName
     };
 }

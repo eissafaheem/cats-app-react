@@ -19,3 +19,5 @@ export const ROUTES = {
     signin: `/`,
     home: `/home`
 }
+
+export type  CONVERSATION_TYPES = "single-chat" | 'group-chat'; 
