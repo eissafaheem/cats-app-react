@@ -24,7 +24,6 @@ function ChatComponent(props: ChatComponentProps) {
     addMessage,
     setMessage,
     selectedConversation,
-    scrollFlagRef,
     inputRef,
   } = useChatHook(props);
 
@@ -52,7 +51,7 @@ function ChatComponent(props: ChatComponentProps) {
           >
             {allMessages.map((message: Message, index: number) => {
               return (
-                <MessageComponent key={index} message={message} myId={myId}/>
+                <MessageComponent key={index} message={message} myId={myId} />
               );
             })}
           </div>

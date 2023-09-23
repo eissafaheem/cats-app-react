@@ -3,8 +3,10 @@ import ConversationListStyles from "./ConversationList.module.css";
 import ConversationItemComponent from "./conversation-item/ConversationItem.component";
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useNavigate } from "react-router-dom";
+import { useNewConversationModalHook } from "../new-conversation-modal/NewConversationModal.hook";
+import { useConversationListHook } from "./ConversationList.hook";
 
-type ConversationListProps = {
+export type ConversationListProps = {
   setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
   conversations: Conversation[];
   setAllConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
@@ -12,39 +14,8 @@ type ConversationListProps = {
 };
 
 function ConversationListComponent(props: ConversationListProps) {
-  const {
-    setSelectedConversation,
-    conversations,
-    allConversations,
-    setAllConversations,
-  } = props;
-
-  function handleConversationClick(conversation: Conversation) {
-    markConversationAsRead(conversation);
-    setSelectedConversation(conversation);
-  }
-
-  function markConversationAsRead(conversation: Conversation) {
-    let tempConversations: Conversation[] = [...allConversations]; // Create a copy
-
-    let isConversationExists = false;
-
-    for (let i = 0; i < tempConversations.length; i++) {
-      if (tempConversations[i]._id === conversation._id) {
-        tempConversations[i].isUnread = false;
-        isConversationExists = true;
-        break;
-      }
-    }
-
-    if (!isConversationExists) {
-      conversation.isUnread = true;
-      tempConversations.push(conversation);
-    }
-
-
-    setAllConversations(tempConversations); // Update state
-  }
+  const { conversations, handleConversationClick } =
+    useConversationListHook(props);
 
   return (
     <div className={ConversationListStyles["conversation-list-container"]}>

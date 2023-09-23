@@ -1,7 +1,9 @@
 # cats-app-react
 
 Bugs
-    
+    self conversation
+    repeated conversation
+    signin signup messages
 
 Features
     Big
@@ -9,6 +11,7 @@ Features
         Profile edit name avatar
 
     Small
+        conversation notification
         other chat also show same msg
         add is unread on server for offline users
         online or offline
