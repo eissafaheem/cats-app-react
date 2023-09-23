@@ -94,7 +94,7 @@ export const useChatHook = (props: ChatComponentProps) => {
             );
             if (addMessageResult.errorCode === 0) {
                 addMessageInDom(addMessageResult.message);
-                addLastMessageInDom(selectedConversation, `You:${addMessageResult.message.content || ""}`);
+                addLastMessageInDom(selectedConversation, addMessageResult.message.content || "");
             } else {
                 alert("failure");
             }

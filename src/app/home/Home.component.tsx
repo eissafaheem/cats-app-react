@@ -8,7 +8,7 @@ import brandLogo from "./../../assets/brand-logo.svg";
 import addIcon from "./../../assets/add-icon.svg";
 import searchIcon from "./../../assets/search-icon.svg";
 import { useHomeHook } from "./Home.hook";
-import ChatComponent from "./content/Chat.component";
+import ChatComponent from "./chat/Chat.component";
 
 function HomeComponent() {
   const {

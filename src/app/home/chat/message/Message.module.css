@@ -1,0 +1,19 @@
+.my-message {
+    text-align: right;
+    margin: 0.5rem;
+}
+
+.my-message span {
+    padding: 0.5rem;
+    border-radius: var(--app_border_radius);
+    background-color: var(--primary_color);
+    color: white;
+    display: inline-block;
+    max-width: 70%;
+    text-align: left;
+}
+
+.other-message {
+    text-align: left;
+    margin: 0.5rem;
+}

@@ -3,11 +3,10 @@ import ChatStyles from "./Chat.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
 import ButtonComponent from "../../_shared/components/button/Button.component";
 import sendIcon from "./../../../assets/send-icon.svg";
-import bg from "./../../../assets/chat-bg2.avif";
-
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useChatHook } from "./Chat.hook";
 import { Message } from "../../../client/models/Entities/Message";
+import MessageComponent from "./message/Message.component";
 
 export type ChatComponentProps = {
   selectedConversation: Conversation;
@@ -26,9 +25,9 @@ function ChatComponent(props: ChatComponentProps) {
     setMessage,
     selectedConversation,
     scrollFlagRef,
-    inputRef
+    inputRef,
   } = useChatHook(props);
-  
+
   return (
     <>
       {selectedConversation._id ? (
@@ -38,7 +37,9 @@ function ChatComponent(props: ChatComponentProps) {
               <img src={AVATARS[selectedConversation.avatarIds[0]]} alt="" />
             </div>
             <div className={ChatStyles["user"]}>
-              <div className={ChatStyles["name"]}>{selectedConversation.name}</div>
+              <div className={ChatStyles["name"]}>
+                {selectedConversation.name}
+              </div>
               <div className={ChatStyles["status"]}>Online</div>
             </div>
             <div className={ChatStyles["close-chat"]} onClick={closeChat}>
@@ -51,16 +52,7 @@ function ChatComponent(props: ChatComponentProps) {
           >
             {allMessages.map((message: Message, index: number) => {
               return (
-                <div
-                  key={index}
-                  className={`${
-                    message.senderId === myId
-                      ? ChatStyles["my-message"]
-                      : ChatStyles["other-message"]
-                  }`}
-                >
-                  <span>{message.content}</span>
-                </div>
+                <MessageComponent key={index} message={message} myId={myId}/>
               );
             })}
           </div>
