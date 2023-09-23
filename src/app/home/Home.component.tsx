@@ -51,7 +51,7 @@ function HomeComponent() {
             setSelectedConversation={setSelectedConversation}
             conversations={conversations}
             allConversations={conversations}
-          setAllConversations={setConversations}
+            setAllConversations={setConversations}
           />
           {isNewConversationModalVisible && (
             <NewConversationModalComponent

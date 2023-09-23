@@ -15,47 +15,45 @@
     /* background-color: yellow; */
 }
 
-@media screen and (max-width: 950px){
-    *{
+@media screen and (max-width: 950px) {
+    * {
         font-size: 12px;
     }
 }
 
-.sidebar-container{
+.sidebar-container {
     border-right: 1px solid var(--app_border_color);
     height: 100%;
     padding: 0 1rem;
 }
 
-.sidebar-container .header{
+.sidebar-container .header {
     height: 5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.sidebar-container .header .brand-logo img{
-    
-}
+.sidebar-container .header .brand-logo img {}
 
-.sidebar-container .header .brand-name{
+.sidebar-container .header .brand-name {
     color: var(--primary_color);
-    font-size:1.7rem;
+    font-size: 1.7rem;
 }
 
-.sidebar-options{
+.sidebar-options {
     display: flex;
     justify-content: space-between;
 }
 
-.sidebar-options .input{
+.sidebar-options .input {
     width: calc(100% - 3.5rem);
 }
 
 
 @media screen and (max-width: 700px) {
 
-    *{
+    * {
         font-size: 14px;
     }
 

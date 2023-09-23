@@ -33,14 +33,14 @@ export const useChatHook = (props: ChatComponentProps) => {
         scrollToBottom();
     }, [allMessages])
 
-    
+
     useEffect(() => {
         setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
         setMessage("");
         setAllMessages([]);
         getAllMessages();
     }, [selectedConversation]);
-    
+
     useEffect(() => {
         socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
 
