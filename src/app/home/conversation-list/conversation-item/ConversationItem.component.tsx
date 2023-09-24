@@ -22,8 +22,12 @@ function ConversationItemComponent(props: ConversationItemProps) {
       className={ConversationItemStyles["conversation-item-container"]}
       onClick={handleConversationClick}
     >
-      <div className={ConversationItemStyles["profile-pic"]}>
-        <img src={AVATARS[avatarIds[0]]} alt="Avatar" />
+      <div className={ConversationItemStyles["profile-pic"]} style={{ gridTemplateColumns: `repeat(${avatarIds.length}, 1fr)` }}>
+        {
+          avatarIds.map((avatar: number, index:number)=>{
+            return <img src={AVATARS[avatarIds[index]]} alt="Avatar" />
+          })
+        }
       </div>
       <div className={ConversationItemStyles["user"]}>
         <div className={ConversationItemStyles["line-1"]}>

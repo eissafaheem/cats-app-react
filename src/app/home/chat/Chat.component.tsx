@@ -51,8 +51,7 @@ function ChatComponent(props: ChatComponentProps) {
           >
             {allMessages.map((message: MessageResponse, index: number) => {
               return (
-                // <div>{message.content}</div>
-                <MessageComponent key={index} message={message} myId={myId} />
+                <MessageComponent key={index} message={message} myId={myId} isGroup={selectedConversation.users.length>2}/>
               );
             })}
           </div>

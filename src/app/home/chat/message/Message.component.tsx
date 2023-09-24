@@ -8,10 +8,11 @@ import {
 type MessageProps = {
   message: MessageResponse;
   myId: string;
+  isGroup: boolean;
 };
 
 function MessageComponent(props: MessageProps) {
-  const { message, myId } = props;
+  const { message, myId, isGroup } = props;
   return (
     <>
       <div
@@ -22,7 +23,7 @@ function MessageComponent(props: MessageProps) {
         }`}
       >
         <span>
-          {message.sender._id !== myId && (
+          {isGroup && message.sender._id !== myId && (
             <div className={MessageStyles["name"]}>{message.sender.name}</div>
           )}
           {message.content}

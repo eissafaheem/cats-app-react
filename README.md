@@ -2,14 +2,14 @@
 
 Bugs
     repeated conversation
-    form validation
+    form validation all places
     ellipses everywhere
 
 
 Features
     Big
-        Group chat
         Profile edit name avatar
+        points on meow
         toaster
 
     Small
