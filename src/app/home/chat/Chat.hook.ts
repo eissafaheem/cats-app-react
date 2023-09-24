@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ConversationManagementService } from "../../../client/services/conversation-management.service";
 import { MessageanagementService } from "../../../client/services/message-management.service";
-import { Message } from "../../../client/models/Entities/Message";
+import { Message, MessageRequest, MessageResponse } from "../../../client/models/Entities/Message";
 import {
     LocalKeys,
     LocalStorage,
@@ -12,12 +12,13 @@ import { SocketIoEvent } from "../../../client/models/Entities/SocketIoEvents";
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { ChatComponentProps } from "./Chat.component";
 import ChatStyles from "./Chat.module.css";
+import { AddMessageResult } from "../../../client/models/Entities/RestResults";
 
 
 export const useChatHook = (props: ChatComponentProps) => {
     const [message, setMessage] = useState<string>("");
     const [myId, setMyId] = useState<string>("");
-    const [allMessages, setAllMessages] = useState<Message[]>([]);
+    const [allMessages, setAllMessages] = useState<MessageResponse[]>([]);
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const socketIoService = new SocketIoService();
@@ -78,8 +79,8 @@ export const useChatHook = (props: ChatComponentProps) => {
 
         try {
             const messageManagementService = new MessageanagementService();
-            const newMessage = new Message(null, message, myId, selectedConversation._id, undefined);
-            const addMessageResult = await messageManagementService.addMessage(
+            const newMessage = new MessageRequest(null, myId, message, selectedConversation._id, undefined);
+            const addMessageResult: AddMessageResult = await messageManagementService.addMessage(
                 newMessage,
                 selectedConversation
             );
@@ -95,7 +96,7 @@ export const useChatHook = (props: ChatComponentProps) => {
         }
     }
 
-    function addMessageInDom(newMessage: Message) {
+    function addMessageInDom(newMessage: MessageResponse) {
         setAllMessages([...allMessages, newMessage]);
     }
 

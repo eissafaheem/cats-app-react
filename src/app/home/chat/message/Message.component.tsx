@@ -1,24 +1,34 @@
 import React from "react";
 import MessageStyles from "./Message.module.css";
-import { Message } from "../../../../client/models/Entities/Message";
+import {
+  Message,
+  MessageResponse,
+} from "../../../../client/models/Entities/Message";
 
 type MessageProps = {
-  message: Message;
+  message: MessageResponse;
   myId: string;
 };
 
 function MessageComponent(props: MessageProps) {
   const { message, myId } = props;
   return (
-    <div
-      className={`${
-        message.senderId === myId
-          ? MessageStyles["my-message"]
-          : MessageStyles["other-message"]
-      }`}
-    >
-      <span>{message.content}</span>
-    </div>
+    <>
+      <div
+        className={`${
+          message.sender._id === myId
+            ? MessageStyles["my-message"]
+            : MessageStyles["other-message"]
+        }`}
+      >
+        <span>
+          {message.sender._id !== myId && (
+            <div className={MessageStyles["name"]}>{message.sender.name}</div>
+          )}
+          {message.content}
+        </span>
+      </div>
+    </>
   );
 }
 

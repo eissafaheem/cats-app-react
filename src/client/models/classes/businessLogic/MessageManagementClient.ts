@@ -37,7 +37,7 @@ export class MessageManagementClient {
           addMessageResult.errorCode = 0;
           addMessageResult.errorMessage = "Success";
           addMessageResult.message = addedMessage;
-          this.sendSocketIONotification(message, conversation);
+          this.sendSocketIONotification(addedMessage, conversation);
           resolve(addMessageResult);
         } else {
           addMessageResult.errorCode = 1;
@@ -71,7 +71,6 @@ export class MessageManagementClient {
       updateConversationLastMessage._id = conversation._id;
       updateConversationLastMessage.lastMessage = newMessage;
       const restResult = await conversationManagementClinet.updateConversation(updateConversationLastMessage);
-      console.log(conversation, newMessage)
     }catch(err){
       console.error(err);
     }

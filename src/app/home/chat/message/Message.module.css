@@ -27,5 +27,10 @@
     max-width: 70%;
     color: var(--text1_color);
     border-radius: var(--app_border_radius);
+}
 
+.other-message .name{
+    color: var(--primary_color);
+    font-size: small;
+    text-align: left;
 }

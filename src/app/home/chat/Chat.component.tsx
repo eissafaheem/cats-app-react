@@ -5,7 +5,7 @@ import ButtonComponent from "../../_shared/components/button/Button.component";
 import sendIcon from "./../../../assets/send-icon.svg";
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useChatHook } from "./Chat.hook";
-import { Message } from "../../../client/models/Entities/Message";
+import { Message, MessageResponse } from "../../../client/models/Entities/Message";
 import MessageComponent from "./message/Message.component";
 
 export type ChatComponentProps = {
@@ -49,8 +49,9 @@ function ChatComponent(props: ChatComponentProps) {
             className={ChatStyles["message-container"]}
             ref={messageContainerRef}
           >
-            {allMessages.map((message: Message, index: number) => {
+            {allMessages.map((message: MessageResponse, index: number) => {
               return (
+                // <div>{message.content}</div>
                 <MessageComponent key={index} message={message} myId={myId} />
               );
             })}
