@@ -9,7 +9,7 @@
 }
 
 .no-user{
-    /* display: none; */
+    display: none;
 }
 .user-item .user-info{
     display: flex;

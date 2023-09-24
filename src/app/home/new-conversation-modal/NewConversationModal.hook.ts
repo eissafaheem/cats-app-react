@@ -26,8 +26,11 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
     const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
 
     useEffect(() => {
-        if (searchToken) {
+        if (searchToken.length) {
             handleSearchUsers();
+        }
+        else{
+            setUsers([]);
         }
     }, [searchToken]);
 
@@ -35,6 +38,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         setSelectedUsers([]);
         setGroupName("");
         setSearchToken("")
+        handleSelectUser(new User());
     },[conversationType])
 
     async function handleSearchUsers() {
@@ -65,7 +69,6 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
             const addConversationResult =
                 await conversationManagementService.addConversation(conversation);
             if (addConversationResult.errorCode === 0) {
-                let tempConversationsArray: Conversation[] = [...conversations];
                 let conversationToAdd = new Conversation();
                 const conversationRestResult: Conversation = addConversationResult.conversation;
                 const {
@@ -79,8 +82,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
                 } = conversationRestResult
                 conversationToAdd = { name, _id, isPinned, lastMessage, users, isUnread, avatarIds };
                 conversationToAdd = handleConversationData([conversationToAdd])[0];
-                tempConversationsArray.push(conversationToAdd);
-                setConversations(tempConversationsArray);
+                setConversations([...[conversationToAdd],...conversations]);
                 setIsNewConversationModalVisible(false);
             } else {
                 alert(addConversationResult.errorMessage);
@@ -92,11 +94,37 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
     }
 
     function handleSelectUser(user: User){
+        if(!user._id){
+            for(let i=0;i<users.length;i++){
+                if(users[i]._id !== user._id){
+                    users[i].isSelected = false;
+                }
+            }
+            return;
+        }
+        user.isSelected = !user.isSelected;
         if(conversationType === "single-chat"){
+            for(let i=0;i<users.length;i++){
+                if(users[i]._id !== user._id){
+                    users[i].isSelected = false;
+                }
+            }
+            setUsers([...users]);
             setSelectedUsers([user]);
         }
         else{
-            setSelectedUsers([user,...selectedUsers])
+            if(user.isSelected){
+                setSelectedUsers([user,...selectedUsers])
+            }
+            else{
+                const tempArray = [];
+                for(let i=0;i<selectedUsers.length;i++){
+                    if(selectedUsers[i]._id !== user._id){
+                        tempArray.push(selectedUsers[i]);
+                    }
+                }
+                setSelectedUsers(tempArray);
+            }
         }
     }
 
@@ -114,6 +142,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         setConversationType,
         handleSelectUser,
         selectedUsers,
-        setGroupName
+        setGroupName,
+        handleSearchUsers
     };
 }

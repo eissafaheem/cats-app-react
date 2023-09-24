@@ -2,17 +2,16 @@ import React from "react";
 import { User } from "../../../client/models/Entities/User";
 import UserItemStyles from "./UserItem.module.css";
 import { AVATARS } from "../utils/constatnts";
-import doneIcon from './../../../assets/done-icon.svg'
+import doneIcon from "./../../../assets/done-icon.svg";
 
 type UserItemProps = {
   onClick: any;
   user: User;
   myEmail: string;
-  isSelected?: boolean
 };
 
 function UserItemComponent(props: UserItemProps) {
-  const { onClick, user, myEmail,isSelected } = props;
+  const { onClick, user, myEmail } = props;
   return (
     <div
       className={`${UserItemStyles["user-item"]} 
@@ -29,9 +28,11 @@ function UserItemComponent(props: UserItemProps) {
             <span>{user.email}</span>
           </div>
         </div>
+        {user.isSelected && (
           <div className={UserItemStyles["selected"]}>
             <img src={doneIcon} alt="Selected" />
           </div>
+        )}
       </div>
     </div>
   );

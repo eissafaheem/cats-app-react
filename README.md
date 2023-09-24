@@ -3,7 +3,6 @@
 Bugs
     repeated conversation
     form validation
-    grp name
     ellipses everywhere
 
 

@@ -28,7 +28,7 @@ function NewConversationModalComponent(props: NewConversationProps) {
     setConversationType,
     handleSelectUser,
     selectedUsers,
-    setGroupName
+    setGroupName,
   } = useNewConversationModalHook(props);
 
   return (
@@ -59,22 +59,25 @@ function NewConversationModalComponent(props: NewConversationProps) {
           </h3>
         </header>
         <div className={NewComversationModalStyles["content"]}>
-          <InputComponent
-            placeholder="Search users"
-            setValue={setSearchToken}
-            icon={searchIcon}
-          />
-          <div className={NewComversationModalStyles["user-list"]}>
-            {conversationType === "single-chat" ? (
-              <div></div>
-            ) : (
-              <div className={NewComversationModalStyles["group-name"]}>
-                <InputComponent
-                  placeholder="Group name"
-                  setValue={setGroupName}
-                />
-              </div>
+          <div
+            className={`${
+              conversationType === "group-chat" &&
+              NewComversationModalStyles["inputs"]
+            }`}
+          >
+            <InputComponent
+              placeholder="Search users"
+              setValue={setSearchToken}
+              icon={searchIcon}
+            />
+            {conversationType === "group-chat" && (
+              <InputComponent
+                placeholder="Group name"
+                setValue={setGroupName}
+              />
             )}
+          </div>
+          <div className={NewComversationModalStyles["user-list"]}>
             {users.map((user: User, index: number) => {
               return (
                 <UserItemComponent
@@ -93,7 +96,7 @@ function NewConversationModalComponent(props: NewConversationProps) {
               {selectedUsers.map((user: User, index: number) => {
                 return (
                   <ChipConponent
-                    onCrossClick={() => {}}
+                    onCrossClick={()=>{handleSelectUser(user)}}
                     text={user.email || ""}
                   />
                 );

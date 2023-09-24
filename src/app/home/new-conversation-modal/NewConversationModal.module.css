@@ -51,6 +51,12 @@
     padding: 1rem 3rem;
 }
 
+.new-conversation-container .modal .content .inputs{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+}
+
 .new-conversation-container .modal .user-list{
     height: 20rem;
     overflow-y: auto;
@@ -83,6 +89,20 @@
     display: none;
 }
 
-.new-conversation-container .group-name{
-    margin-bottom: 1rem;
+@media screen and (max-width: 600px) {
+    .new-conversation-container .modal{
+        width: 80vw;
+
+    }
+    .new-conversation-container footer{
+        grid-template-columns: 1fr;
+    }
+    .new-conversation-container .chip-container{
+        display: none;
+    }
+
+    .new-conversation-container .modal .content{
+        padding: 1rem;
+    }
+
 }
