@@ -76,7 +76,7 @@ export class UserManagementClient {
     });
   }
 
-  private storeSigninDetails(accessToken: string, userDetails: any) {
+  private storeSigninDetails(accessToken: string, userDetails: User) {
     const localStore = new LocalStorage();
     localStore.setData(LocalKeys.ACCESS_TOKEN, accessToken);
     localStore.setData(LocalKeys.USER_DETAILS, userDetails);

@@ -9,6 +9,8 @@ import addIcon from "./../../assets/add-icon.svg";
 import searchIcon from "./../../assets/search-icon.svg";
 import { useHomeHook } from "./Home.hook";
 import ChatComponent from "./chat/Chat.component";
+import { AVATARS } from "../_shared/utils/constatnts";
+import ProfileComponent from "./profile/Profile.component";
 
 function HomeComponent() {
   const {
@@ -20,6 +22,7 @@ function HomeComponent() {
     setIsNewConversationModalVisible,
     setConversations,
     selectedConversation,
+    userDetails
   } = useHomeHook();
 
   return (
@@ -29,8 +32,11 @@ function HomeComponent() {
           <div className={HomeStyles["header"]}>
             <div className={HomeStyles["brand-logo"]}>
               <img src={brandLogo} alt="Cat's App Logo" />
+              <div className={HomeStyles["brand-name"]}>Cat's App</div>
             </div>
-            <div className={HomeStyles["brand-name"]}>Cat's App</div>
+            <div className={HomeStyles["my-profile"]}>
+                <img src={AVATARS[0]} alt="Avatar" />
+            </div>
           </div>
           <div className={HomeStyles["sidebar-options"]}>
             <div className={HomeStyles["input"]}>
@@ -62,6 +68,7 @@ function HomeComponent() {
               conversations={conversations}
             />
           )}
+          <ProfileComponent user={userDetails}/>
         </div>
       </div>
 

@@ -16,6 +16,9 @@ export const useHomeHook = () => {
         useState<boolean>(false);
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const modalDiv = document.getElementById("modal");
+    const userDetails: User = new LocalStorage().getData(
+        LocalKeys.USER_DETAILS
+    );
 
     useEffect(() => {
         establishSocketioConnection();
@@ -26,9 +29,6 @@ export const useHomeHook = () => {
     }, []);
 
     function establishSocketioConnection() {
-        const userDetails: User = new LocalStorage().getData(
-            LocalKeys.USER_DETAILS
-        );
         socketIoService.establishConnection(userDetails);
         socketIoService.emitEvent(SocketIoEvent.JOIN_MY_ROOM, userDetails);
     }
@@ -68,5 +68,6 @@ export const useHomeHook = () => {
         setIsNewConversationModalVisible,
         setConversations,
         selectedConversation,
+        userDetails
     };
 }

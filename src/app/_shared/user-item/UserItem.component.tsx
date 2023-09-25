@@ -5,9 +5,9 @@ import { AVATARS } from "../utils/constatnts";
 import doneIcon from "./../../../assets/done-icon.svg";
 
 type UserItemProps = {
-  onClick: any;
+  onClick?: any;
   user: User;
-  myEmail: string;
+  myEmail?: string;
 };
 
 function UserItemComponent(props: UserItemProps) {
