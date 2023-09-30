@@ -14,7 +14,7 @@ type ConversationItemProps = {
 function ConversationItemComponent(props: ConversationItemProps) {
   const { handleConversationClick } = props;
 
-  const { _id, name, users, lastMessage, isPinned, isUnread ,avatarIds} =
+  const { _id, name, users, lastMessage, isPinned, isUnread, avatarIds } =
     props.conversation;
 
   return (
@@ -22,9 +22,12 @@ function ConversationItemComponent(props: ConversationItemProps) {
       className={ConversationItemStyles["conversation-item-container"]}
       onClick={handleConversationClick}
     >
-      <div className={ConversationItemStyles["profile-pic"]} style={{ gridTemplateColumns: `repeat(${avatarIds.length}, 1fr)` }}>
+      <div className={ConversationItemStyles["profile-pic"]}
+        style={{
+          gridTemplateColumns: `repeat(${avatarIds.length > 3 ? 3 : avatarIds.length}, 1fr)`
+        }}>
         {
-          avatarIds.map((avatar: number, index:number)=>{
+          avatarIds.slice(0, 3).map((avatar: number, index: number) => {
             return <img key={index} src={AVATARS[avatarIds[index]]} alt="Avatar" />
           })
         }

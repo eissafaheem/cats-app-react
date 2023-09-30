@@ -32,8 +32,21 @@
     font-size: 0.8rem;
 }
 
-.content-container .header .profile-avatar img {
+.content-container .profile-pic {
+    display: grid; 
     height: 3.5rem;
+    width: 3.5rem;
+    background-color: var(--secondary_color);
+    border-radius: 50%;
+    overflow: hidden;
+    grid-gap: 0.1rem;
+}
+
+.content-container  .profile-pic img{
+    /* border: 3px solid var(--primary_color); */
+    width: 100%; /* Makes each image fill its container */
+    height: 100%;
+    object-fit: cover;
 }
 
 .content-container .footer {

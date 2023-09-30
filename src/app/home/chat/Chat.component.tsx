@@ -35,8 +35,16 @@ function ChatComponent(props: ChatComponentProps) {
       {selectedConversation._id ? (
         <div className={ChatStyles["content-container"]}>
           <div className={ChatStyles["header"]}>
-            <div className={ChatStyles["profile-avatar"]}>
-              <img src={AVATARS[selectedConversation.avatarIds[0]]} alt="" />
+            <div className={ChatStyles["profile-pic"]}
+              style={{
+                gridTemplateColumns: 
+                `repeat(${selectedConversation.avatarIds.length > 3 ? 3 : selectedConversation.avatarIds.length}, 1fr)`
+              }}>
+              {
+                selectedConversation.avatarIds.slice(0, 3).map((avatar: number, index: number) => {
+                  return <img key={index} src={AVATARS[selectedConversation.avatarIds[index]]} alt="Avatar" />
+                })
+              }
             </div>
             <div className={ChatStyles["user"]}>
               <div className={ChatStyles["name"]}>
@@ -54,7 +62,7 @@ function ChatComponent(props: ChatComponentProps) {
           >
             {allMessages.map((message: MessageResponse, index: number) => {
               return (
-                <MessageComponent key={index} message={message} myId={myDetails._id || ""} isGroup={selectedConversation.users.length>2}/>
+                <MessageComponent key={index} message={message} myId={myDetails._id || ""} isGroup={selectedConversation.users.length > 2} />
               );
             })}
           </div>
