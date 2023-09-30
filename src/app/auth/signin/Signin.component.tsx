@@ -49,7 +49,7 @@ function SigninComponent() {
           <InputComponent placeholder="Email" setValue={setEmailInput} />
         </div>
         <div className={SigninStyles["input"]}>
-          <InputComponent placeholder="Password" setValue={setPasswordInput} />
+          <InputComponent placeholder="Password" setValue={setPasswordInput} type="password"/>
         </div>
         <div className={SigninStyles["input"]}>
           <ButtonComponent onClick={handleSignIn} text="Sign In" />

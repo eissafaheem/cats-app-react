@@ -6,11 +6,12 @@ type InputComponentProps = {
   icon?: string;
   placeholder: string;
   inputRef?: React.RefObject<HTMLInputElement>;
-  value?: string
+  value?: string;
+  type?: "password" | "text" | "number"
 };
 
 function InputComponent(props: InputComponentProps) {
-  const { setValue, icon, placeholder, inputRef, value } = props;
+  const { setValue, icon, placeholder, inputRef, value, type } = props;
 
   function setInputValue(event: any) {
     setValue(event.target.value);
@@ -19,7 +20,7 @@ function InputComponent(props: InputComponentProps) {
   return (
     <div className={InputStyles["input-container"]}>
       {icon && <img src={icon} alt="Icon" />}
-      <input type="text" placeholder={placeholder} onChange={setInputValue} ref={inputRef} value={value}/>
+      <input type={type} placeholder={placeholder} onChange={setInputValue} ref={inputRef} value={value}/>
     </div>
   );
 }
