@@ -55,6 +55,7 @@ function ProfileComponent(props: ProfileProps) {
             {AVATARS.map((avatar: string, index: number) => {
               return (
                 <div
+                  key={index}
                   className={`
                     ${ProfileStyles["avatar"]} 
                     ${user.pawints < (index + 1) * 10 &&ProfileStyles["locked-avatar"]}

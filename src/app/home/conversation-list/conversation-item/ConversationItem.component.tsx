@@ -25,7 +25,7 @@ function ConversationItemComponent(props: ConversationItemProps) {
       <div className={ConversationItemStyles["profile-pic"]} style={{ gridTemplateColumns: `repeat(${avatarIds.length}, 1fr)` }}>
         {
           avatarIds.map((avatar: number, index:number)=>{
-            return <img src={AVATARS[avatarIds[index]]} alt="Avatar" />
+            return <img key={index} src={AVATARS[avatarIds[index]]} alt="Avatar" />
           })
         }
       </div>

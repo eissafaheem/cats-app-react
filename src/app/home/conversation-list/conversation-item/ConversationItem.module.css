@@ -41,12 +41,18 @@
 
 .conversation-item-container .user .line-1 .user-name{
     color: var(--text1_color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .conversation-item-container .user .line-2 .last-message,
 .conversation-item-container .user .line-1 .timestamp{
     color: var(--text3_color);
     font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .conversation-item-container .user .line-1 .unread{
     background-color: var(--success_color);

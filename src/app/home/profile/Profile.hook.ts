@@ -11,8 +11,8 @@ export const useProfileHook = (props: ProfileProps) => {
     const [name, setName] = useState<string>(user.name || "");
     const [email, setEmail] = useState<string>(user.email || "");
     const [password, setPassword] = useState<string>("");
-    const [avatarId, setAvatarId] = useState<number>(user.avatarId);
-
+    const [avatarId, setAvatarId] = useState<number>(+user.avatarId);
+    console.log(typeof avatarId);
     function logoutUser() {
 
     }

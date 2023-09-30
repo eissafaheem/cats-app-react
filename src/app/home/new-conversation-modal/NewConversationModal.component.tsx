@@ -40,19 +40,17 @@ function NewConversationModalComponent(props: NewConversationProps) {
       <div className={NewComversationModalStyles["modal"]}>
         <header>
           <h3
-            className={`${
-              conversationType === "single-chat" &&
+            className={`${conversationType === "single-chat" &&
               NewComversationModalStyles["selected"]
-            }`}
+              }`}
             onClick={() => setConversationType("single-chat")}
           >
             New Chat
           </h3>
           <h3
-            className={`${
-              conversationType === "group-chat" &&
+            className={`${conversationType === "group-chat" &&
               NewComversationModalStyles["selected"]
-            }`}
+              }`}
             onClick={() => setConversationType("group-chat")}
           >
             New Group
@@ -60,10 +58,9 @@ function NewConversationModalComponent(props: NewConversationProps) {
         </header>
         <div className={NewComversationModalStyles["content"]}>
           <div
-            className={`${
-              conversationType === "group-chat" &&
+            className={`${conversationType === "group-chat" &&
               NewComversationModalStyles["inputs"]
-            }`}
+              }`}
           >
             <InputComponent
               placeholder="Search users"
@@ -96,7 +93,8 @@ function NewConversationModalComponent(props: NewConversationProps) {
               {selectedUsers.map((user: User, index: number) => {
                 return (
                   <ChipConponent
-                    onCrossClick={()=>{handleSelectUser(user)}}
+                    key={index}
+                    onCrossClick={() => { handleSelectUser(user) }}
                     text={user.email || ""}
                   />
                 );
