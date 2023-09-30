@@ -34,6 +34,14 @@ export class SearchUserResult extends RestResult {
   }
 }
 
+export class UpdateUserResult extends RestResult {
+  user: User;
+  constructor(user: User = new User()) {
+    super();
+    this.user = user;
+  }
+}
+
 export class AddConversationResult extends RestResult {
   conversation: Conversation;
   constructor(conversation: Conversation = new Conversation()) {

@@ -1,4 +1,4 @@
-import { SearchUserResult, SignUpResult, SigninResult } from "../models/Entities/RestResults";
+import { SearchUserResult, SignUpResult, SigninResult, UpdateUserResult } from "../models/Entities/RestResults";
 import { User } from "../models/Entities/User";
 import { UserManagementClient } from "../models/classes/businessLogic/UserManagementClient";
 
@@ -19,6 +19,10 @@ export class UserManagementService{
 
     searchUser(token: string): Promise<SearchUserResult>{
         return this.userManagementClient.searchUser(token);
+    }
+
+    updateUser(user: User): Promise<UpdateUserResult>{
+        return this.userManagementClient.updateUser(user);
     }
     
 }

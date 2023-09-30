@@ -10,12 +10,14 @@ import ButtonComponent from "../../_shared/components/button/Button.component";
 import { useProfileHook } from "./Profile.hook";
 import InputComponent from "../../_shared/components/input/Input.component";
 
-type ProfileProps = {
+export type ProfileProps = {
   user: User;
+  setUserDetails: React.Dispatch<React.SetStateAction<User>>
+  setIsProfileVisible: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 function ProfileComponent(props: ProfileProps) {
-  let { user } = props;
+
   const {
     logoutUser,
     isEditProfile,
@@ -26,12 +28,15 @@ function ProfileComponent(props: ProfileProps) {
     handleProfileButtonClick,
     password,
     setEmail,
-    setPassword
-  } = useProfileHook();
+    setPassword,
+    setIsProfileVisible,
+    user,
+    setAvatarId
+  } = useProfileHook(props);
 
   return (
     <div className={ProfileStyles["profile-container"]}>
-      <div className={ProfileStyles["close-div"]}></div>
+      <div className={ProfileStyles["close-div"]} onClick={()=>setIsProfileVisible(false)}></div>
       <div className={ProfileStyles["modal"]}>
         <header>
           <div className={ProfileStyles["user-info"]}>
@@ -51,6 +56,7 @@ function ProfileComponent(props: ProfileProps) {
                   className={`${ProfileStyles["avatar"]} ${user.pawints < (index + 1) * 10 &&
                     ProfileStyles["locked-avatar"]
                     }`}
+                    onClick={()=>{setAvatarId(index)}}
                 >
                   <img src={avatar} alt="user avatar" />
                   {(index + 1) * 10}

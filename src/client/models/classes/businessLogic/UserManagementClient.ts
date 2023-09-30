@@ -3,6 +3,7 @@ import {
   SearchUserResult,
   SignUpResult,
   SigninResult,
+  UpdateUserResult,
 } from "../../Entities/RestResults";
 import { User } from "../../Entities/User";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
@@ -104,6 +105,36 @@ export class UserManagementClient {
         }
       } catch (err) {
         let searchUserResult = new SearchUserResult();
+        searchUserResult.errorCode = 1;
+        searchUserResult.errorMessage = "Something went wrong";
+        reject(searchUserResult);
+      }
+    });
+  }
+
+  updateUser(user: User): Promise<UpdateUserResult> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}${this.USER_ROUTE}/${user._id}`;
+        const restResponse = await this.restCalls.sendHttpRequest(
+          Method.PUT,
+          url,
+          user
+        );
+        let updateUserResult = new UpdateUserResult();
+        if (restResponse) {
+          updateUserResult.errorCode = 0;
+          updateUserResult.errorMessage = "Successfull!";
+          updateUserResult.user = restResponse;
+          resolve(updateUserResult);
+        } else {
+          updateUserResult.errorCode = 1;
+          updateUserResult.errorMessage = "Failure!";
+          updateUserResult.user = restResponse;
+          reject(updateUserResult);
+        }
+      } catch (err) {
+        let searchUserResult = new UpdateUserResult();
         searchUserResult.errorCode = 1;
         searchUserResult.errorMessage = "Something went wrong";
         reject(searchUserResult);
