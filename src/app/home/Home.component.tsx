@@ -22,7 +22,10 @@ function HomeComponent() {
     setIsNewConversationModalVisible,
     setConversations,
     selectedConversation,
-    userDetails
+    userDetails,
+    isProfileVisible,
+    setIsProfileVisible,
+    setUserDetails
   } = useHomeHook();
 
   return (
@@ -34,8 +37,8 @@ function HomeComponent() {
               <img src={brandLogo} alt="Cat's App Logo" />
               <div className={HomeStyles["brand-name"]}>Cat's App</div>
             </div>
-            <div className={HomeStyles["my-profile"]}>
-                <img src={AVATARS[0]} alt="Avatar" />
+            <div className={HomeStyles["my-profile"]} onClick={()=>{setIsProfileVisible(!isProfileVisible)}}>
+              <img src={AVATARS[userDetails.avatarId]} alt="Avatar" />
             </div>
           </div>
           <div className={HomeStyles["sidebar-options"]}>
@@ -68,20 +71,25 @@ function HomeComponent() {
               conversations={conversations}
             />
           )}
-          <ProfileComponent user={userDetails}/>
+
+          {
+            isProfileVisible &&
+            <ProfileComponent user={userDetails} setIsProfileVisible={setIsProfileVisible} setUserDetails={setUserDetails}/>
+          }
         </div>
       </div>
 
       <div
-        className={`${HomeStyles["content"]} ${
-          selectedConversation?._id && HomeStyles["content-open"]
-        }`}
+        className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
+          }`}
       >
         <ChatComponent
           selectedConversation={selectedConversation}
           setSelectedConversation={setSelectedConversation}
           allConversations={conversations}
           setAllConversations={setConversations}
+          myDetails = {userDetails}
+          setMyDetails={setUserDetails}
         />
       </div>
     </div>

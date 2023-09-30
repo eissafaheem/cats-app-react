@@ -12,13 +12,14 @@ export const useHomeHook = () => {
     const [selectedConversation, setSelectedConversation] = useState<Conversation>(new Conversation());
     const socketIoService = new SocketIoService();
     const [searchString, setSearchString] = useState<string>("");
+    const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);
     const [isNewConversationModalVisible, setIsNewConversationModalVisible] =
         useState<boolean>(false);
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const modalDiv = document.getElementById("modal");
-    const userDetails: User = new LocalStorage().getData(
+    const [userDetails, setUserDetails] = useState<User>(new LocalStorage().getData(
         LocalKeys.USER_DETAILS
-    );
+    ));
 
     useEffect(() => {
         establishSocketioConnection();
@@ -68,6 +69,9 @@ export const useHomeHook = () => {
         setIsNewConversationModalVisible,
         setConversations,
         selectedConversation,
-        userDetails
+        userDetails,
+        isProfileVisible,
+        setIsProfileVisible,
+        setUserDetails
     };
 }

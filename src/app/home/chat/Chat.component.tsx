@@ -7,12 +7,15 @@ import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useChatHook } from "./Chat.hook";
 import { Message, MessageResponse } from "../../../client/models/Entities/Message";
 import MessageComponent from "./message/Message.component";
+import { User } from "../../../client/models/Entities/User";
 
 export type ChatComponentProps = {
   selectedConversation: Conversation;
   setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
   setAllConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
   allConversations: Conversation[];
+  myDetails: User,
+  setMyDetails: React.Dispatch<React.SetStateAction<User>>
 };
 
 function ChatComponent(props: ChatComponentProps) {
@@ -20,7 +23,7 @@ function ChatComponent(props: ChatComponentProps) {
     messageContainerRef,
     allMessages,
     closeChat,
-    myId,
+    myDetails,
     addMessage,
     setMessage,
     selectedConversation,
@@ -51,7 +54,7 @@ function ChatComponent(props: ChatComponentProps) {
           >
             {allMessages.map((message: MessageResponse, index: number) => {
               return (
-                <MessageComponent key={index} message={message} myId={myId} isGroup={selectedConversation.users.length>2}/>
+                <MessageComponent key={index} message={message} myId={myDetails._id || ""} isGroup={selectedConversation.users.length>2}/>
               );
             })}
           </div>

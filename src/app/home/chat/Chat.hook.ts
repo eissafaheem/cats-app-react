@@ -13,11 +13,13 @@ import { Conversation } from "../../../client/models/Entities/Conversation";
 import { ChatComponentProps } from "./Chat.component";
 import ChatStyles from "./Chat.module.css";
 import { AddMessageResult } from "../../../client/models/Entities/RestResults";
+import { UserManagementService } from "../../../client/services/user-management.service";
+import { User } from "../../../client/models/Entities/User";
+import { userInfo } from "os";
 
 
 export const useChatHook = (props: ChatComponentProps) => {
     const [message, setMessage] = useState<string>("");
-    const [myId, setMyId] = useState<string>("");
     const [allMessages, setAllMessages] = useState<MessageResponse[]>([]);
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -27,7 +29,9 @@ export const useChatHook = (props: ChatComponentProps) => {
         setSelectedConversation,
         selectedConversation,
         allConversations,
-        setAllConversations
+        setAllConversations,
+        myDetails,
+        setMyDetails
     } = props;
 
     useEffect(() => {
@@ -36,7 +40,6 @@ export const useChatHook = (props: ChatComponentProps) => {
 
 
     useEffect(() => {
-        setMyId(new LocalStorage().getData(LocalKeys.USER_DETAILS)._id);
         setMessage("");
         setAllMessages([]);
         getAllMessages();
@@ -79,7 +82,7 @@ export const useChatHook = (props: ChatComponentProps) => {
 
         try {
             const messageManagementService = new MessageanagementService();
-            const newMessage = new MessageRequest(null, myId, message, selectedConversation._id, undefined);
+            const newMessage = new MessageRequest(null, myDetails._id, message, selectedConversation._id, undefined);
             const addMessageResult: AddMessageResult = await messageManagementService.addMessage(
                 newMessage,
                 selectedConversation
@@ -87,6 +90,7 @@ export const useChatHook = (props: ChatComponentProps) => {
             if (addMessageResult.errorCode === 0) {
                 addMessageInDom(addMessageResult.message);
                 addLastMessageInDom(selectedConversation, addMessageResult.message.content || "");
+                handlePawints(addMessageResult.message.content || "");
             } else {
                 alert("failure");
             }
@@ -99,6 +103,19 @@ export const useChatHook = (props: ChatComponentProps) => {
     function addMessageInDom(newMessage: MessageResponse) {
         setAllMessages([...allMessages, newMessage]);
     }
+
+    async function handlePawints(message: string){
+        if(message.includes("meow")){
+            const userManagementService = new UserManagementService();
+            const updateUser = new User(myDetails._id);
+            updateUser.pawints = myDetails.pawints + 1;
+            const updateUserResult = await userManagementService.updateUser(updateUser);
+            if(updateUserResult.errorCode===0){
+                new LocalStorage().setData(LocalKeys.USER_DETAILS, updateUserResult.user);
+                setMyDetails(updateUserResult.user);
+            }
+        }
+    }   
 
     const handleReceiveMessage = (data: any) => {
         addLastMessageInDom(data.conversation, data.message.content)
@@ -158,7 +175,7 @@ export const useChatHook = (props: ChatComponentProps) => {
         messageContainerRef,
         allMessages,
         closeChat,
-        myId,
+        myDetails,
         addMessage,
         setMessage,
         selectedConversation,
