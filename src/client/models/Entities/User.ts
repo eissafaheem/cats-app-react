@@ -5,6 +5,7 @@ export class User {
     password: string | null;
     avatarId: number;
     pawints: number;
+    isSelected: boolean | undefined;
 
     constructor(
         id: string | null = null,

@@ -11,7 +11,6 @@
     padding: 1rem;
     border-bottom: 1px solid var(--app_border_color);
     line-height: 1.4rem;
-    position: relative;
 }
 
 .close-chat{
@@ -33,8 +32,21 @@
     font-size: 0.8rem;
 }
 
-.content-container .header .profile-avatar img {
+.content-container .profile-pic {
+    display: grid; 
     height: 3.5rem;
+    width: 3.5rem;
+    background-color: var(--secondary_color);
+    border-radius: 50%;
+    overflow: hidden;
+    grid-gap: 0.1rem;
+}
+
+.content-container  .profile-pic img{
+    /* border: 3px solid var(--primary_color); */
+    width: 100%; /* Makes each image fill its container */
+    height: 100%;
+    object-fit: cover;
 }
 
 .content-container .footer {
@@ -55,36 +67,5 @@
     overflow-y: scroll;
     background-image: url('./../../../assets/opacity10.png');
     background-size: cover;
-}
-
-
-.my-message {
-    text-align: right;
-    margin: 0.5rem;
-}
-
-.my-message span {
-    padding: 0.5rem;
-    border-radius: var(--app_border_radius);
-    background-color: var(--primary_color);
-    color: white;
-    display: inline-block;
-    max-width: 70%;
-    text-align: left;
-}
-
-.other-message {
-    text-align: left;
-    margin: 0.5rem;
-}
-
-.other-message span {
-    padding: 0.5rem;
-    display: inline-block;
-    background-color: var(--secondary_color);
-    max-width: 70%;
-    color: var(--text1_color);
-    border-radius: var(--app_border_radius);
-
 }
 

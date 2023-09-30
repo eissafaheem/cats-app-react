@@ -3,17 +3,19 @@ import ChatStyles from "./Chat.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
 import ButtonComponent from "../../_shared/components/button/Button.component";
 import sendIcon from "./../../../assets/send-icon.svg";
-import bg from "./../../../assets/chat-bg2.avif";
-
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useChatHook } from "./Chat.hook";
-import { Message } from "../../../client/models/Entities/Message";
+import { Message, MessageResponse } from "../../../client/models/Entities/Message";
+import MessageComponent from "./message/Message.component";
+import { User } from "../../../client/models/Entities/User";
 
 export type ChatComponentProps = {
   selectedConversation: Conversation;
   setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
   setAllConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
   allConversations: Conversation[];
+  myDetails: User,
+  setMyDetails: React.Dispatch<React.SetStateAction<User>>
 };
 
 function ChatComponent(props: ChatComponentProps) {
@@ -21,22 +23,33 @@ function ChatComponent(props: ChatComponentProps) {
     messageContainerRef,
     allMessages,
     closeChat,
-    myId,
+    myDetails,
     addMessage,
     setMessage,
-    selectedConversation
+    selectedConversation,
+    inputRef,
   } = useChatHook(props);
-  
+
   return (
     <>
       {selectedConversation._id ? (
         <div className={ChatStyles["content-container"]}>
           <div className={ChatStyles["header"]}>
-            <div className={ChatStyles["profile-avatar"]}>
-              <img src={AVATARS[0]} alt="" />
+            <div className={ChatStyles["profile-pic"]}
+              style={{
+                gridTemplateColumns: 
+                `repeat(${selectedConversation.avatarIds.length > 3 ? 3 : selectedConversation.avatarIds.length}, 1fr)`
+              }}>
+              {
+                selectedConversation.avatarIds.slice(0, 3).map((avatar: number, index: number) => {
+                  return <img key={index} src={AVATARS[selectedConversation.avatarIds[index]]} alt="Avatar" />
+                })
+              }
             </div>
             <div className={ChatStyles["user"]}>
-              <div className={ChatStyles["name"]}>{selectedConversation.name}</div>
+              <div className={ChatStyles["name"]}>
+                {selectedConversation.name}
+              </div>
               <div className={ChatStyles["status"]}>Online</div>
             </div>
             <div className={ChatStyles["close-chat"]} onClick={closeChat}>
@@ -47,18 +60,9 @@ function ChatComponent(props: ChatComponentProps) {
             className={ChatStyles["message-container"]}
             ref={messageContainerRef}
           >
-            {allMessages.map((message: Message, index: number) => {
+            {allMessages.map((message: MessageResponse, index: number) => {
               return (
-                <div
-                  key={index}
-                  className={`${
-                    message.senderId === myId
-                      ? ChatStyles["my-message"]
-                      : ChatStyles["other-message"]
-                  }`}
-                >
-                  <span>{message.content}</span>
-                </div>
+                <MessageComponent key={index} message={message} myId={myDetails._id || ""} isGroup={selectedConversation.users.length > 2} />
               );
             })}
           </div>
@@ -67,6 +71,7 @@ function ChatComponent(props: ChatComponentProps) {
               <InputComponent
                 placeholder="Type message..."
                 setValue={setMessage}
+                inputRef={inputRef}
               />
             </div>
             <div className={ChatStyles["button"]}>

@@ -1,5 +1,5 @@
 import { Conversation } from "./Conversation";
-import { Message } from "./Message";
+import { Message, MessageResponse } from "./Message";
 import { User } from "./User";
 
 export class RestResult {
@@ -34,7 +34,23 @@ export class SearchUserResult extends RestResult {
   }
 }
 
+export class UpdateUserResult extends RestResult {
+  user: User;
+  constructor(user: User = new User()) {
+    super();
+    this.user = user;
+  }
+}
+
 export class AddConversationResult extends RestResult {
+  conversation: Conversation;
+  constructor(conversation: Conversation = new Conversation()) {
+    super();
+    this.conversation = conversation;
+  }
+}
+
+export class UpdateConversationResult extends RestResult {
   conversation: Conversation;
   constructor(conversation: Conversation = new Conversation()) {
     super();
@@ -51,16 +67,16 @@ export class GetConversationResult extends RestResult {
 }
 
 export class AddMessageResult extends RestResult {
-  message: Message;
-  constructor(message: Message = new Message()) {
+  message: MessageResponse;
+  constructor(message: MessageResponse = new MessageResponse()) {
     super();
     this.message = message;
   }
 }
 
 export class GetMessageResult extends RestResult {
-  messages: Message[];
-  constructor(messages: Message[] = []) {
+  messages: MessageResponse[];
+  constructor(messages: MessageResponse[] = []) {
     super();
     this.messages = messages;
   }

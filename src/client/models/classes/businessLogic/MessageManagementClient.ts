@@ -4,6 +4,7 @@ import { Message } from "../../Entities/Message";
 import { AddMessageResult, GetMessageResult } from "../../Entities/RestResults";
 import { SocketIoEvent } from "../../Entities/SocketIoEvents";
 import { User } from "../../Entities/User";
+import { ConversationManagementClinet } from "./ConversationManagementClient";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
 import { Method, RestCalls } from "./RestCalls";
 import { SocketIoClient } from "./SocketIoClient";
@@ -30,12 +31,13 @@ export class MessageManagementClient {
           message,
           accessToken
         );
+        await this.updateConversation(conversation, message.content || "");
         let addMessageResult = new AddMessageResult();
         if (addedMessage) {
           addMessageResult.errorCode = 0;
           addMessageResult.errorMessage = "Success";
           addMessageResult.message = addedMessage;
-          this.sendSocketIONotification(message, conversation);
+          this.sendSocketIONotification(addedMessage, conversation);
           resolve(addMessageResult);
         } else {
           addMessageResult.errorCode = 1;
@@ -59,6 +61,18 @@ export class MessageManagementClient {
     }
     catch (err) {
       console.error(err)
+    }
+  }
+
+  async updateConversation(conversation: Conversation, newMessage: string){
+    try{
+      const conversationManagementClinet = new ConversationManagementClinet();
+      const updateConversationLastMessage = new Conversation();
+      updateConversationLastMessage._id = conversation._id;
+      updateConversationLastMessage.lastMessage = newMessage;
+      const restResult = await conversationManagementClinet.updateConversation(updateConversationLastMessage);
+    }catch(err){
+      console.error(err);
     }
   }
 

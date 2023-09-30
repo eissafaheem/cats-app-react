@@ -7,6 +7,7 @@ export class Conversation {
   lastMessage: string | null;
   isPinned: boolean;
   isUnread: boolean;
+  avatarIds: number[];
 
   constructor(
     id: string | null = null,
@@ -14,7 +15,8 @@ export class Conversation {
     users: any[] = [],
     lastMessage: string | null = null,
     isPinned: boolean = false,
-    isUnread: boolean = false
+    isUnread: boolean = false,
+    avatarId: number[] | null = null
 
   ) {
     this._id = id;
@@ -23,5 +25,6 @@ export class Conversation {
     this.lastMessage = lastMessage;
     this.isPinned = isPinned;
     this.isUnread = isUnread
+    this.avatarIds = avatarId !== null ? avatarId : [0];
   }
 }

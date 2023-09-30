@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import NewComversationModalStyles from "./NewConversationModal.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
 import searchIcon from "./../../../assets/search-icon.svg";
-import { UserManagementService } from "../../../client/services/user-management.service";
-import { User } from "../../../client/models/Entities/User";
-import { ConversationManagementService } from "../../../client/services/conversation-management.service";
 import { Conversation } from "../../../client/models/Entities/Conversation";
-import { AddConversationResult } from "../../../client/models/Entities/RestResults";
-import {
-  LocalKeys,
-  LocalStorage,
-} from "../../../client/models/classes/businessLogic/LocalStorage";
+import { useNewConversationModalHook } from "./NewConversationModal.hook";
+import { User } from "../../../client/models/Entities/User";
+import UserItemComponent from "../../_shared/user-item/UserItem.component";
+import ButtonComponent from "../../_shared/components/button/Button.component";
+import ChipConponent from "../../_shared/components/chip/Chip.conponent";
 
-type NewConversationProps = {
+export type NewConversationProps = {
   setIsNewConversationModalVisible: React.Dispatch<
     React.SetStateAction<boolean>
   >;
@@ -21,96 +18,100 @@ type NewConversationProps = {
 };
 
 function NewConversationModalComponent(props: NewConversationProps) {
-  const [searchToken, setSearchToken] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const { setIsNewConversationModalVisible, setConversations, conversations } =
-    props;
-
-  useEffect(() => {
-    if (searchToken) {
-      handleSearchUsers();
-    }
-  }, [searchToken]);
-
-  async function handleSearchUsers() {
-    const userManagementService = new UserManagementService();
-    try {
-      const searchUserResult = await userManagementService.searchUser(
-        searchToken
-      );
-      if (searchUserResult.errorCode === 0) {
-        setUsers(searchUserResult.users);
-      } else {
-        alert(searchUserResult.errorMessage);
-      }
-    } catch (err) {}
-  }
-
-  async function addConversation(user: User) {
-    try {
-      const conversationManagementService = new ConversationManagementService();
-      const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
-      const myId = myDetails._id;
-      let conversation = new Conversation(
-        null,
-        user.name,
-        [user._id, myId],
-        "Start meowing...",
-        false
-      );
-      const addConversationResult =
-        await conversationManagementService.addConversation(conversation);
-      if (addConversationResult.errorCode === 0) {
-        let tempConversationsArray: Conversation[] = conversations;
-        let conversationToAdd = new Conversation();
-        conversationToAdd = addConversationResult.conversation;
-        conversationToAdd.users = [user, myDetails];
-        tempConversationsArray.push(addConversationResult.conversation);
-        setConversations(tempConversationsArray);
-        setIsNewConversationModalVisible(false);
-      } else {
-        alert(addConversationResult.errorMessage);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Failed");
-    }
-  }
-
-  function handleClose() {
-    setIsNewConversationModalVisible(false);
-  }
+  const {
+    handleClose,
+    setSearchToken,
+    users,
+    addConversation,
+    myDetails,
+    conversationType,
+    setConversationType,
+    handleSelectUser,
+    selectedUsers,
+    setGroupName,
+  } = useNewConversationModalHook(props);
 
   return (
     <div className={NewComversationModalStyles["new-conversation-container"]}>
+      <div
+        className={NewComversationModalStyles["closeDiv"]}
+        onClick={handleClose}
+      ></div>
       <div className={NewComversationModalStyles["modal"]}>
-        <div
-          className={NewComversationModalStyles["close-icon"]}
-          onClick={handleClose}
-        >
-          X
+        <header>
+          <h3
+            className={`${conversationType === "single-chat" &&
+              NewComversationModalStyles["selected"]
+              }`}
+            onClick={() => setConversationType("single-chat")}
+          >
+            New Chat
+          </h3>
+          <h3
+            className={`${conversationType === "group-chat" &&
+              NewComversationModalStyles["selected"]
+              }`}
+            onClick={() => setConversationType("group-chat")}
+          >
+            New Group
+          </h3>
+        </header>
+        <div className={NewComversationModalStyles["content"]}>
+          <div
+            className={`${conversationType === "group-chat" &&
+              NewComversationModalStyles["inputs"]
+              }`}
+          >
+            <InputComponent
+              placeholder="Search users"
+              setValue={setSearchToken}
+              icon={searchIcon}
+            />
+            {conversationType === "group-chat" && (
+              <InputComponent
+                placeholder="Group name"
+                setValue={setGroupName}
+              />
+            )}
+          </div>
+          <div className={NewComversationModalStyles["user-list"]}>
+            {users.map((user: User, index: number) => {
+              return (
+                <UserItemComponent
+                  key={index}
+                  myEmail={myDetails.email}
+                  onClick={() => handleSelectUser(user)}
+                  user={user}
+                />
+              );
+            })}
+          </div>
         </div>
-        <h3>Start New Conversation</h3>
-        <InputComponent
-          setValue={setSearchToken}
-          placeholder="Search users by email"
-          icon={searchIcon}
-        />
-        <div className={NewComversationModalStyles["users-list"]}>
-          {users.map((user, index) => {
-            return (
-              <div
-                key={index}
-                className={NewComversationModalStyles["user"]}
-                onClick={() => {
-                  addConversation(user);
-                }}
-              >
-                {user.email}
-              </div>
-            );
-          })}
-        </div>
+        <footer>
+          <div className={NewComversationModalStyles["grid-item"]}>
+            <div className={NewComversationModalStyles["chip-container"]}>
+              {selectedUsers.map((user: User, index: number) => {
+                return (
+                  <ChipConponent
+                    key={index}
+                    onCrossClick={() => { handleSelectUser(user) }}
+                    text={user.email || ""}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          <div className={NewComversationModalStyles["grid-item"]}>
+            <ButtonComponent
+              text={
+                conversationType === "single-chat"
+                  ? "Start Chat"
+                  : "Create Group"
+              }
+              onClick={addConversation}
+            />
+          </div>
+        </footer>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import {
   SearchUserResult,
   SignUpResult,
   SigninResult,
+  UpdateUserResult,
 } from "../../Entities/RestResults";
 import { User } from "../../Entities/User";
 import { LocalKeys, LocalStorage } from "./LocalStorage";
@@ -19,22 +20,22 @@ export class UserManagementClient {
     return new Promise(async (resolve, reject) => {
       try {
         const url = `${environment.BASE_URL}${this.USER_ROUTE}/signup`;
-        const addedUser: User = await this.restCalls.sendHttpRequest(
+        const addedUser = await this.restCalls.sendHttpRequest(
           Method.POST,
           url,
           user
         );
         let signupResult = new SignUpResult();
-        if (addedUser) {
+        if (addedUser._id) {
           signupResult.errorCode = 0;
           signupResult.errorMessage = "Signup successfull!";
           signupResult.user = addedUser;
           resolve(signupResult);
         } else {
           signupResult.errorCode = 1;
-          signupResult.errorMessage = "Signup failed!";
+          signupResult.errorMessage = addedUser.message;
           signupResult.user = user;
-          reject(addedUser);
+          resolve(addedUser);
         }
       } catch (err) {
         let signinResult = new SigninResult();
@@ -65,7 +66,7 @@ export class UserManagementClient {
         } else {
           signinResult.errorCode = 1;
           signinResult.errorMessage = "Incorrect email or password!";
-          reject(signinResult);
+          resolve(signinResult);
         }
       } catch (err) {
         let signinResult = new SigninResult();
@@ -76,7 +77,7 @@ export class UserManagementClient {
     });
   }
 
-  private storeSigninDetails(accessToken: string, userDetails: any) {
+  private storeSigninDetails(accessToken: string, userDetails: User) {
     const localStore = new LocalStorage();
     localStore.setData(LocalKeys.ACCESS_TOKEN, accessToken);
     localStore.setData(LocalKeys.USER_DETAILS, userDetails);
@@ -104,6 +105,36 @@ export class UserManagementClient {
         }
       } catch (err) {
         let searchUserResult = new SearchUserResult();
+        searchUserResult.errorCode = 1;
+        searchUserResult.errorMessage = "Something went wrong";
+        reject(searchUserResult);
+      }
+    });
+  }
+
+  updateUser(user: User): Promise<UpdateUserResult> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const url = `${environment.BASE_URL}${this.USER_ROUTE}/${user._id}`;
+        const restResponse = await this.restCalls.sendHttpRequest(
+          Method.PUT,
+          url,
+          user
+        );
+        let updateUserResult = new UpdateUserResult();
+        if (restResponse) {
+          updateUserResult.errorCode = 0;
+          updateUserResult.errorMessage = "Successfull!";
+          updateUserResult.user = restResponse;
+          resolve(updateUserResult);
+        } else {
+          updateUserResult.errorCode = 1;
+          updateUserResult.errorMessage = "Failure!";
+          updateUserResult.user = restResponse;
+          reject(updateUserResult);
+        }
+      } catch (err) {
+        let searchUserResult = new UpdateUserResult();
         searchUserResult.errorCode = 1;
         searchUserResult.errorMessage = "Something went wrong";
         reject(searchUserResult);

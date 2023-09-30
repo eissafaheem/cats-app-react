@@ -7,18 +7,30 @@
     cursor: pointer;
 }
 
-.conversation-item-container:hover  .profile-pic img{
-    border: 3px solid var(--primary_color);
+.conversation-item-container .profile-pic {
+    display: grid; 
+    height: 3.5rem;
+    width: 3.5rem;
+    background-color: var(--secondary_color);
+    border-radius: 50%;
+    overflow: hidden;
+    grid-gap: 0.1rem;
+}
+
+.conversation-item-container  .profile-pic img{
+    /* border: 3px solid var(--primary_color); */
+    width: 100%; /* Makes each image fill its container */
+    height: 100%;
+    object-fit: cover;
 }
 
 .conversation-item-container .profile-pic img{
-    border: 3px solid transparent;
-    height: 3.5rem;
-    border-radius: 50%;
+    /* border: 3px solid transparent; */
+    /* height: 3.5rem; */
 }
 
 .conversation-item-container .user {
-    width: 100%;
+    width: 80%;
 
 }
 .conversation-item-container .user .line-1{
@@ -29,12 +41,18 @@
 
 .conversation-item-container .user .line-1 .user-name{
     color: var(--text1_color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .conversation-item-container .user .line-2 .last-message,
 .conversation-item-container .user .line-1 .timestamp{
     color: var(--text3_color);
     font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .conversation-item-container .user .line-1 .unread{
     background-color: var(--success_color);

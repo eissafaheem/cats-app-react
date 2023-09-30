@@ -11,6 +11,7 @@ import {
 import { User } from "../../../client/models/Entities/User";
 import { UserManagementService } from "../../../client/services/user-management.service";
 import { error } from "console";
+import { SigninResult } from "../../../client/models/Entities/RestResults";
 
 function SigninComponent() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ function SigninComponent() {
         alert(signinResult.errorMessage);
       }
     } catch (err) {
-      alert(err);
+      alert("Something went wrong!");
       console.error(err)
     }
   }

@@ -5,16 +5,21 @@ import { SocketIoEvent } from "../../client/models/Entities/SocketIoEvents";
 import { LocalKeys, LocalStorage } from "../../client/models/classes/businessLogic/LocalStorage";
 import { User } from "../../client/models/Entities/User";
 import { ConversationManagementService } from "../../client/services/conversation-management.service";
+import { handleConversationData } from "../_shared/utils/methods";
 
 export const useHomeHook = () => {
 
     const [selectedConversation, setSelectedConversation] = useState<Conversation>(new Conversation());
     const socketIoService = new SocketIoService();
     const [searchString, setSearchString] = useState<string>("");
+    const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);
     const [isNewConversationModalVisible, setIsNewConversationModalVisible] =
         useState<boolean>(false);
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const modalDiv = document.getElementById("modal");
+    const [userDetails, setUserDetails] = useState<User>(new LocalStorage().getData(
+        LocalKeys.USER_DETAILS
+    ));
 
     useEffect(() => {
         establishSocketioConnection();
@@ -25,27 +30,13 @@ export const useHomeHook = () => {
     }, []);
 
     function establishSocketioConnection() {
-        const userDetails: User = new LocalStorage().getData(
-            LocalKeys.USER_DETAILS
-        );
         socketIoService.establishConnection(userDetails);
         socketIoService.emitEvent(SocketIoEvent.JOIN_MY_ROOM, userDetails);
-        socketIoService.recieveEvent(SocketIoEvent.JOINED, (data) => {
-            console.log("joined", data);
-        });
-        // socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, (data)=>{
-        //   console.log("event");
-        //   console.log(data);
-        // })
     }
 
     useEffect(() => {
         getConversations();
     }, []);
-
-    useEffect(()=>{
-        console.log("From home", conversations)
-    },[conversations])
 
     async function getConversations() {
         const conversationManagementService = new ConversationManagementService();
@@ -53,7 +44,7 @@ export const useHomeHook = () => {
             const getConversationResult =
                 await conversationManagementService.getAllConversations();
             if (getConversationResult.errorCode === 0) {
-                const conversatiosArray = handleConversationName(
+                const conversatiosArray = handleConversationData(
                     getConversationResult.conversation
                 );
                 setConversations([...conversatiosArray]);
@@ -63,16 +54,6 @@ export const useHomeHook = () => {
         } catch (err) {
             console.error(err);
         }
-    }
-
-    function handleConversationName(conversations: Conversation[]): Conversation[] {
-        const myId = new LocalStorage().getData(LocalKeys.USER_DETAILS)._id;
-        return conversations.map(conversation => {
-            return {
-                ...conversation,
-                name: conversation.users.find(user => user._id !== myId)?.name || "Unnamed Conversation"
-            };
-        });
     }
 
     function openNewConversationModal() {
@@ -87,6 +68,10 @@ export const useHomeHook = () => {
         isNewConversationModalVisible,
         setIsNewConversationModalVisible,
         setConversations,
-        selectedConversation
+        selectedConversation,
+        userDetails,
+        isProfileVisible,
+        setIsProfileVisible,
+        setUserDetails
     };
 }
