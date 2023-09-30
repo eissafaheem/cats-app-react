@@ -90,11 +90,17 @@
     border-radius: 50%;
     z-index: 1;
     cursor: pointer;
+    border: 5px solid transparent;
 }
 
 .profile-container .content .avatars .locked-avatar img{
     filter: brightness(0.5);
     cursor: not-allowed;
+    border: 5px solid transparent;
+}
+
+.profile-container .content .avatars .selected-avatar img{
+    border: 5px solid var(--success_color);
 }
 
 .profile-container footer{

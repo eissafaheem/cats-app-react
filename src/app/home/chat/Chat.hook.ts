@@ -105,10 +105,11 @@ export const useChatHook = (props: ChatComponentProps) => {
     }
 
     async function handlePawints(message: string){
-        if(message.includes("meow")){
+        const meowCount = (message.match(/meow/g) || []).length;
+        if(meowCount>0){
             const userManagementService = new UserManagementService();
             const updateUser = new User(myDetails._id);
-            updateUser.pawints = myDetails.pawints + 1;
+            updateUser.pawints = myDetails.pawints + meowCount;
             const updateUserResult = await userManagementService.updateUser(updateUser);
             if(updateUserResult.errorCode===0){
                 new LocalStorage().setData(LocalKeys.USER_DETAILS, updateUserResult.user);

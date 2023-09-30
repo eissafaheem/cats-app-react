@@ -31,16 +31,18 @@ function ProfileComponent(props: ProfileProps) {
     setPassword,
     setIsProfileVisible,
     user,
-    setAvatarId
+    setAvatarId,
+    avatarId,
+    handleAvatarSelect
   } = useProfileHook(props);
 
   return (
     <div className={ProfileStyles["profile-container"]}>
-      <div className={ProfileStyles["close-div"]} onClick={()=>setIsProfileVisible(false)}></div>
+      <div className={ProfileStyles["close-div"]} onClick={() => setIsProfileVisible(false)}></div>
       <div className={ProfileStyles["modal"]}>
         <header>
           <div className={ProfileStyles["user-info"]}>
-            <img src={AVATARS[user.avatarId]} alt="user avatar" />
+            <img src={AVATARS[avatarId]} alt="user avatar" />
             <div className={ProfileStyles["details"]}>
               <h1>{user.name}</h1>
               <h3>{user.pawints} Pawints</h3>
@@ -53,10 +55,12 @@ function ProfileComponent(props: ProfileProps) {
             {AVATARS.map((avatar: string, index: number) => {
               return (
                 <div
-                  className={`${ProfileStyles["avatar"]} ${user.pawints < (index + 1) * 10 &&
-                    ProfileStyles["locked-avatar"]
-                    }`}
-                    onClick={()=>{setAvatarId(index)}}
+                  className={`
+                    ${ProfileStyles["avatar"]} 
+                    ${user.pawints < (index + 1) * 10 &&ProfileStyles["locked-avatar"]}
+                    ${avatarId===index && ProfileStyles['selected-avatar']}`
+                  }
+                  onClick={() => { handleAvatarSelect(index) }}
                 >
                   <img src={avatar} alt="user avatar" />
                   {(index + 1) * 10}
@@ -70,7 +74,7 @@ function ProfileComponent(props: ProfileProps) {
               {
                 isEditProfile
                   ?
-                  <InputComponent placeholder="Name" setValue={setName} />
+                  <InputComponent placeholder="Name" setValue={setName} value={name}/>
                   :
                   <>
                     {user.name}
@@ -82,7 +86,7 @@ function ProfileComponent(props: ProfileProps) {
               {
                 isEditProfile
                   ?
-                  <InputComponent placeholder="Email" setValue={setEmail} />
+                  <InputComponent placeholder="Email" setValue={setEmail} value={email}/>
                   :
                   <>
                     {user.email}
@@ -104,7 +108,7 @@ function ProfileComponent(props: ProfileProps) {
           </div>
         </div>
         <footer>
-          <ButtonComponent text={isEditProfile?"Save Profile":"Edit Profile"} onClick={handleProfileButtonClick} />
+          <ButtonComponent text={isEditProfile ? "Save Profile" : "Edit Profile"} onClick={handleProfileButtonClick} />
         </footer>
       </div>
     </div>
