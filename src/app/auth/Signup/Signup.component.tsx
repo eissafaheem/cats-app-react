@@ -44,7 +44,7 @@ function SignupComponent() {
           <InputComponent placeholder="Email" setValue={setEmail} />
         </div>
         <div className={SignupStyles["input"]}>
-          <InputComponent placeholder="Password" setValue={setPassword} />
+          <InputComponent placeholder="Password" setValue={setPassword} type={"password"}/>
         </div>
         <div className={SignupStyles["input"]}>
           <ButtonComponent onClick={handleSignup} text="Sign Up" />
