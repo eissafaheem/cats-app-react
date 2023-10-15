@@ -1,7 +1,7 @@
 # Meow: Realtime Chat App Preview
 * Developed as a fun way to display skills, users can unlock new cat avatars by collecting ‘Paw-ints’ by 
 meowing in their conversations.
-*Users can have a one to one as well as group chat, members can be added and removed from group.
+* Users can have a one to one as well as group chat, members can be added and removed from group.
 Skills used: React, TypeScript, NodeJS, Socket IO and MongoDB
 
 
