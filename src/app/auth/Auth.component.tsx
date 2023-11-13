@@ -7,18 +7,17 @@ import catPaw from './../../assets/cat_paw.png'
 function AuthComponent() {
   return (
     <div className={AuthStyles['auth-container']}>
-      <img src={catPaw} alt="Paw" id={AuthStyles["paw"]} />
       <div className={AuthStyles["brand-info"]}>
         <div className={AuthStyles["heading"]}>
           <img src={brandLogo} alt="Meow" />
-          <h1>Meow: Cat's App</h1>
+          <h1>Meow: Chat App</h1>
         </div>
         <div className={AuthStyles["content"]}>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam soluta eius fugit dolore, at in 
+          Purr-fectly Social Application Where Conversations Earn Paw-ints and Cat Avatars Come to Life!
         </div>
       </div>
       <div className={AuthStyles["form-container"]}>
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   )

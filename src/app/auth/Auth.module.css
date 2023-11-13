@@ -24,6 +24,7 @@
 
 .brand-info .content{
     margin-top: 1rem;
+    line-height: 1.8rem;
 }
 
 .form-container{
@@ -31,16 +32,6 @@
     display: flex;
     align-items: center;
     justify-self: center;
-}
-
-#paw{
-    position: absolute;
-    bottom: 5rem;
-    left: 5rem;
-    height: 10rem;
-    transform: rotate(35deg);
-    display: none;
-
 }
 
 @media screen and (max-width: 950px) {

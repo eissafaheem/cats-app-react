@@ -12,27 +12,13 @@ function SignupComponent() {
 
   const {
     handleSignup,
-    setName,
-    setEmail,
-    setPassword,
-    setConfirmPassword
+    onNameChange,
+    onEmailChange,
+    onConfirmPasswordChange,
+    onPasswordChange,
+    errorMessage,
+    isDisabled
   } = useSignupHook();
-
-  function onNameChange(event: React.FormEvent<HTMLInputElement>){
-    setName(event.currentTarget.value)
-  }
-
-  const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
-  };
-
-  const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
-  };
-
-  const onConfirmPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setConfirmPassword(event.currentTarget.value);
-  };
 
   return (
     <div className={SignupStyles["signup-container"]}>
@@ -50,8 +36,9 @@ function SignupComponent() {
         <div className={SignupStyles["input"]}>
           <InputComponent placeholder="Confirm Password" onChange={onConfirmPasswordChange} type={"password"} />
         </div>
+        <p className={SignupStyles["error-message"]}>{errorMessage}</p>
         <div className={SignupStyles["input"]}>
-          <ButtonComponent onClick={handleSignup} text="Sign Up" />
+          <ButtonComponent onClick={handleSignup} text="Sign Up" isDisabled={isDisabled}/>
         </div>
       </form>
       <div className={SignupStyles["signup"]}>

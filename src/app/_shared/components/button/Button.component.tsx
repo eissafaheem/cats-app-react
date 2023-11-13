@@ -4,7 +4,8 @@ import ButtonStyles from './Button.module.css'
 type ButtonProps = {
     onClick?: any,
     text?: string,
-    icon?: string
+    icon?: string,
+    isDisabled?: boolean
 }
 
 function ButtonComponent(props: ButtonProps) {
@@ -12,12 +13,13 @@ function ButtonComponent(props: ButtonProps) {
     const {
         onClick,
         text,
-        icon
+        icon,
+        isDisabled
     } = props;
 
     return (
-        <button>
-            <div className={ButtonStyles['button-container']} onClick={onClick}>
+        <button disabled={isDisabled}>
+            <div className={`${ButtonStyles['button-container']} ${isDisabled && ButtonStyles['disabled-button']}`} onClick={onClick}>
                 {
                     text
                     &&
