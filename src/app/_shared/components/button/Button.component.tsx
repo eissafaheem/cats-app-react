@@ -6,6 +6,7 @@ type ButtonProps = {
     text?: string,
     icon?: string,
     isDisabled?: boolean
+    isLoading?: boolean
 }
 
 function ButtonComponent(props: ButtonProps) {
@@ -14,18 +15,26 @@ function ButtonComponent(props: ButtonProps) {
         onClick,
         text,
         icon,
-        isDisabled
+        isDisabled,
+        isLoading
     } = props;
 
     return (
         <button disabled={isDisabled}>
             <div className={`${ButtonStyles['button-container']} ${isDisabled && ButtonStyles['disabled-button']}`} onClick={onClick}>
                 {
-                    text
-                    &&
-                    <div className={ButtonStyles["button-text"]}>
-                        {text}
-                    </div>
+                    isLoading ?
+                        <div className={ButtonStyles['loader']}>
+
+                        </div> :
+                        <>
+                            {text
+                                &&
+                                <div className={ButtonStyles["button-text"]}>
+                                    {text}
+                                </div>
+                            }
+                        </>
                 }
                 <div className={ButtonStyles["button-image"]}>
                     <img src={icon} alt="" />

@@ -1,4 +1,4 @@
-.button-container{
+.button-container {
     background-color: var(--primary_color);
     display: flex;
     align-items: center;
@@ -11,20 +11,39 @@
     cursor: pointer;
 }
 
-.button-container:hover{
+.button-container:hover {
     opacity: 0.8;
 }
 
-.disabled-button{
+.disabled-button {
     opacity: 0.5;
 }
 
-.disabled-button:hover{
+.disabled-button:hover {
     opacity: 0.5;
 }
 
-button{
+button {
     background-color: transparent;
     outline: none;
     border: none;
+}
+
+.loader {
+    border: 0.25rem solid var(--app_border_color);
+    border-top: 0.25rem solid var(--secondary_color);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

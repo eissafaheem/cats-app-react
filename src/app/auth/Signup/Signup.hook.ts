@@ -13,18 +13,31 @@ const useSignupHook = () => {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [isPasswordsMatch, setIsPasswordsMatch] = useState<boolean>(false);
-    
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isInvalidEmail, setisInvalidEmail] = useState<boolean>(false);
+
     useEffect(() => {
-        console.log(name , email , password , confirmPassword)
-        if (name && email && password && isPasswordsMatch) {
-            setIsDisabled(false);
-        }
-        else{
-            setIsDisabled(true);
-        }
+        validateForm();
     }, [name, password, email, confirmPassword])
 
+    function validateForm() {
+        if (name && email && password && isPasswordsMatch && !isInvalidEmail) {
+            setIsDisabled(false);
+            setErrorMessage("");
+            return;
+        }
+        if (!isPasswordsMatch) {
+            setErrorMessage("Passwords do not match!")
+        }
+        if(isInvalidEmail){
+            setErrorMessage("Invalid email!")
+        }
+        setIsDisabled(true);
+    }
+
     async function handleSignup(event: any) {
+        setIsLoading(true);
+        setIsDisabled(true);
         event.preventDefault();
         const userManagementService = new UserManagementService();
         try {
@@ -38,6 +51,8 @@ const useSignupHook = () => {
         } catch (err) {
             setErrorMessage("Something went wrong!")
         }
+        setIsDisabled(false);
+        setIsLoading(false);
     }
 
     function onNameChange(event: React.FormEvent<HTMLInputElement>) {
@@ -46,6 +61,16 @@ const useSignupHook = () => {
 
     const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
         setEmail(event.currentTarget.value);
+        validateEmail(event.currentTarget.value);
+    };
+
+    const validateEmail = (value: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            setisInvalidEmail(true);
+        } else {
+            setisInvalidEmail(false);
+        }
     };
 
     const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -55,10 +80,8 @@ const useSignupHook = () => {
     const onConfirmPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
         let confirmPasswordCurrValue = event.currentTarget.value;
         if (confirmPasswordCurrValue !== password) {
-            setErrorMessage("Passwords do not match!");
             setIsPasswordsMatch(false);
         } else {
-            setErrorMessage("");
             setIsPasswordsMatch(true)
         }
         setConfirmPassword(event.currentTarget.value);
@@ -75,7 +98,8 @@ const useSignupHook = () => {
         onConfirmPasswordChange,
         onPasswordChange,
         errorMessage,
-        isDisabled
+        isDisabled,
+        isLoading
     };
 }
 export default useSignupHook;

@@ -17,7 +17,8 @@ function SignupComponent() {
     onConfirmPasswordChange,
     onPasswordChange,
     errorMessage,
-    isDisabled
+    isDisabled,
+    isLoading
   } = useSignupHook();
 
   return (
@@ -38,7 +39,7 @@ function SignupComponent() {
         </div>
         <p className={SignupStyles["error-message"]}>{errorMessage}</p>
         <div className={SignupStyles["input"]}>
-          <ButtonComponent onClick={handleSignup} text="Sign Up" isDisabled={isDisabled}/>
+          <ButtonComponent onClick={handleSignup} text="Sign Up" isDisabled={isDisabled} isLoading={isLoading}/>
         </div>
       </form>
       <div className={SignupStyles["signup"]}>
