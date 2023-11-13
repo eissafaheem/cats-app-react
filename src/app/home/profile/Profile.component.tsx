@@ -33,7 +33,10 @@ function ProfileComponent(props: ProfileProps) {
     user,
     setAvatarId,
     avatarId,
-    handleAvatarSelect
+    handleAvatarSelect,
+    onNameChange,
+    onEmailChange,
+    onPasswordChange
   } = useProfileHook(props);
 
   return (
@@ -58,8 +61,8 @@ function ProfileComponent(props: ProfileProps) {
                   key={index}
                   className={`
                     ${ProfileStyles["avatar"]} 
-                    ${user.pawints < (index + 1) * 10 &&ProfileStyles["locked-avatar"]}
-                    ${avatarId===index && ProfileStyles['selected-avatar']}`
+                    ${user.pawints < (index + 1) * 10 && ProfileStyles["locked-avatar"]}
+                    ${avatarId === index && ProfileStyles['selected-avatar']}`
                   }
                   onClick={() => { handleAvatarSelect(index) }}
                 >
@@ -75,7 +78,7 @@ function ProfileComponent(props: ProfileProps) {
               {
                 isEditProfile
                   ?
-                  <InputComponent placeholder="Name" setValue={setName} value={name}/>
+                  <InputComponent placeholder="Name" onChange={onNameChange} value={name} />
                   :
                   <>
                     {user.name}
@@ -87,7 +90,7 @@ function ProfileComponent(props: ProfileProps) {
               {
                 isEditProfile
                   ?
-                  <InputComponent placeholder="Email" setValue={setEmail} value={email}/>
+                  <InputComponent placeholder="Email" onChange={onEmailChange} value={email} />
                   :
                   <>
                     {user.email}
@@ -99,7 +102,7 @@ function ProfileComponent(props: ProfileProps) {
               {
                 isEditProfile
                   ?
-                  <InputComponent placeholder="Password" setValue={setPassword} />
+                  <InputComponent placeholder="Password" onChange={onPasswordChange} />
                   :
                   <>
                     ********

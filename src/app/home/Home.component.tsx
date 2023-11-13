@@ -25,7 +25,8 @@ function HomeComponent() {
     userDetails,
     isProfileVisible,
     setIsProfileVisible,
-    setUserDetails
+    setUserDetails,
+    onSearchStringCHange
   } = useHomeHook();
 
   return (
@@ -44,7 +45,7 @@ function HomeComponent() {
           <div className={HomeStyles["sidebar-options"]}>
             <div className={HomeStyles["input"]}>
               <InputComponent
-                setValue={setSearchString}
+                onChange={onSearchStringCHange}
                 icon={searchIcon}
                 placeholder="Search people"
               />

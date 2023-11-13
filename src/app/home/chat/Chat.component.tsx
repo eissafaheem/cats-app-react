@@ -25,9 +25,9 @@ function ChatComponent(props: ChatComponentProps) {
     closeChat,
     myDetails,
     addMessage,
-    setMessage,
     selectedConversation,
     inputRef,
+    onMessageChange
   } = useChatHook(props);
 
   return (
@@ -70,7 +70,7 @@ function ChatComponent(props: ChatComponentProps) {
             <div className={ChatStyles["input"]}>
               <InputComponent
                 placeholder="Type message..."
-                setValue={setMessage}
+                onChange={onMessageChange}
                 inputRef={inputRef}
               />
             </div>

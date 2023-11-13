@@ -44,6 +44,18 @@ export const useProfileHook = (props: ProfileProps) => {
         }
     }
 
+    function onNameChange(event: React.FormEvent<HTMLInputElement>) {
+        setName(event.currentTarget.value)
+    }
+
+    const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setEmail(event.currentTarget.value);
+    };
+
+    const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setPassword(event.currentTarget.value);
+    };
+
     return {
         logoutUser,
         isEditProfile,
@@ -59,6 +71,9 @@ export const useProfileHook = (props: ProfileProps) => {
         setIsProfileVisible,
         setAvatarId,
         avatarId,
-        handleAvatarSelect
+        handleAvatarSelect,
+        onNameChange,
+        onEmailChange,
+        onPasswordChange
     };
 }

@@ -172,6 +172,10 @@ export const useChatHook = (props: ChatComponentProps) => {
         setSelectedConversation(new Conversation());
     }
 
+    function onMessageChange(event: React.FormEvent<HTMLInputElement>){
+        setMessage(event.currentTarget.value);
+    }
+
     return {
         messageContainerRef,
         allMessages,
@@ -180,6 +184,7 @@ export const useChatHook = (props: ChatComponentProps) => {
         addMessage,
         setMessage,
         selectedConversation,
-        inputRef
+        inputRef,
+        onMessageChange
     };
 }

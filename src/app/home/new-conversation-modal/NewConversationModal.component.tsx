@@ -20,7 +20,6 @@ export type NewConversationProps = {
 function NewConversationModalComponent(props: NewConversationProps) {
   const {
     handleClose,
-    setSearchToken,
     users,
     addConversation,
     myDetails,
@@ -28,7 +27,8 @@ function NewConversationModalComponent(props: NewConversationProps) {
     setConversationType,
     handleSelectUser,
     selectedUsers,
-    setGroupName,
+    onSearchTokenChange,
+    onGroupNameChange
   } = useNewConversationModalHook(props);
 
   return (
@@ -64,13 +64,13 @@ function NewConversationModalComponent(props: NewConversationProps) {
           >
             <InputComponent
               placeholder="Search users"
-              setValue={setSearchToken}
+              onChange={onSearchTokenChange}
               icon={searchIcon}
             />
             {conversationType === "group-chat" && (
               <InputComponent
                 placeholder="Group name"
-                setValue={setGroupName}
+                onChange={onGroupNameChange}
               />
             )}
           </div>

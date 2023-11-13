@@ -60,6 +60,10 @@ export const useHomeHook = () => {
         setIsNewConversationModalVisible(true);
     }
 
+    function onSearchStringCHange(event: React.FormEvent<HTMLInputElement>){
+        setSearchString(event.currentTarget.value);
+    }
+
     return {
         setSearchString,
         openNewConversationModal,
@@ -72,6 +76,7 @@ export const useHomeHook = () => {
         userDetails,
         isProfileVisible,
         setIsProfileVisible,
-        setUserDetails
+        setUserDetails,
+        onSearchStringCHange
     };
 }

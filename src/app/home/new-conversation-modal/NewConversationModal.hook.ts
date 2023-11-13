@@ -132,6 +132,14 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         setIsNewConversationModalVisible(false);
     }
 
+    function onSearchTokenChange(event: React.FormEvent<HTMLInputElement>){
+        setSearchToken(event.currentTarget.value);
+    }
+
+    function onGroupNameChange(event: React.FormEvent<HTMLInputElement>){
+        setSearchToken(event.currentTarget.value);
+    }
+
     return {
         handleClose,
         setSearchToken,
@@ -143,6 +151,8 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         handleSelectUser,
         selectedUsers,
         setGroupName,
-        handleSearchUsers
+        handleSearchUsers,
+        onSearchTokenChange,
+        onGroupNameChange
     };
 }
