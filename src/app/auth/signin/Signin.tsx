@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SigninStyles from "./Signin.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
 import ButtonComponent from "../../_shared/components/button/Button.component";
@@ -12,38 +12,18 @@ import { User } from "../../../client/models/Entities/User";
 import { UserManagementService } from "../../../client/services/user-management.service";
 import { error } from "console";
 import { SigninResult } from "../../../client/models/Entities/RestResults";
+import useSigninHook from "./Signin.hook";
 
 function SigninComponent() {
-  const navigate = useNavigate();
-  const [emailInput, setEmailInput] = useState<string>("");
-  const [passwordInput, setPasswordInput] = useState<string>("");
-
-  async function handleSignIn(event: any) {
-    event.preventDefault();
-    const userManagementService = new UserManagementService();
-    try {
-      const signinResult = await userManagementService.signin(
-        emailInput,
-        passwordInput
-      );
-      if (signinResult.errorCode === 0) {
-        navigate(ROUTES.home);
-      } else {
-        alert(signinResult.errorMessage);
-      }
-    } catch (err) {
-      alert("Something went wrong!");
-      console.error(err)
-    }
-  }
-
-  function onEmailChange(event: React.FormEvent<HTMLInputElement>){
-    setEmailInput(event.currentTarget.value);
-  }
-
-  function onPasswordChange(event: React.FormEvent<HTMLInputElement>){
-    setPasswordInput(event.currentTarget.value);
-  }
+  
+  const { 
+    isLoading,
+    isDisabled,
+    errorMessage,
+    onPasswordChange,
+    onEmailChange,
+    handleSignIn
+  } = useSigninHook();
 
   return (
     <div className={SigninStyles["signin-container"]}>
@@ -53,10 +33,11 @@ function SigninComponent() {
           <InputComponent placeholder="Email" onChange={onEmailChange} />
         </div>
         <div className={SigninStyles["input"]}>
-          <InputComponent placeholder="Password" onChange={onPasswordChange} type="password"/>
+          <InputComponent placeholder="Password" onChange={onPasswordChange} type="password" />
         </div>
+        <p className={SigninStyles["error-message"]}>{errorMessage}</p>
         <div className={SigninStyles["input"]}>
-          <ButtonComponent onClick={handleSignIn} text="Sign In" />
+          <ButtonComponent onClick={handleSignIn} text="Sign In" isDisabled={isDisabled} isLoading={isLoading} />
         </div>
       </form>
       <div className={SigninStyles["signup"]}>

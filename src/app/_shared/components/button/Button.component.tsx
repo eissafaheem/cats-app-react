@@ -21,7 +21,11 @@ function ButtonComponent(props: ButtonProps) {
 
     return (
         <button disabled={isDisabled}>
-            <div className={`${ButtonStyles['button-container']} ${isDisabled && ButtonStyles['disabled-button']}`} onClick={onClick}>
+            <div className={
+                `${ButtonStyles['button-container']} 
+                ${isDisabled && ButtonStyles['disabled-button']} 
+                ${isLoading && ButtonStyles['loading-button']}`
+            } onClick={onClick}>
                 {
                     isLoading ?
                         <div className={ButtonStyles['loader']}>
@@ -36,9 +40,9 @@ function ButtonComponent(props: ButtonProps) {
                             }
                         </>
                 }
-                <div className={ButtonStyles["button-image"]}>
-                    <img src={icon} alt="" />
-                </div>
+                {/* <div className={ButtonStyles["button-image"]}> */}
+                <img src={icon} alt="" />
+                {/* </div> */}
             </div>
         </button>
     )

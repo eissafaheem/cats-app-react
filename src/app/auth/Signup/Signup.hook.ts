@@ -12,7 +12,7 @@ const useSignupHook = () => {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
-    const [isPasswordsMatch, setIsPasswordsMatch] = useState<boolean>(false);
+    const [isPasswordsMatch, setIsPasswordsMatch] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isInvalidEmail, setisInvalidEmail] = useState<boolean>(false);
 

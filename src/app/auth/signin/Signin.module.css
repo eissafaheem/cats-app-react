@@ -4,11 +4,9 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    /* border: 1px solid var(--app_border_color); */
     box-shadow: 0px 0px 20px var(--app_border_color);
     border-radius: var(--app_border_radius);
     padding: 2rem 1rem;
-    /* height: 50%; */
 }
 .signin-container h1{
     color: var(--primary_color);
@@ -29,6 +27,12 @@
 
 .signin-container .signup{
     font-size: 0.8rem;
+}
+
+.error-message{
+    color: var(--danger_color);
+    font-size: small;
+    height: 1rem;
 }
 
 @media screen and (max-width: 950px) {
