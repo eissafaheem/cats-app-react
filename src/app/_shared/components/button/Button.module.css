@@ -4,8 +4,7 @@
     align-items: center;
     justify-content: center;
     width: fit-content;
-    padding: 0.5rem;
-    height: 2.5rem;
+    padding: 0.8rem 1rem;
     border-radius: var(--app_border_radius);
     color: white;
     cursor: pointer;
@@ -30,11 +29,11 @@ button {
 }
 
 .loader {
-    border: 0.25rem solid var(--app_border_color);
-    border-top: 0.25rem solid var(--secondary_color);
+    border: 0.20rem solid var(--text2_color);
+    border-top: 0.20rem solid var(--secondary_color);
     border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
+    width: 1rem;
+    height: 1rem;
     animation: spin 1s linear infinite;
 }
 
