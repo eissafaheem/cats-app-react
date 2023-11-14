@@ -35,8 +35,8 @@ function HomeComponent() {
         <div className={HomeStyles["sidebar-container"]}>
           <div className={HomeStyles["header"]}>
             <div className={HomeStyles["brand-logo"]}>
-              <img src={brandLogo} alt="Cat's App Logo" />
-              <div className={HomeStyles["brand-name"]}>Cat's App</div>
+              <img src={brandLogo} alt="Meow Logo" />
+              <div className={HomeStyles["brand-name"]}>Meow</div>
             </div>
             <div className={HomeStyles["my-profile"]} onClick={()=>{setIsProfileVisible(!isProfileVisible)}}>
               <img src={AVATARS[userDetails.avatarId]} alt="Avatar" />

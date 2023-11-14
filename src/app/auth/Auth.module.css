@@ -1,15 +1,14 @@
 .auth-container{
-    /* background-color: var(--secondary_color); */
     height: 100vh;  
     display: grid;
     grid-template-columns: 1fr 1fr;
-    position: relative;
+    padding: 0 2.5rem;
 }
 
 .brand-info{
     display: flex;
     flex-direction: column;
-    padding: 35% 10%;
+    justify-content: center;
 }
 
 .brand-info .heading{
@@ -28,7 +27,6 @@
 }
 
 .form-container{
-    /* background-color: yellow; */
     display: flex;
     align-items: center;
     justify-self: center;
@@ -37,26 +35,10 @@
 @media screen and (max-width: 950px) {
     .auth-container{
         grid-template-columns: 1fr;
-        height: fit-content;
-    }
-
-    .brand-info{
-        padding: 2rem 3rem;
-    }
-
-    .brand-info h1{
-        font-size: 2rem;
-    }
-    
-    .brand-info .content{
-        margin-top: 3rem;
-    }
-
-    #paw{
-       display: none;
+        padding: 1rem;
     }
 
     .form-container{
-        display: block;
+        display: unset;
     }
 }

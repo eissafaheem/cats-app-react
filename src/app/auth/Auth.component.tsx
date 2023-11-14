@@ -13,7 +13,7 @@ function AuthComponent() {
           <h1>Meow: Chat App</h1>
         </div>
         <div className={AuthStyles["content"]}>
-          Purr-fectly Social Application Where Conversations Earn Paw-ints and Cat Avatars Come to Life!
+          Purr-fectly Social Application Conversations Earn Paw-ints and <br />Cat Avatars Come to Life!
         </div>
       </div>
       <div className={AuthStyles["form-container"]}>
