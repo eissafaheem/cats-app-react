@@ -3,6 +3,7 @@ import ChatStyles from "./Chat.module.css";
 import InputComponent from "../../_shared/components/input/Input.component";
 import ButtonComponent from "../../_shared/components/button/Button.component";
 import sendIcon from "./../../../assets/send-icon.svg";
+import emptyChat from "./../../../assets/chat.svg";
 import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useChatHook } from "./Chat.hook";
 import { Message, MessageResponse } from "../../../client/models/Entities/Message";
@@ -80,7 +81,10 @@ function ChatComponent(props: ChatComponentProps) {
           </form>
         </div>
       ) : (
-        "No Chat Selected"
+        <div className={ChatStyles["no-chat"]}>
+          <img src={emptyChat} alt="" />
+          Select a chat to dive into!
+        </div>
       )}
     </>
   );

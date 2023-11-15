@@ -3,11 +3,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: fit-content;
     padding: 0.8rem;
     border-radius: var(--app_border_radius);
     color: white;
     cursor: pointer;
+    gap: 1ch;
 }
 
 .button-container:hover {

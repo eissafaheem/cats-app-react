@@ -69,3 +69,17 @@
     background-size: cover;
 }
 
+.no-chat {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--secondary_color);
+    font-weight: bold;
+}
+
+.no-chat img{
+    height: 10rem;
+}
