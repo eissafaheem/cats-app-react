@@ -11,6 +11,11 @@ import { useHomeHook } from "./Home.hook";
 import ChatComponent from "./chat/Chat.component";
 import { AVATARS } from "../_shared/utils/constatnts";
 import ProfileComponent from "./profile/Profile.component";
+import { useTypedSelector } from "../../redux/store";
+import { useDispatch } from 'react-redux';
+// import { decrement, increment } from "../../redux/slices/countSlice";
+import { addConversation, removeConversation } from "../../redux/slices/conversationSlice";
+import { Conversation } from "../../client/models/Entities/Conversation";
 
 function HomeComponent() {
   const {
@@ -28,7 +33,8 @@ function HomeComponent() {
     setUserDetails,
     onSearchStringCHange
   } = useHomeHook();
-
+  const item = useTypedSelector(state => state);
+  const dispatch = useDispatch();
   return (
     <div className={HomeStyles["home-container"]}>
       <div className={HomeStyles["sidebar"]}>
@@ -36,9 +42,25 @@ function HomeComponent() {
           <div className={HomeStyles["header"]}>
             <div className={HomeStyles["brand-logo"]}>
               <img src={brandLogo} alt="Meow Logo" />
-              <div className={HomeStyles["brand-name"]}>Meow</div>
+              <div className={HomeStyles["brand-name"]}>Meow 
+              
+              {
+                item.conversationReducer.allConversations.map((a, index)=>{
+                  return <div key={index}>
+                  {a._id}
+                  </div>
+                })
+              }
+              
+              </div>
+              <button onClick={() => {
+                dispatch(addConversation(new Conversation("7687")))
+              }}>Inc</button>
+              <button onClick={() => {
+                dispatch(removeConversation(item.conversationReducer.allConversations.length-1))
+              }}>Dec</button>
             </div>
-            <div className={HomeStyles["my-profile"]} onClick={()=>{setIsProfileVisible(!isProfileVisible)}}>
+            <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
               <img src={AVATARS[userDetails.avatarId]} alt="Avatar" />
             </div>
           </div>
@@ -75,7 +97,7 @@ function HomeComponent() {
 
           {
             isProfileVisible &&
-            <ProfileComponent user={userDetails} setIsProfileVisible={setIsProfileVisible} setUserDetails={setUserDetails}/>
+            <ProfileComponent user={userDetails} setIsProfileVisible={setIsProfileVisible} setUserDetails={setUserDetails} />
           }
         </div>
       </div>
@@ -89,7 +111,7 @@ function HomeComponent() {
           setSelectedConversation={setSelectedConversation}
           allConversations={conversations}
           setAllConversations={setConversations}
-          myDetails = {userDetails}
+          myDetails={userDetails}
           setMyDetails={setUserDetails}
         />
       </div>
