@@ -8,23 +8,21 @@ import { useConversationListHook } from "./ConversationList.hook";
 import emptyConversation from './../../../assets/conversation.svg'
 import addIcon from './../../../assets/add-icon.svg'
 import ButtonComponent from "../../_shared/components/button/Button.component";
+import { all } from "q";
 
 export type ConversationListProps = {
   setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
-  conversations: Conversation[];
-  setAllConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
-  allConversations: Conversation[];
 };
 
 function ConversationListComponent(props: ConversationListProps) {
-  const { conversations, handleConversationClick } =
+  const { allConversations, handleConversationClick } =
     useConversationListHook(props);
 
   return (
     <div className={ConversationListStyles["conversation-list-container"]}>
       {
-        conversations.length ?
-          conversations?.map((conversation: Conversation, index: number) => {
+        allConversations.length ?
+          allConversations?.map((conversation: Conversation, index: number) => {
             return (
               <ConversationItemComponent
                 key={index}

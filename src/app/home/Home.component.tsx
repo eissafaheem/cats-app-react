@@ -16,16 +16,17 @@ import { useDispatch } from 'react-redux';
 // import { decrement, increment } from "../../redux/slices/countSlice";
 import { addConversation, removeConversation } from "../../redux/slices/conversationSlice";
 import { Conversation } from "../../client/models/Entities/Conversation";
+import { useCustomSelector } from "../../redux/slices/selector";
 
 function HomeComponent() {
   const {
     setSearchString,
     openNewConversationModal,
     setSelectedConversation,
-    conversations,
+    // conversations,
     isNewConversationModalVisible,
     setIsNewConversationModalVisible,
-    setConversations,
+    // setConversations,
     selectedConversation,
     userDetails,
     isProfileVisible,
@@ -33,7 +34,7 @@ function HomeComponent() {
     setUserDetails,
     onSearchStringCHange
   } = useHomeHook();
-  const item = useTypedSelector(state => state);
+  const { getAllConversationState } = useCustomSelector();
   const dispatch = useDispatch();
   return (
     <div className={HomeStyles["home-container"]}>
@@ -42,22 +43,12 @@ function HomeComponent() {
           <div className={HomeStyles["header"]}>
             <div className={HomeStyles["brand-logo"]}>
               <img src={brandLogo} alt="Meow Logo" />
-              <div className={HomeStyles["brand-name"]}>Meow 
-              
-              {
-                item.conversationReducer.allConversations.map((a, index)=>{
-                  return <div key={index}>
-                  {a._id}
-                  </div>
-                })
-              }
-              
-              </div>
+              <div className={HomeStyles["brand-name"]}>Meow</div>
               <button onClick={() => {
                 dispatch(addConversation(new Conversation("7687")))
               }}>Inc</button>
               <button onClick={() => {
-                dispatch(removeConversation(item.conversationReducer.allConversations.length-1))
+                dispatch(removeConversation(0))
               }}>Dec</button>
             </div>
             <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
@@ -81,11 +72,8 @@ function HomeComponent() {
           </div>
           <ConversationListComponent
             setSelectedConversation={setSelectedConversation}
-            conversations={conversations}
-            allConversations={conversations}
-            setAllConversations={setConversations}
           />
-          {isNewConversationModalVisible && (
+          {/* {isNewConversationModalVisible && (
             <NewConversationModalComponent
               setIsNewConversationModalVisible={
                 setIsNewConversationModalVisible
@@ -93,7 +81,7 @@ function HomeComponent() {
               setConversations={setConversations}
               conversations={conversations}
             />
-          )}
+          )} */}
 
           {
             isProfileVisible &&
@@ -106,14 +94,14 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        <ChatComponent
+        {/* <ChatComponent
           selectedConversation={selectedConversation}
           setSelectedConversation={setSelectedConversation}
-          allConversations={conversations}
-          setAllConversations={setConversations}
+          // allConversations={conversations}
+          // setAllConversations={setConversations}
           myDetails={userDetails}
           setMyDetails={setUserDetails}
-        />
+        /> */}
       </div>
     </div>
   );

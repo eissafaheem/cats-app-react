@@ -3,7 +3,7 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import countReducer, { CountState } from './slices/countSlice'
 import conversationReducer, { ConversationState } from './slices/conversationSlice'
 
-interface RootState {
+export interface RootState {
     countReducer: CountState,
     conversationReducer: ConversationState
 }

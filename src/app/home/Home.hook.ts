@@ -6,11 +6,15 @@ import { LocalKeys, LocalStorage } from "../../client/models/classes/businessLog
 import { User } from "../../client/models/Entities/User";
 import { ConversationManagementService } from "../../client/services/conversation-management.service";
 import { handleConversationData } from "../_shared/utils/methods";
+import { useDispatch } from "react-redux";
+import { addConversation, addConversationArray } from "../../redux/slices/conversationSlice";
+import { useCustomSelector } from "../../redux/slices/selector";
+
 
 export const useHomeHook = () => {
 
     const [selectedConversation, setSelectedConversation] = useState<Conversation>(new Conversation());
-    const [conversations, setConversations] = useState<Conversation[]>([]);
+    // const [conversations, setConversations] = useState<Conversation[]>([]);
     const socketIoService = new SocketIoService();
     const [searchString, setSearchString] = useState<string>("");
     const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);
@@ -20,6 +24,7 @@ export const useHomeHook = () => {
     const [userDetails, setUserDetails] = useState<User>(new LocalStorage().getData(
         LocalKeys.USER_DETAILS
     ));
+    const dispatch = useDispatch();
 
     useEffect(() => {
         establishSocketioConnection();
@@ -47,7 +52,8 @@ export const useHomeHook = () => {
                 const conversatiosArray = handleConversationData(
                     getConversationResult.conversation
                 );
-                setConversations([...conversatiosArray]);
+                // setConversations([...conversatiosArray]);
+                dispatch(addConversationArray([...conversatiosArray]));
             } else {
                 alert(getConversationResult.errorMessage);
             }
@@ -60,7 +66,7 @@ export const useHomeHook = () => {
         setIsNewConversationModalVisible(true);
     }
 
-    function onSearchStringCHange(event: React.FormEvent<HTMLInputElement>){
+    function onSearchStringCHange(event: React.FormEvent<HTMLInputElement>) {
         setSearchString(event.currentTarget.value);
     }
 
@@ -68,10 +74,10 @@ export const useHomeHook = () => {
         setSearchString,
         openNewConversationModal,
         setSelectedConversation,
-        conversations,
+        // conversations,
         isNewConversationModalVisible,
         setIsNewConversationModalVisible,
-        setConversations,
+        // setConversations,
         selectedConversation,
         userDetails,
         isProfileVisible,
