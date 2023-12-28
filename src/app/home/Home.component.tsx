@@ -16,7 +16,6 @@ import { useDispatch } from 'react-redux';
 // import { decrement, increment } from "../../redux/slices/countSlice";
 import { addConversation, removeConversation } from "../../redux/slices/conversationSlice";
 import { Conversation } from "../../client/models/Entities/Conversation";
-import { useCustomSelector } from "../../redux/slices/selector";
 
 function HomeComponent() {
   const {
@@ -34,7 +33,6 @@ function HomeComponent() {
     setUserDetails,
     onSearchStringCHange
   } = useHomeHook();
-  const { getAllConversationState } = useCustomSelector();
   const dispatch = useDispatch();
   return (
     <div className={HomeStyles["home-container"]}>
@@ -97,8 +95,6 @@ function HomeComponent() {
         {/* <ChatComponent
           selectedConversation={selectedConversation}
           setSelectedConversation={setSelectedConversation}
-          // allConversations={conversations}
-          // setAllConversations={setConversations}
           myDetails={userDetails}
           setMyDetails={setUserDetails}
         /> */}

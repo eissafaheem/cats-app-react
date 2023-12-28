@@ -8,7 +8,6 @@ import { ConversationManagementService } from "../../client/services/conversatio
 import { handleConversationData } from "../_shared/utils/methods";
 import { useDispatch } from "react-redux";
 import { addConversation, addConversationArray } from "../../redux/slices/conversationSlice";
-import { useCustomSelector } from "../../redux/slices/selector";
 
 
 export const useHomeHook = () => {

@@ -1,17 +1,17 @@
 import { useDispatch } from "react-redux";
 import { Conversation } from "../../../client/models/Entities/Conversation";
-import { useCustomSelector } from "../../../redux/slices/selector";
 import { ConversationListProps } from "./ConversationList.component";
 import { addConversationArray } from "../../../redux/slices/conversationSlice";
+import { useTypedSelector } from "../../../redux/store";
 
 export const useConversationListHook = (props: ConversationListProps) => {
 
   const {
     setSelectedConversation
   } = props;
+  const selectors = useTypedSelector(state => state);
 
-  const { getAllConversationState } = useCustomSelector();
-  const allConversations = getAllConversationState();
+  const allConversations = selectors.conversationReducer.allConversations;
   const dispatch = useDispatch();
 
   function handleConversationClick(conversation: Conversation) {
