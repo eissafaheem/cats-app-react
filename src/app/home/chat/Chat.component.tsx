@@ -13,8 +13,6 @@ import { User } from "../../../client/models/Entities/User";
 export type ChatComponentProps = {
   selectedConversation: Conversation;
   setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
-  setAllConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
-  allConversations: Conversation[];
   myDetails: User,
   setMyDetails: React.Dispatch<React.SetStateAction<User>>
 };
