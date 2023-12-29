@@ -71,15 +71,13 @@ function HomeComponent() {
           <ConversationListComponent
             setSelectedConversation={setSelectedConversation}
           />
-          {/* {isNewConversationModalVisible && (
+          {isNewConversationModalVisible && (
             <NewConversationModalComponent
               setIsNewConversationModalVisible={
                 setIsNewConversationModalVisible
               }
-              setConversations={setConversations}
-              conversations={conversations}
             />
-          )} */}
+          )}
 
           {
             isProfileVisible &&

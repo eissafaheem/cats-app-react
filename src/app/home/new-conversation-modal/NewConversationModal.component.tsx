@@ -13,8 +13,6 @@ export type NewConversationProps = {
   setIsNewConversationModalVisible: React.Dispatch<
     React.SetStateAction<boolean>
   >;
-  setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
-  conversations: Conversation[];
 };
 
 function NewConversationModalComponent(props: NewConversationProps) {
