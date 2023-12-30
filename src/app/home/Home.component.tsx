@@ -42,12 +42,6 @@ function HomeComponent() {
             <div className={HomeStyles["brand-logo"]}>
               <img src={brandLogo} alt="Meow Logo" />
               <div className={HomeStyles["brand-name"]}>Meow</div>
-              <button onClick={() => {
-                dispatch(addConversation(new Conversation("7687")))
-              }}>Inc</button>
-              <button onClick={() => {
-                dispatch(removeConversation(0))
-              }}>Dec</button>
             </div>
             <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
               <img src={AVATARS[userDetails.avatarId]} alt="Avatar" />
