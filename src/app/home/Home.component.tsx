@@ -68,9 +68,9 @@ function HomeComponent() {
               />
             </div>
           </div>
-          <ConversationListComponent
+          {/* <ConversationListComponent
             setSelectedConversation={setSelectedConversation}
-          />
+          /> */}
           {isNewConversationModalVisible && (
             <NewConversationModalComponent
               setIsNewConversationModalVisible={
@@ -90,12 +90,12 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        <ChatComponent
+        {/* <ChatComponent
           selectedConversation={selectedConversation}
           setSelectedConversation={setSelectedConversation}
           myDetails={userDetails}
           setMyDetails={setUserDetails}
-        />
+        /> */}
       </div>
     </div>
   );

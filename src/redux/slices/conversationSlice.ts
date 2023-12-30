@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Conversation } from '../../client/models/Entities/Conversation';
 import { useState } from 'react';
-import { addConversationArrayReducer, addConversationReducer, removeConversationReducer } from '../reducers/conversationReducers';
+import { addConversationArrayReducer, addConversationReducer, removeConversationReducer, setSelectedConversationReducer } from '../reducers/conversationReducers';
 
 
 
@@ -21,9 +21,10 @@ const conversationSlice = createSlice({
     reducers: {
         addConversation: addConversationReducer,
         addConversationArray: addConversationArrayReducer, 
-        removeConversation: removeConversationReducer
+        removeConversation: removeConversationReducer,
+        setSelectedConversation: setSelectedConversationReducer
     }
 })
 
-export const { addConversation, removeConversation, addConversationArray } = conversationSlice.actions;
+export const { addConversation, removeConversation, addConversationArray, setSelectedConversation } = conversationSlice.actions;
 export default conversationSlice.reducer;

@@ -7,22 +7,21 @@ import { User } from "../../client/models/Entities/User";
 import { ConversationManagementService } from "../../client/services/conversation-management.service";
 import { handleConversationData } from "../_shared/utils/methods";
 import { useDispatch } from "react-redux";
-import { addConversation, addConversationArray } from "../../redux/slices/conversationSlice";
+import { setSelectedConversation as setSelectedConversationState, addConversationArray } from "../../redux/slices/conversationSlice";
+import { useTypedSelector } from "../../redux/store";
 
 
 export const useHomeHook = () => {
 
-    const [selectedConversation, setSelectedConversation] = useState<Conversation>(new Conversation());
+    // const [selectedConversation, setSelectedConversation] = useState<Conversation>(new Conversation());
     // const [conversations, setConversations] = useState<Conversation[]>([]);
+    const selectors = useTypedSelector(state => state);
+    const selectedConversation = selectors.conversationReducer.selectedConversation;
     const socketIoService = new SocketIoService();
     const [searchString, setSearchString] = useState<string>("");
     const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);
-    const [isNewConversationModalVisible, setIsNewConversationModalVisible] =
-        useState<boolean>(false);
-    const modalDiv = document.getElementById("modal");
-    const [userDetails, setUserDetails] = useState<User>(new LocalStorage().getData(
-        LocalKeys.USER_DETAILS
-    ));
+    const [isNewConversationModalVisible, setIsNewConversationModalVisible] = useState<boolean>(false);
+    const [userDetails, setUserDetails] = useState<User>(new LocalStorage().getData(LocalKeys.USER_DETAILS));
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -51,14 +50,22 @@ export const useHomeHook = () => {
                 const conversatiosArray = handleConversationData(
                     getConversationResult.conversation
                 );
-                // setConversations([...conversatiosArray]);
-                dispatch(addConversationArray([...conversatiosArray]));
+                setAllConversations([...conversatiosArray]);
+
             } else {
                 alert(getConversationResult.errorMessage);
             }
         } catch (err) {
             console.error(err);
         }
+    }
+
+    function setSelectedConversation(conversation: Conversation) {
+        dispatch(setSelectedConversationState(conversation));
+    }
+
+    function setAllConversations(conversationArr: Conversation[]) {
+        dispatch(addConversationArray(conversationArr));
     }
 
     function openNewConversationModal() {
