@@ -13,8 +13,6 @@ import { useTypedSelector } from "../../redux/store";
 
 export const useHomeHook = () => {
 
-    // const [selectedConversation, setSelectedConversation] = useState<Conversation>(new Conversation());
-    // const [conversations, setConversations] = useState<Conversation[]>([]);
     const selectors = useTypedSelector(state => state);
     const selectedConversation = selectors.conversationReducer.selectedConversation;
     const socketIoService = new SocketIoService();
@@ -80,15 +78,12 @@ export const useHomeHook = () => {
         setSearchString,
         openNewConversationModal,
         setSelectedConversation,
-        // conversations,
         isNewConversationModalVisible,
         setIsNewConversationModalVisible,
-        // setConversations,
         selectedConversation,
         userDetails,
         isProfileVisible,
         setIsProfileVisible,
-        setUserDetails,
         onSearchStringCHange
     };
 }

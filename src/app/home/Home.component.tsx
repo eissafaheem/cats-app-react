@@ -27,13 +27,12 @@ function HomeComponent() {
     setIsNewConversationModalVisible,
     // setConversations,
     selectedConversation,
-    userDetails,
+    // userDetails,
     isProfileVisible,
     setIsProfileVisible,
-    setUserDetails,
+    // setUserDetails,
     onSearchStringCHange
   } = useHomeHook();
-  const dispatch = useDispatch();
   return (
     <div className={HomeStyles["home-container"]}>
       <div className={HomeStyles["sidebar"]}>
@@ -44,7 +43,7 @@ function HomeComponent() {
               <div className={HomeStyles["brand-name"]}>Meow</div>
             </div>
             <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
-              <img src={AVATARS[userDetails.avatarId]} alt="Avatar" />
+              {/* <img src={AVATARS[userDetails.avatarId]} alt="Avatar" /> */}
             </div>
           </div>
           <div className={HomeStyles["sidebar-options"]}>
@@ -71,10 +70,10 @@ function HomeComponent() {
             />
           )}
 
-          {
+          {/* {
             isProfileVisible &&
             <ProfileComponent user={userDetails} setIsProfileVisible={setIsProfileVisible} setUserDetails={setUserDetails} />
-          }
+          } */}
         </div>
       </div>
 
@@ -82,10 +81,10 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        <ChatComponent
+        {/* <ChatComponent
           myDetails={userDetails}
           setMyDetails={setUserDetails}
-        />
+        /> */}
       </div>
     </div>
   );
