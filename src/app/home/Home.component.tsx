@@ -88,12 +88,10 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        {/* <ChatComponent
-          selectedConversation={selectedConversation}
-          setSelectedConversation={setSelectedConversation}
+        <ChatComponent
           myDetails={userDetails}
           setMyDetails={setUserDetails}
-        /> */}
+        />
       </div>
     </div>
   );

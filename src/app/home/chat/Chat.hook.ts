@@ -18,7 +18,7 @@ import { User } from "../../../client/models/Entities/User";
 import { userInfo } from "os";
 import { useTypedSelector } from "../../../redux/store";
 import { useDispatch } from "react-redux";
-import { addConversationArray } from "../../../redux/slices/conversationSlice";
+import { addConversationArray, setSelectedConversation as setSelectedConversationState } from "../../../redux/slices/conversationSlice";
 
 
 export const useChatHook = (props: ChatComponentProps) => {
@@ -27,10 +27,12 @@ export const useChatHook = (props: ChatComponentProps) => {
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const socketIoService = new SocketIoService();
+    const selectors = useTypedSelector(state => state);
+    const allConversations = selectors.conversationReducer.allConversations
+    const selectedConversation = selectors.conversationReducer.selectedConversation;
+    const dispatch = useDispatch();
 
     const {
-        setSelectedConversation,
-        selectedConversation,
         myDetails,
         setMyDetails
     } = props;
@@ -46,12 +48,13 @@ export const useChatHook = (props: ChatComponentProps) => {
         getAllMessages();
     }, [selectedConversation]);
 
-    const selectors = useTypedSelector(state => state);
-    const allConversations = selectors.conversationReducer.allConversations
-    const dispatch = useDispatch();
 
     function setAllConversations(allConversationsLocal: Conversation[]) {
         dispatch(addConversationArray(allConversationsLocal));
+    }
+
+    function setSelectedConversation(conversation: Conversation) {
+        dispatch(setSelectedConversationState(conversation));
     }
 
     useEffect(() => {

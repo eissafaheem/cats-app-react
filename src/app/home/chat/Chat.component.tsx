@@ -11,8 +11,6 @@ import MessageComponent from "./message/Message.component";
 import { User } from "../../../client/models/Entities/User";
 
 export type ChatComponentProps = {
-  selectedConversation: Conversation;
-  setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
   myDetails: User,
   setMyDetails: React.Dispatch<React.SetStateAction<User>>
 };
