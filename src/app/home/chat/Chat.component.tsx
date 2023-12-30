@@ -8,14 +8,8 @@ import { Conversation } from "../../../client/models/Entities/Conversation";
 import { useChatHook } from "./Chat.hook";
 import { Message, MessageResponse } from "../../../client/models/Entities/Message";
 import MessageComponent from "./message/Message.component";
-import { User } from "../../../client/models/Entities/User";
 
-export type ChatComponentProps = {
-  myDetails: User,
-  setMyDetails: React.Dispatch<React.SetStateAction<User>>
-};
-
-function ChatComponent(props: ChatComponentProps) {
+function ChatComponent() {
   const {
     messageContainerRef,
     allMessages,
@@ -25,7 +19,7 @@ function ChatComponent(props: ChatComponentProps) {
     selectedConversation,
     inputRef,
     onMessageChange
-  } = useChatHook(props);
+  } = useChatHook();
 
   return (
     <>

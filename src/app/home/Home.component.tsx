@@ -31,7 +31,8 @@ function HomeComponent() {
     isProfileVisible,
     setIsProfileVisible,
     // setUserDetails,
-    onSearchStringCHange
+    onSearchStringCHange,
+    userDetailsState
   } = useHomeHook();
   return (
     <div className={HomeStyles["home-container"]}>
@@ -43,7 +44,7 @@ function HomeComponent() {
               <div className={HomeStyles["brand-name"]}>Meow</div>
             </div>
             <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
-              {/* <img src={AVATARS[userDetails.avatarId]} alt="Avatar" /> */}
+              <img src={AVATARS[userDetailsState.avatarId]} alt="Avatar" />
             </div>
           </div>
           <div className={HomeStyles["sidebar-options"]}>
@@ -81,10 +82,7 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        {/* <ChatComponent
-          myDetails={userDetails}
-          setMyDetails={setUserDetails}
-        /> */}
+        <ChatComponent/>
       </div>
     </div>
   );

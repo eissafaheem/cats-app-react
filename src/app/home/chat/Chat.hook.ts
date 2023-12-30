@@ -10,18 +10,17 @@ import {
 import { SocketIoService } from "../../../client/services/socket-io.service";
 import { SocketIoEvent } from "../../../client/models/Entities/SocketIoEvents";
 import { Conversation } from "../../../client/models/Entities/Conversation";
-import { ChatComponentProps } from "./Chat.component";
 import ChatStyles from "./Chat.module.css";
 import { AddMessageResult } from "../../../client/models/Entities/RestResults";
 import { UserManagementService } from "../../../client/services/user-management.service";
 import { User } from "../../../client/models/Entities/User";
-import { userInfo } from "os";
 import { useTypedSelector } from "../../../redux/store";
 import { useDispatch } from "react-redux";
 import { addConversationArray, setSelectedConversation as setSelectedConversationState } from "../../../redux/slices/conversationSlice";
+import { setUserDetails } from "../../../redux/slices/userSlice";
 
 
-export const useChatHook = (props: ChatComponentProps) => {
+export const useChatHook = () => {
     const [message, setMessage] = useState<string>("");
     const [allMessages, setAllMessages] = useState<MessageResponse[]>([]);
     const messageContainerRef = useRef<HTMLDivElement>(null);
@@ -30,17 +29,12 @@ export const useChatHook = (props: ChatComponentProps) => {
     const selectors = useTypedSelector(state => state);
     const allConversations = selectors.conversationReducer.allConversations
     const selectedConversation = selectors.conversationReducer.selectedConversation;
+    const myDetails = selectors.userReducer.userDetails;
     const dispatch = useDispatch();
-
-    const {
-        myDetails,
-        setMyDetails
-    } = props;
 
     useEffect(() => {
         scrollToBottom();
     }, [allMessages])
-
 
     useEffect(() => {
         setMessage("");
@@ -56,6 +50,14 @@ export const useChatHook = (props: ChatComponentProps) => {
     function setSelectedConversation(conversation: Conversation) {
         dispatch(setSelectedConversationState(conversation));
     }
+
+    function setMyDetails(userDetails: User) {
+        dispatch(setUserDetails(userDetails));
+    }
+
+    useEffect(()=>{
+        console.log(myDetails)
+    },[myDetails])
 
     useEffect(() => {
         socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
