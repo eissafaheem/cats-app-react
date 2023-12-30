@@ -71,10 +71,10 @@ function HomeComponent() {
             />
           )}
 
-          {/* {
+          {
             isProfileVisible &&
-            <ProfileComponent user={userDetails} setIsProfileVisible={setIsProfileVisible} setUserDetails={setUserDetails} />
-          } */}
+            <ProfileComponent  setIsProfileVisible={setIsProfileVisible}  />
+          }
         </div>
       </div>
 
