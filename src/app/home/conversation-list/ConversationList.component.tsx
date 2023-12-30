@@ -10,13 +10,9 @@ import addIcon from './../../../assets/add-icon.svg'
 import ButtonComponent from "../../_shared/components/button/Button.component";
 import { all } from "q";
 
-export type ConversationListProps = {
-  setSelectedConversation: React.Dispatch<React.SetStateAction<Conversation>>;
-};
-
-function ConversationListComponent(props: ConversationListProps) {
+function ConversationListComponent() {
   const { allConversations, handleConversationClick } =
-    useConversationListHook(props);
+    useConversationListHook();
 
   return (
     <div className={ConversationListStyles["conversation-list-container"]}>

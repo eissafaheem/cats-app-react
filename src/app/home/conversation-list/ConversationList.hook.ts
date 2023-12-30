@@ -1,18 +1,18 @@
 import { useDispatch } from "react-redux";
 import { Conversation } from "../../../client/models/Entities/Conversation";
-import { ConversationListProps } from "./ConversationList.component";
-import { addConversationArray } from "../../../redux/slices/conversationSlice";
+import { addConversationArray, setSelectedConversation as setSelectedConversationState } from "../../../redux/slices/conversationSlice";
 import { useTypedSelector } from "../../../redux/store";
+import { useEffect } from "react";
 
-export const useConversationListHook = (props: ConversationListProps) => {
+export const useConversationListHook = () => {
 
-  const {
-    setSelectedConversation
-  } = props;
   const selectors = useTypedSelector(state => state);
-
   const allConversations = selectors.conversationReducer.allConversations;
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    console.log("sfgslb",selectors.conversationReducer.selectedConversation)
+  },[selectors.conversationReducer.selectedConversation])
 
   function handleConversationClick(conversation: Conversation) {
     markConversationAsRead(conversation);
@@ -46,6 +46,9 @@ export const useConversationListHook = (props: ConversationListProps) => {
     dispatch(addConversationArray(tempConversations));
   }
 
+  function setSelectedConversation(conversation: Conversation) {
+    dispatch(setSelectedConversationState(conversation))
+  }
 
   return {
     allConversations,

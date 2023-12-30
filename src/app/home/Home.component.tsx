@@ -68,9 +68,7 @@ function HomeComponent() {
               />
             </div>
           </div>
-          {/* <ConversationListComponent
-            setSelectedConversation={setSelectedConversation}
-          /> */}
+          <ConversationListComponent/>
           {isNewConversationModalVisible && (
             <NewConversationModalComponent
               setIsNewConversationModalVisible={
