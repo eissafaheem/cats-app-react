@@ -10,6 +10,9 @@ import {
 import { handleConversationData } from "../../_shared/utils/methods";
 import { NewConversationProps } from "./NewConversationModal.component";
 import { CONVERSATION_TYPES } from "../../_shared/utils/constatnts";
+import { useDispatch } from "react-redux";
+import { useTypedSelector } from "../../../redux/store";
+import { addConversationArray } from "../../../redux/slices/conversationSlice";
 
 export const useNewConversationModalHook = (props: NewConversationProps) => {
 
@@ -18,28 +21,32 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
     const [conversationType, setConversationType] = useState<CONVERSATION_TYPES>('single-chat');
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+    const dispatch = useDispatch();
+    const selector = useTypedSelector(state => state);
+    const allConversations = selector.conversationReducer.allConversations
     const {
         setIsNewConversationModalVisible,
-        setConversations,
-        conversations
     } = props;
     const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
-
     useEffect(() => {
         if (searchToken.length) {
             handleSearchUsers();
         }
-        else{
+        else {
             setUsers([]);
         }
     }, [searchToken]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setSelectedUsers([]);
         setGroupName("");
         setSearchToken("")
         handleSelectUser(new User());
-    },[conversationType])
+    }, [conversationType])
+
+    function setConversations(conversationsArr: Conversation[]) {
+        dispatch(addConversationArray(conversationsArr));
+    }
 
     async function handleSearchUsers() {
         const userManagementService = new UserManagementService();
@@ -63,7 +70,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
                 null,
                 groupName,
                 [...selectedUsers, myId],
-                `${myDetails.name} ${selectedUsers.length===1? "started a chat" : "created a group"}`,
+                `${myDetails.name} ${selectedUsers.length === 1 ? "started a chat" : "created a group"}`,
                 false
             );
             const addConversationResult =
@@ -82,7 +89,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
                 } = conversationRestResult
                 conversationToAdd = { name, _id, isPinned, lastMessage, users, isUnread, avatarIds };
                 conversationToAdd = handleConversationData([conversationToAdd])[0];
-                setConversations([...[conversationToAdd],...conversations]);
+                setConversations([...[conversationToAdd], ...allConversations]);
                 setIsNewConversationModalVisible(false);
             } else {
                 alert(addConversationResult.errorMessage);
@@ -93,33 +100,33 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         }
     }
 
-    function handleSelectUser(user: User){
-        if(!user._id){
-            for(let i=0;i<users.length;i++){
-                if(users[i]._id !== user._id){
+    function handleSelectUser(user: User) {
+        if (!user._id) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]._id !== user._id) {
                     users[i].isSelected = false;
                 }
             }
             return;
         }
         user.isSelected = !user.isSelected;
-        if(conversationType === "single-chat"){
-            for(let i=0;i<users.length;i++){
-                if(users[i]._id !== user._id){
+        if (conversationType === "single-chat") {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]._id !== user._id) {
                     users[i].isSelected = false;
                 }
             }
             setUsers([...users]);
             setSelectedUsers([user]);
         }
-        else{
-            if(user.isSelected){
-                setSelectedUsers([user,...selectedUsers])
+        else {
+            if (user.isSelected) {
+                setSelectedUsers([user, ...selectedUsers])
             }
-            else{
+            else {
                 const tempArray = [];
-                for(let i=0;i<selectedUsers.length;i++){
-                    if(selectedUsers[i]._id !== user._id){
+                for (let i = 0; i < selectedUsers.length; i++) {
+                    if (selectedUsers[i]._id !== user._id) {
                         tempArray.push(selectedUsers[i]);
                     }
                 }
@@ -132,11 +139,11 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
         setIsNewConversationModalVisible(false);
     }
 
-    function onSearchTokenChange(event: React.FormEvent<HTMLInputElement>){
+    function onSearchTokenChange(event: React.FormEvent<HTMLInputElement>) {
         setSearchToken(event.currentTarget.value);
     }
 
-    function onGroupNameChange(event: React.FormEvent<HTMLInputElement>){
+    function onGroupNameChange(event: React.FormEvent<HTMLInputElement>) {
         setSearchToken(event.currentTarget.value);
     }
 

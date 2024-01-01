@@ -3,7 +3,7 @@ import { User } from "./User";
 export class Conversation {
   _id: string | null;
   name: string | null;
-  users: User[];
+  users: any;
   lastMessage: string | null;
   isPinned: boolean;
   isUnread: boolean;

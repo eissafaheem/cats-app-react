@@ -10,34 +10,31 @@ import {
 import { SocketIoService } from "../../../client/services/socket-io.service";
 import { SocketIoEvent } from "../../../client/models/Entities/SocketIoEvents";
 import { Conversation } from "../../../client/models/Entities/Conversation";
-import { ChatComponentProps } from "./Chat.component";
 import ChatStyles from "./Chat.module.css";
 import { AddMessageResult } from "../../../client/models/Entities/RestResults";
 import { UserManagementService } from "../../../client/services/user-management.service";
 import { User } from "../../../client/models/Entities/User";
-import { userInfo } from "os";
+import { useTypedSelector } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { addConversationArray, setSelectedConversation as setSelectedConversationState } from "../../../redux/slices/conversationSlice";
+import { setUserDetails } from "../../../redux/slices/userSlice";
 
 
-export const useChatHook = (props: ChatComponentProps) => {
+export const useChatHook = () => {
     const [message, setMessage] = useState<string>("");
     const [allMessages, setAllMessages] = useState<MessageResponse[]>([]);
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const socketIoService = new SocketIoService();
-
-    const {
-        setSelectedConversation,
-        selectedConversation,
-        allConversations,
-        setAllConversations,
-        myDetails,
-        setMyDetails
-    } = props;
+    const selectors = useTypedSelector(state => state);
+    const allConversations = selectors.conversationReducer.allConversations
+    const selectedConversation = selectors.conversationReducer.selectedConversation;
+    const myDetails = selectors.userReducer.userDetails;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         scrollToBottom();
     }, [allMessages])
-
 
     useEffect(() => {
         setMessage("");
@@ -45,13 +42,30 @@ export const useChatHook = (props: ChatComponentProps) => {
         getAllMessages();
     }, [selectedConversation]);
 
+
+    function setAllConversations(allConversationsLocal: Conversation[]) {
+        dispatch(addConversationArray(allConversationsLocal));
+    }
+
+    function setSelectedConversation(conversation: Conversation) {
+        dispatch(setSelectedConversationState(conversation));
+    }
+
+    function setMyDetails(userDetails: User) {
+        dispatch(setUserDetails(userDetails));
+    }
+
+    useEffect(()=>{
+        console.log(myDetails)
+    },[myDetails])
+
     useEffect(() => {
         socketIoService.recieveEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
 
         return () => {
             socketIoService.unregisterEvent(SocketIoEvent.RECIEVE_MESSAGE, handleReceiveMessage);
         };
-    }, [allConversations, selectedConversation]);
+    }, [allConversations, selectedConversation, allMessages]);
 
 
     async function getAllMessages() {
@@ -104,19 +118,19 @@ export const useChatHook = (props: ChatComponentProps) => {
         setAllMessages([...allMessages, newMessage]);
     }
 
-    async function handlePawints(message: string){
+    async function handlePawints(message: string) {
         const meowCount = (message.match(/meow/g) || []).length;
-        if(meowCount>0){
+        if (meowCount > 0) {
             const userManagementService = new UserManagementService();
             const updateUser = new User(myDetails._id);
             updateUser.pawints = myDetails.pawints + meowCount;
             const updateUserResult = await userManagementService.updateUser(updateUser);
-            if(updateUserResult.errorCode===0){
+            if (updateUserResult.errorCode === 0) {
                 new LocalStorage().setData(LocalKeys.USER_DETAILS, updateUserResult.user);
                 setMyDetails(updateUserResult.user);
             }
         }
-    }   
+    }
 
     const handleReceiveMessage = (data: any) => {
         addLastMessageInDom(data.conversation, data.message.content)
@@ -133,7 +147,10 @@ export const useChatHook = (props: ChatComponentProps) => {
         for (let i = 0; i < tempConversations.length; i++) {
             if (tempConversations[i]._id === conversation._id) {
                 if (!tempConversations[i].isUnread) {
-                    tempConversations[i].isUnread = true;
+                    tempConversations[i] = {
+                        ...tempConversations[i],
+                        isUnread: true
+                    }
                     isConversationExists = true;
                     break;
                 }
@@ -155,7 +172,10 @@ export const useChatHook = (props: ChatComponentProps) => {
 
         for (let i = 0; i < tempConversations.length; i++) {
             if (tempConversations[i]._id === conversation._id) {
-                tempConversations[i].lastMessage = lastMessage;
+                tempConversations[i] = {
+                    ...tempConversations[i],
+                    lastMessage: lastMessage
+                }
                 break;
             }
         }
@@ -172,7 +192,7 @@ export const useChatHook = (props: ChatComponentProps) => {
         setSelectedConversation(new Conversation());
     }
 
-    function onMessageChange(event: React.FormEvent<HTMLInputElement>){
+    function onMessageChange(event: React.FormEvent<HTMLInputElement>) {
         setMessage(event.currentTarget.value);
     }
 

@@ -3,16 +3,26 @@ import { UserManagementService } from "../../../client/services/user-management.
 import { ProfileProps } from "./Profile.component";
 import { User } from "../../../client/models/Entities/User";
 import { LocalKeys, LocalStorage } from "../../../client/models/classes/businessLogic/LocalStorage";
+import { useTypedSelector } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import {setUserDetails} from '../../../redux/slices/userSlice'
 
 export const useProfileHook = (props: ProfileProps) => {
 
-    let { user, setIsProfileVisible, setUserDetails } = props;
+    let { setIsProfileVisible } = props;
     const [isEditProfile, setIsEditProfile] = useState<boolean>(false);
+    const selectors = useTypedSelector(state=>state);
+    const user = selectors.userReducer.userDetails;
     const [name, setName] = useState<string>(user.name || "");
     const [email, setEmail] = useState<string>(user.email || "");
     const [password, setPassword] = useState<string>("");
     const [avatarId, setAvatarId] = useState<number>(+user.avatarId);
-    console.log(typeof avatarId);
+    const dispatch = useDispatch();
+
+    function setMyDetails(userDetails: User){
+        dispatch(setUserDetails(userDetails));
+    }
+
     function logoutUser() {
 
     }
@@ -34,7 +44,7 @@ export const useProfileHook = (props: ProfileProps) => {
         if (updateUserResult.errorCode === 0) {
             new LocalStorage().setData(LocalKeys.USER_DETAILS, updateUserResult.user);
             setIsEditProfile(false);
-            setUserDetails(updateUserResult.user);
+            setMyDetails(updateUserResult.user);
         }
     }
 

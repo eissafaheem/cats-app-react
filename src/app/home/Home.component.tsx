@@ -11,24 +11,29 @@ import { useHomeHook } from "./Home.hook";
 import ChatComponent from "./chat/Chat.component";
 import { AVATARS } from "../_shared/utils/constatnts";
 import ProfileComponent from "./profile/Profile.component";
+import { useTypedSelector } from "../../redux/store";
+import { useDispatch } from 'react-redux';
+// import { decrement, increment } from "../../redux/slices/countSlice";
+import { addConversation, removeConversation } from "../../redux/slices/conversationSlice";
+import { Conversation } from "../../client/models/Entities/Conversation";
 
 function HomeComponent() {
   const {
     setSearchString,
     openNewConversationModal,
     setSelectedConversation,
-    conversations,
+    // conversations,
     isNewConversationModalVisible,
     setIsNewConversationModalVisible,
-    setConversations,
+    // setConversations,
     selectedConversation,
-    userDetails,
+    // userDetails,
     isProfileVisible,
     setIsProfileVisible,
-    setUserDetails,
-    onSearchStringCHange
+    // setUserDetails,
+    onSearchStringCHange,
+    userDetailsState
   } = useHomeHook();
-
   return (
     <div className={HomeStyles["home-container"]}>
       <div className={HomeStyles["sidebar"]}>
@@ -38,8 +43,8 @@ function HomeComponent() {
               <img src={brandLogo} alt="Meow Logo" />
               <div className={HomeStyles["brand-name"]}>Meow</div>
             </div>
-            <div className={HomeStyles["my-profile"]} onClick={()=>{setIsProfileVisible(!isProfileVisible)}}>
-              <img src={AVATARS[userDetails.avatarId]} alt="Avatar" />
+            <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
+              <img src={AVATARS[userDetailsState.avatarId]} alt="Avatar" />
             </div>
           </div>
           <div className={HomeStyles["sidebar-options"]}>
@@ -57,25 +62,18 @@ function HomeComponent() {
               />
             </div>
           </div>
-          <ConversationListComponent
-            setSelectedConversation={setSelectedConversation}
-            conversations={conversations}
-            allConversations={conversations}
-            setAllConversations={setConversations}
-          />
+          <ConversationListComponent/>
           {isNewConversationModalVisible && (
             <NewConversationModalComponent
               setIsNewConversationModalVisible={
                 setIsNewConversationModalVisible
               }
-              setConversations={setConversations}
-              conversations={conversations}
             />
           )}
 
           {
             isProfileVisible &&
-            <ProfileComponent user={userDetails} setIsProfileVisible={setIsProfileVisible} setUserDetails={setUserDetails}/>
+            <ProfileComponent  setIsProfileVisible={setIsProfileVisible}  />
           }
         </div>
       </div>
@@ -84,14 +82,7 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        <ChatComponent
-          selectedConversation={selectedConversation}
-          setSelectedConversation={setSelectedConversation}
-          allConversations={conversations}
-          setAllConversations={setConversations}
-          myDetails = {userDetails}
-          setMyDetails={setUserDetails}
-        />
+        <ChatComponent/>
       </div>
     </div>
   );

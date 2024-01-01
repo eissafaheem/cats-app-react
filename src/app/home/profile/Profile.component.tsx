@@ -11,8 +11,6 @@ import { useProfileHook } from "./Profile.hook";
 import InputComponent from "../../_shared/components/input/Input.component";
 
 export type ProfileProps = {
-  user: User;
-  setUserDetails: React.Dispatch<React.SetStateAction<User>>
   setIsProfileVisible: React.Dispatch<React.SetStateAction<boolean>>
 };
 
