@@ -14,20 +14,14 @@ export type ProfileProps = {
   setIsProfileVisible: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-function ProfileComponent(props: ProfileProps) {
+function ProfileComponent() {
 
   const {
     logoutUser,
     isEditProfile,
-    setIsEditProfile,
     name,
-    setName,
     email,
     handleProfileButtonClick,
-    password,
-    setEmail,
-    setPassword,
-    setIsProfileVisible,
     user,
     setAvatarId,
     avatarId,
@@ -35,11 +29,13 @@ function ProfileComponent(props: ProfileProps) {
     onNameChange,
     onEmailChange,
     onPasswordChange
-  } = useProfileHook(props);
+  } = useProfileHook();
 
   return (
     <div className={ProfileStyles["profile-container"]}>
-      <div className={ProfileStyles["close-div"]} onClick={() => setIsProfileVisible(false)}></div>
+      <div className={ProfileStyles["close-div"]}
+      //  onClick={() => setIsProfileVisible(false)}
+      ></div>
       <div className={ProfileStyles["modal"]}>
         <header>
           <div className={ProfileStyles["user-info"]}>

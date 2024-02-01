@@ -15,7 +15,7 @@ export type NewConversationProps = {
   >;
 };
 
-function NewConversationModalComponent(props: NewConversationProps) {
+function NewConversationModalComponent() {
   const {
     handleClose,
     users,
@@ -27,7 +27,7 @@ function NewConversationModalComponent(props: NewConversationProps) {
     selectedUsers,
     onSearchTokenChange,
     onGroupNameChange
-  } = useNewConversationModalHook(props);
+  } = useNewConversationModalHook();
 
   return (
     <div className={NewComversationModalStyles["new-conversation-container"]}>

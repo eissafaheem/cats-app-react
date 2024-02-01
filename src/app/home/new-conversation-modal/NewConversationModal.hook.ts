@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../redux/store";
 import { addConversationArray } from "../../../redux/slices/conversationSlice";
 
-export const useNewConversationModalHook = (props: NewConversationProps) => {
+export const useNewConversationModalHook = () => {
 
     const [searchToken, setSearchToken] = useState<string>("");
     const [groupName, setGroupName] = useState<string>("");
@@ -24,9 +24,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
     const dispatch = useDispatch();
     const selector = useTypedSelector(state => state);
     const allConversations = selector.conversationReducer.allConversations
-    const {
-        setIsNewConversationModalVisible,
-    } = props;
+
     const myDetails = new LocalStorage().getData(LocalKeys.USER_DETAILS);
     useEffect(() => {
         if (searchToken.length) {
@@ -90,7 +88,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
                 conversationToAdd = { name, _id, isPinned, lastMessage, users, isUnread, avatarIds };
                 conversationToAdd = handleConversationData([conversationToAdd])[0];
                 setConversations([...[conversationToAdd], ...allConversations]);
-                setIsNewConversationModalVisible(false);
+                // setIsNewConversationModalVisible(false);
             } else {
                 alert(addConversationResult.errorMessage);
             }
@@ -136,7 +134,7 @@ export const useNewConversationModalHook = (props: NewConversationProps) => {
     }
 
     function handleClose() {
-        setIsNewConversationModalVisible(false);
+        // setIsNewConversationModalVisible(false);
     }
 
     function onSearchTokenChange(event: React.FormEvent<HTMLInputElement>) {

@@ -6,6 +6,8 @@ import ChatComponent from './home/chat/Chat.component';
 import AuthComponent from './auth/Auth.component';
 import SigninComponent from './auth/signin/Signin';
 import SignupComponent from './auth/signup/Signup';
+import NewConversationModalComponent from './home/new-conversation-modal/NewConversationModal.component';
+import ProfileComponent from './home/profile/Profile.component';
 
 function AppRouting() {
 
@@ -32,6 +34,20 @@ function AppRouting() {
         {
           path: "/home",
           element: <HomeComponent />,
+          children:[
+            {
+              path: "chat",
+              element: <ChatComponent/>
+            },
+            {
+              path: "new-conversation",
+              element: <NewConversationModalComponent/>
+            },
+            {
+              path: "profile",
+              element: <ProfileComponent/>
+            }
+          ]
         }
       ]
     }

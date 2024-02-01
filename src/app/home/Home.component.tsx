@@ -63,18 +63,18 @@ function HomeComponent() {
             </div>
           </div>
           <ConversationListComponent/>
-          {isNewConversationModalVisible && (
+          {/* {isNewConversationModalVisible && (
             <NewConversationModalComponent
               setIsNewConversationModalVisible={
                 setIsNewConversationModalVisible
               }
             />
-          )}
+          )} */}
 
-          {
+          {/* {
             isProfileVisible &&
             <ProfileComponent  setIsProfileVisible={setIsProfileVisible}  />
-          }
+          } */}
         </div>
       </div>
 
@@ -82,7 +82,7 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        <ChatComponent/>
+        <Outlet/>
       </div>
     </div>
   );

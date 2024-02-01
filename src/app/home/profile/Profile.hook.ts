@@ -7,9 +7,8 @@ import { useTypedSelector } from "../../../redux/store";
 import { useDispatch } from "react-redux";
 import {setUserDetails} from '../../../redux/slices/userSlice'
 
-export const useProfileHook = (props: ProfileProps) => {
+export const useProfileHook = () => {
 
-    let { setIsProfileVisible } = props;
     const [isEditProfile, setIsEditProfile] = useState<boolean>(false);
     const selectors = useTypedSelector(state=>state);
     const user = selectors.userReducer.userDetails;
@@ -78,7 +77,6 @@ export const useProfileHook = (props: ProfileProps) => {
         setPassword,
         handleProfileButtonClick,
         user,
-        setIsProfileVisible,
         setAvatarId,
         avatarId,
         handleAvatarSelect,
