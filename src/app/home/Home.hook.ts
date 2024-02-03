@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { setSelectedConversation as setSelectedConversationState, addConversationArray } from "../../redux/slices/conversationSlice";
 import { useTypedSelector } from "../../redux/store";
 import { setUserDetails } from "../../redux/slices/userSlice";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../_shared/utils/constatnts";
 
 
 export const useHomeHook = () => {
@@ -23,6 +25,7 @@ export const useHomeHook = () => {
     const [isNewConversationModalVisible, setIsNewConversationModalVisible] = useState<boolean>(false);
     const dispatch = useDispatch();
     const [userDetailsState, setUserDetailsState] = useState<User>(new LocalStorage().getData(LocalKeys.USER_DETAILS));
+    const navigate = useNavigate();
 
     useEffect(() => {
         setMyDetails();
@@ -82,6 +85,11 @@ export const useHomeHook = () => {
         setSearchString(event.currentTarget.value);
     }
 
+    function handleProfileClick(){
+        console.log("kjb")
+        navigate(ROUTES.home.profile)
+    }
+
     return {
         setSearchString,
         openNewConversationModal,
@@ -92,6 +100,7 @@ export const useHomeHook = () => {
         isProfileVisible,
         setIsProfileVisible,
         onSearchStringCHange,
-        userDetailsState
+        userDetailsState,
+        handleProfileClick
     };
 }

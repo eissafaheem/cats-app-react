@@ -33,7 +33,8 @@ function HomeComponent() {
     setIsProfileVisible,
     // setUserDetails,
     onSearchStringCHange,
-    userDetailsState
+    userDetailsState,
+    handleProfileClick
   } = useHomeHook();
   return (
     <div className={HomeStyles["home-container"]}>
@@ -44,7 +45,7 @@ function HomeComponent() {
               <img src={brandLogo} alt="Meow Logo" />
               <div className={HomeStyles["brand-name"]}>Meow</div>
             </div>
-            <div className={HomeStyles["my-profile"]} onClick={() => { setIsProfileVisible(!isProfileVisible) }}>
+            <div className={HomeStyles["my-profile"]} onClick={handleProfileClick}>
               <img src={AVATARS[userDetailsState.avatarId]} alt="Avatar" />
             </div>
           </div>
@@ -71,16 +72,7 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        
-        {
-          selectedConversation._id ?
-            <Outlet />
-            :
-            <div className={HomeStyles["no-chat"]}>
-              <img src={emptyChat} alt="" />
-              Select a chat to dive into!
-            </div>
-        }
+        <Outlet />
       </div>
     </div>
   );
