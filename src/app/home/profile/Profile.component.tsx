@@ -33,9 +33,6 @@ function ProfileComponent() {
 
   return (
     <div className={ProfileStyles["profile-container"]}>
-      <div className={ProfileStyles["close-div"]}
-      //  onClick={() => setIsProfileVisible(false)}
-      ></div>
       <div className={ProfileStyles["modal"]}>
         <header>
           <div className={ProfileStyles["user-info"]}>
@@ -45,7 +42,9 @@ function ProfileComponent() {
               <h3>{user.pawints} Pawints</h3>
             </div>
           </div>
-          <ButtonComponent text="Logout" onClick={logoutUser} />
+          <div>
+            <ButtonComponent text="Logout" onClick={logoutUser} />
+          </div>
         </header>
         <div className={ProfileStyles["content"]}>
           <div className={ProfileStyles["avatars"]}>

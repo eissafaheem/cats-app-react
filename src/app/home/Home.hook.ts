@@ -86,7 +86,7 @@ export const useHomeHook = () => {
     }
 
     function handleProfileClick(){
-        console.log("kjb")
+        setIsProfileVisible(true)
         navigate(ROUTES.home.profile)
     }
 

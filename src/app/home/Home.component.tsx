@@ -69,7 +69,7 @@ function HomeComponent() {
       </div>
 
       <div
-        className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
+        className={`${HomeStyles["content"]} ${(selectedConversation?._id || isProfileVisible)&& HomeStyles["content-open"]
           }`}
       >
         <Outlet />
