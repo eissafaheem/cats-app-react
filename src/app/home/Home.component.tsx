@@ -68,8 +68,12 @@ function HomeComponent() {
         </div>
       </div>
 
+      <>
+        {console.log(selectedConversation?._id, isProfileVisible, isNewConversationModalVisible)}
+      </>
+
       <div
-        className={`${HomeStyles["content"]} ${(selectedConversation?._id || isProfileVisible)&& HomeStyles["content-open"]
+        className={`${HomeStyles["content"]} ${(selectedConversation?._id || isProfileVisible || isNewConversationModalVisible) && HomeStyles["content-open"]
           }`}
       >
         <Outlet />

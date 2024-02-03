@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedConversation as setSelectedConversationState, addConversationArray } from "../../redux/slices/conversationSlice";
 import { useTypedSelector } from "../../redux/store";
 import { setUserDetails } from "../../redux/slices/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../_shared/utils/constatnts";
 
 
@@ -26,6 +26,8 @@ export const useHomeHook = () => {
     const dispatch = useDispatch();
     const [userDetailsState, setUserDetailsState] = useState<User>(new LocalStorage().getData(LocalKeys.USER_DETAILS));
     const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location.pathname === ROUTES.home.profile)
 
     useEffect(() => {
         setMyDetails();
@@ -37,9 +39,18 @@ export const useHomeHook = () => {
         };
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
+        setIsProfileVisible(location.pathname === ROUTES.home.profile)
+        setIsNewConversationModalVisible(location.pathname === ROUTES.home.newConversation)
+        console.log({location})
+        if (location.pathname === ROUTES.home.empty) {
+            setSelectedConversation(new Conversation());
+        }
+    }, [location]);
+
+    useEffect(() => {
         setUserDetailsState(myDetails);
-    },[myDetails]);
+    }, [myDetails]);
 
     function establishSocketioConnection() {
         socketIoService.establishConnection(userDetailsState);
@@ -78,6 +89,7 @@ export const useHomeHook = () => {
     }
 
     function openNewConversationModal() {
+        setIsNewConversationModalVisible(true);
         navigate(ROUTES.home.newConversation)
     }
 
@@ -85,7 +97,7 @@ export const useHomeHook = () => {
         setSearchString(event.currentTarget.value);
     }
 
-    function handleProfileClick(){
+    function handleProfileClick() {
         setIsProfileVisible(true)
         navigate(ROUTES.home.profile)
     }

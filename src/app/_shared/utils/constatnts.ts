@@ -18,7 +18,7 @@ export const ROUTES = {
     signup: `/signup`,
     signin: `/`,
     home: {
-        empty: "/home",
+        empty: "/home/",
         chat: "/home/chat",
         profile: "/home/profile",
         newConversation: "/home/new-conversation"
