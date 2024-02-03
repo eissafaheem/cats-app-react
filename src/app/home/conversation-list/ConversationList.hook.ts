@@ -3,6 +3,8 @@ import { Conversation } from "../../../client/models/Entities/Conversation";
 import { addConversationArray, setSelectedConversation as setSelectedConversationState } from "../../../redux/slices/conversationSlice";
 import { useTypedSelector } from "../../../redux/store";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../_shared/utils/constatnts";
 
 export const useConversationListHook = () => {
 
@@ -10,11 +12,14 @@ export const useConversationListHook = () => {
   const allConversations = selectors.conversationReducer.allConversations;
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   useEffect(()=>{
     console.log("sfgslb",selectors.conversationReducer.selectedConversation)
   },[selectors.conversationReducer.selectedConversation])
 
   function handleConversationClick(conversation: Conversation) {
+    navigate(`${ROUTES.home.chat}`)
     markConversationAsRead(conversation);
     setSelectedConversation(conversation);
   }

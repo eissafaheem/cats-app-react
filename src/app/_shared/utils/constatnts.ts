@@ -17,7 +17,13 @@ export const AVATARS = [
 export const ROUTES = {
     signup: `/signup`,
     signin: `/`,
-    home: `/home`
-}
+    home: {
+        empty: "/home",
+        chat: "/home/chat",
+        profile: "/home/profile",
+        newConversation: "/home/new-conversation"
+    }
+};
+
 
 export type  CONVERSATION_TYPES = "single-chat" | 'group-chat'; 

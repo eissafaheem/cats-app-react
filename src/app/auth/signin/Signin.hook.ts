@@ -30,7 +30,7 @@ const useSigninHook = () => {
                 passwordInput
             );
             if (signinResult.errorCode === 0) {
-                navigate(ROUTES.home);
+                navigate(ROUTES.home.empty);
             } else {
                 setErrorMessage(signinResult.errorMessage);
             }

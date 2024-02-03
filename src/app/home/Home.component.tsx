@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import InputComponent from "../_shared/components/input/Input.component";
 import ButtonComponent from "../_shared/components/button/Button.component";
 import ConversationListComponent from "./conversation-list/ConversationList.component";
+import emptyChat from "./../../assets/chat.svg";
 import NewConversationModalComponent from "./new-conversation-modal/NewConversationModal.component";
 import brandLogo from "./../../assets/brand-logo.svg";
 import addIcon from "./../../assets/add-icon.svg";
@@ -62,19 +63,7 @@ function HomeComponent() {
               />
             </div>
           </div>
-          <ConversationListComponent/>
-          {/* {isNewConversationModalVisible && (
-            <NewConversationModalComponent
-              setIsNewConversationModalVisible={
-                setIsNewConversationModalVisible
-              }
-            />
-          )} */}
-
-          {/* {
-            isProfileVisible &&
-            <ProfileComponent  setIsProfileVisible={setIsProfileVisible}  />
-          } */}
+          <ConversationListComponent />
         </div>
       </div>
 
@@ -82,7 +71,16 @@ function HomeComponent() {
         className={`${HomeStyles["content"]} ${selectedConversation?._id && HomeStyles["content-open"]
           }`}
       >
-        <Outlet/>
+        
+        {
+          selectedConversation._id ?
+            <Outlet />
+            :
+            <div className={HomeStyles["no-chat"]}>
+              <img src={emptyChat} alt="" />
+              Select a chat to dive into!
+            </div>
+        }
       </div>
     </div>
   );
