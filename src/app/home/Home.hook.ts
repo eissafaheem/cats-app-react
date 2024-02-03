@@ -78,7 +78,7 @@ export const useHomeHook = () => {
     }
 
     function openNewConversationModal() {
-        setIsNewConversationModalVisible(true);
+        navigate(ROUTES.home.newConversation)
     }
 
     function onSearchStringCHange(event: React.FormEvent<HTMLInputElement>) {
